@@ -95,4 +95,3 @@ app.use(pesAppRoutes.checkAdminExist);
 app.get(config.sitePrefix + '/auth/login', pesAppRoutes.getLogin);
 app.get(config.sitePrefix + '/auth/register', pesAppRoutes.getRegister);
 
-console.log('test');
