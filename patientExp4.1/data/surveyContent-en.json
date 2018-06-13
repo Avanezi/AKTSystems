@@ -1,0 +1,316 @@
+{
+  "name": "Primary Care Patient Experience Survey",
+  "language": "en",
+  "version": "4-2015",
+  "notes": "You are being invited to take part in this survey because you have recently had a visit with our clinic.  Your responses to the questions on this survey will help us improve the care we provide. There are six sections of the survey and it will take approximately 5 minutes to complete. Participation in the survey is completely voluntary and all your responses to the survey questions will be kept confidential.",
+  "sections": [
+    {
+      "section_name" : "start",
+      "section_id" : "0",
+      "extra_note" : "",
+      "questions" : [
+        {
+          "id": "q0",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "Who are you completing this survey for?",
+          "response_options": [
+            "Myself",
+            "Family or Friend",
+            "Patient or Client",
+            "Other (please specify):"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Contacting us",
+      "section_id": "1",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q1",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "1. How was the appointment for your most recent visit made?",
+          "response_options": [
+            "I didn't have an appointment - I just dropped in",
+            "I called and set it up",
+            "I emailed and set it up",
+            "I set it up at my last visit",
+            "You called me to set it up",
+            "Other (please specify):"
+          ]
+        },
+        {
+          "id": "q2",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "2. Thinking about your most recent visit, on a scale of poor to excellent, how would you rate the following ...?",
+          "sub_questions": [
+            "a. The length of time it took between making your appointment and the visit you just had",
+            "b. Your overall experience accessing the office/clinic"
+          ],
+          "radio_options" : [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Arriving and waiting at the Office/Clinic",
+      "section_id": "2",
+      "extra_note": "Still thinking about your most recent visit...",
+      "questions": [
+        {
+          "id": "q3",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "3. On a scale of poor to excellent, how would you rate the following ...?",
+          "sub_questions": [
+            "a. The length of time you had to wait in the reception/waiting area",
+            "b. Your overall experience with our reception staff",
+            "c. The length of time you had to wait in the examination room before you spoke with the health care provider about the reason for your visit"
+          ],
+          "radio_options" : [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name" : "Your Appointment",
+      "section_id" : "3",
+      "extra_note" : " ",
+      "questions" : [
+        {
+          "id": "",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "4. Thinking about the MAIN health care provider you spoke with during the visit, on a scale of poor to excellent, how would you rate this person on the following …",
+          "sub_questions": [
+            "a. They knew about your medical history ",
+            "b. They listened to your concerns",
+            "c. They spoke using a language you could understand",
+            "d. They explained things in a way that was easy to understand",
+            "e. They were sensitive to your needs and preferences",
+            "f. They treated you with dignity and respect",
+            "g. They gave you clear instructions about what you need to do  after your visit",
+            "h. Your overall experience speaking with the health care provider about the reason for your visit"
+          ],
+          "radio_options": [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Your overall experience with your most recent visit",
+      "section_id": "4",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q5",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "5. Thinking about your most recent visit, on a scale of poor to excellent, how would you rate the following...?",
+          "sub_questions": [
+            "a. The overall cleanliness of the of office/clinic",
+            "b. The overall physical comfort of the of office/clinic",
+            "c. Your confidence in the doctor/ health care provider(s) you saw during the visit",
+            "d. Your confidence that your health information was treated with the level of privacy you expect",
+            "e. Your overall experience with the visit you had with us"
+          ],
+          "radio_options" : [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Your experiences visiting with us over the last year or so",
+      "section_id": "5",
+      "extra_note": "The first couple of questions below are similar to ones asked earlier. However, instead of thinking about your most recent visit, we’d like you to think more broadly…about your experiences with us OVER THE LAST YEAR OR SO.",
+      "questions": [
+        {
+          "id": "q6a",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "6. The last time you were sick or were concerned you had a health problem…",
+          "sub_questions": "a. Did you get an appointment on the date you wanted?",
+          "response_options": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "id": "q6b",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "b. How many days did it take from when you first tried to see your doctor or nurse practitioner  to when you actually SAW him/her or someone else in their office?",
+          "response_options": [
+            "Same day",
+            "Next day",
+            "2-19 days (enter # of days:)",
+            "20 or more days",
+            "Not applicable (don’t know/ refused)"
+          ]
+        },
+        {
+          "id": "q7",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "7. When you see your doctor or nurse practitioner,  how often do they or someone else in the office…?",
+          "sub_questions": [
+            "a. Give you an opportunity to ask questions about recommended treatment",
+            "b. Involve you as much as you want to be in decisions about your care and treatment",
+            "c. Spend enough time with you"
+          ],
+          "radio_options" : [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q8",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "8. Over the last year or so…",
+          "sub_questions": "Did you receive care from a health care provider(s) at a location other than this practice",
+          "response_options": [
+            "Yes",
+            "No (Skip to Question 10)"
+          ]
+        },
+        {
+          "id": "q9",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "9. Thinking about the health care(s) providers that you have seen  at the different places you have received care over the last year or so, how often…?",
+          "sub_questions": [
+            "a. Did each seem to know your medical history",
+            "b. Did each seem to have your recent tests or exam results",
+            "c. Were they consistent in what they were telling you about your care and treatment?",
+            "d. Did they seem to work well together in caring for you"
+          ],
+          "radio_options" : [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q10",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "10. On another issue, the last time when you needed medical care in the evening, on a weekend, or on a public holiday, how easy was it to get care without going to the emergency department?",
+          "response_options": [
+            "Not Applicable",
+            "Very Easy",
+            "Somewhat Easy",
+            "Somewhat Difficult",
+            "Very Difficult"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "CONTEXT/DEMOGRAPHICS ",
+      "section_id": "6",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q11",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "11. In general how would you rate your overall health?",
+          "response_options": [
+            "Poor",
+            "Fair",
+            "Good",
+            "Very Good",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q12",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "12. How long have you been visiting us for your health care?",
+          "response_options": [
+            "Less than six months ",
+            "Between six months and a year",
+            "Between one and three years",
+            "Between three and five years",
+            "Longer than five years"
+          ]
+        },
+        {
+          "id": "q13",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "13. Using your best guess, how many times did you visit us over the last year or so for your own medical care?",
+          "response_options": [
+            "One",
+            "Two",
+            "Three",
+            "Four",
+            "Five or more"
+          ]
+        },
+        {
+          "id": "q14",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "14. Would you recommend our services to your family or friends? Check ONE only",
+          "response_options": [
+            "Definitely no",
+            "Probably no",
+            "Definitely yes",
+            "Probably yes"
+            ]
+        }
+      ]
+    },
+    {
+      "section_name": "Feedback (Optional)",
+      "section_id": "7",
+      "extra_note": "If you would like to provide additional feedback, please use the space below:",
+      "questions": [
+        {
+          "id": "q15",
+          "type": "text",
+          "has_other" : false,
+          "main_question": "15. Thinking of your overall experience with our office/clinic, what are …?",
+          "sub_questions": [
+            "a. Two things done particularly well:",
+            "b. Two things that could be improved?",
+            "c. Is there any additional information or feedback you would like to share with us that could help us improve the way we provide care?"
+          ]
+        }
+      ]
+    }
+
+  ]
+}

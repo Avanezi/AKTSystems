@@ -1,0 +1,39 @@
+<% include ../partials/head %>
+<% include ../partials/navigation%>
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-xs-12 col-sm-9">
+            <h1>Section <%= surveyQuestions.sections[7].section_id%>:  <%= surveyQuestions.sections[7].section_name%></h1>
+            <p><%=surveyQuestions.sections[7].extra_note%></p>
+            <form action="<%=sitePrefix%>/survey_run/<%=surveyRunId%>/feedback"
+                  method="post" enctype="application/x-www-form-urlencoded">
+                <h2 class="question"><%=surveyQuestions.sections[7].questions[0].main_question%></h2>
+                <fieldset>
+                    <h3 class="subquestion"><%=surveyQuestions.sections[7].questions[0].sub_questions[0]%></h3>
+                    <div class="answer">
+                        <textarea class="feedback" name="q15a1" id="q15a1" wrap="hard"/></textarea>
+                        <textarea class="feedback" name="q15a2" id="q15a2" wrap="hard"/></textarea>
+                    </div>
+                </fieldset>
+<br>
+
+                <fieldset>
+                    <h3 class="subquestion"><%=surveyQuestions.sections[7].questions[0].sub_questions[1]%></h3>
+                    <div class="answer">
+                        <textarea class="feedback" name="q15b1" id="q15b1" wrap="hard"/></textarea>
+                        <textarea class="feedback" name="q15b2" id="q15b2" wrap="hard"/></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <h3 class="subquestion"><%=surveyQuestions.sections[7].questions[0].sub_questions[2]%></h3>
+                    <div class="answer">
+                        <textarea class="feedback" name="q15c" id="q15c" wrap="hard"/></textarea>
+                    </div>
+                </fieldset>
+<br>
+                <input class="submit" type="submit" value="Complete / Fini" />
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<% include ../partials/head%>
+<% include ../partials/navigation%>
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-xs-12 col-sm-9">
+            <h1>Section <%= surveyQuestions.sections[1].section_id%>:  <%= surveyQuestions.sections[1].section_name%></h1>
+            <p><%=surveyQuestions.sections[1].extra_note%></p>
+            <form action="<%=sitePrefix%>/survey_run/<%=surveyRunId%>/section1"
+                  method="post" enctype="application/x-www-form-urlencoded">
+                <fieldset>
+                    <h2 class="question"><%=surveyQuestions.sections[1].questions[0].main_question%></h2>
+                    <% if (surveyQuestions.sections[1].questions[0].type === 'options') { %>
+                        <% for (var j = 0; j < surveyQuestions.sections[1].questions[0].response_options.length - 1; j++) { %>
+                            <div class="answer">
+                                <input type="radio" name="q1" id="'q1_' + '<%= j+1 %>'" value="<%= j+1%> " required="required" />
+                                <label for="<%= j+1 %>"><%=surveyQuestions.sections[1].questions[0].response_options[j]%></label>
+                            </div>
+                        <% } %>
+                    <div class="answer">
+                        <input type="radio" name="q1" id="q1_6" value="6"required="required" />
+                        <label for="q1_other"><%=surveyQuestions.sections[1].questions[0].response_options[5]%></label>
+                        <input type="text" name="q1_other" id="q1_other" />
+                    </div>
+                 <% } %>
+                </fieldset>
+
+                <h2 class="question"><%=surveyQuestions.sections[1].questions[1].main_question%></h2>
+                <fieldset>
+                    <h3 class="subquestion"><%=surveyQuestions.sections[1].questions[1].sub_questions[0]%></h3>
+                        <% if (surveyQuestions.sections[1].questions[1].type === 'scales') { %>
+                            <% for (var b = 0; b < surveyQuestions.sections[1].questions[1].radio_options.length; b++) { %>
+                                 <div class="answer">
+                                    <input type="radio" name="q2a" id="'q2a_' + '<%= b+1 %>'" value="<%= b+1 %>" required="required" />
+                                    <label for="<%= b+1 %>"><%=surveyQuestions.sections[1].questions[1].radio_options[b]%></label>
+                                 </div>
+                            <% } %>
+                         <% } %>
+                </fieldset>
+<br>
+                <fieldset>
+                    <h3 class="subquestion"><%=surveyQuestions.sections[1].questions[1].sub_questions[1]%></h3>
+                    <% if (surveyQuestions.sections[1].questions[1].type === 'scales') { %>
+                            <% for (var c = 0; c < surveyQuestions.sections[1].questions[1].radio_options.length; c++) { %>
+                                <div class="answer">
+                                    <input type="radio" name="q2b" id="'q2b'_ + '<%= c+1 %>'" value="<%= c+1 %>" required="required" />
+                                    <label for="<%= c+1 %>"><%=surveyQuestions.sections[1].questions[1].radio_options[c]%></label>
+                                </div>
+                            <% } %>
+                    <% } %>
+                 </fieldset>
+<br>
+                <input class="submit" type="submit" value="Next / Prochain"/>
+        </form>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer %>

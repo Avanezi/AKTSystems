@@ -1,0 +1,38 @@
+body {
+  background-color: cyan ;
+}
+
+.info_msg {
+  margin-top: 30px;
+  color: blue;
+}
+
+footer {
+
+  color: #3c3c3c;
+  margin-top: 5em;
+  font-size: 0.8em;
+}
+.title{
+  margin-top: 100px;
+}
+
+.version{
+  margin-top: 100px;
+}
+.submit {
+  background-color: black;
+  color: white;
+}
+
+.feedback{
+  width: 300px;
+  height: 100px;
+}
+fieldset{
+  padding: 20px;
+  font-family: Verdana, Geneva, sans-serif;
+  background-color: honeydew;
+  border: 5px solid;
+  border-bottom: 5px solid;
+}

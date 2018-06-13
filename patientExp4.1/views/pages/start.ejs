@@ -1,0 +1,38 @@
+<% include ../partials/head %>
+<% include ../partials/navigation %>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+        <p><%= surveyQuestions.notes %></p>
+        <form class="form-group" action="<%=sitePrefix%>/survey_run/<%=surveyRunId%>/start"
+              method="post" enctype="application/x-www-form-urlencoded">
+            <h2 class="question"><%=surveyQuestions.sections[0].questions[0].main_question%></h2>
+            <% if (surveyQuestions.sections[0].questions[0].type === 'options') { %>
+                <fieldset>
+                    <div class="answer">
+                        <input type="radio" name="q0" id="q0_0" value="myself" required="required" />
+                        <label for="myself"><%=surveyQuestions.sections[0].questions[0].response_options[0] %></label>
+                    </div>
+                    <div class="answer">
+                        <input type="radio" name="q0" id="q0_1" value="family"required="required" />
+                        <label for="family"><%=surveyQuestions.sections[0].questions[0].response_options[1] %></label>
+                    </div>
+                <div class="answer">
+                    <input type="radio" name="q0" id="q0_2" value="client"required="required" />
+                    <label for="friend"><%=surveyQuestions.sections[0].questions[0].response_options[2] %></label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q0" id="q0_3" value="other" required="required"/>
+                    <label for="client"><%=surveyQuestions.sections[0].questions[0].response_options[3] %></label>
+                    <input type="text" name="q0_other" id="q0_other" />
+                </div>
+                <% } %>
+                </fieldset>
+            <br>
+            <input class="submit" type="submit" value="Next / Prochain" />
+        </form>
+    </div>
+</div>
+</div>
+<% include ../partials/footer %>
+

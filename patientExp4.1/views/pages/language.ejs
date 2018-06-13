@@ -1,0 +1,24 @@
+<% include ../partials/head %>
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-xs-12 col-sm-9">
+        <form action="<%=sitePrefix%>/survey_run/<%=surveyRunId%>/language"
+              method="post" enctype="application/x-www-form-urlencoded">
+            <fieldset>
+                <h2>Which language do you prefer?</h2>
+
+                <h2>Quelle langue préférez-vous?</h2>
+
+                <input type="radio" name="language" id="fr" value="fr">
+                <label for="fr">French</label>
+
+                <input type="radio" name="language" id="en" value="en">
+                <label for="en">English</label>
+            </fieldset>
+<br>
+            <input type="submit" class="submit" value="Start / Début" />
+        </form>
+    </div>
+    </div>
+</div>
+<% include ../partials/footer %>

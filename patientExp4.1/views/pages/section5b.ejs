@@ -1,0 +1,26 @@
+<% include ../partials/head %>
+<% include ../partials/navigation%>
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-9">
+            <h1>Section <%= surveyQuestions.sections[5].section_id%>:  <%= surveyQuestions.sections[5].section_name%></h1>
+            <p><%=surveyQuestions.sections[5].extra_note%></p>
+            <form action="<%=sitePrefix%>/survey_run/<%=surveyRunId%>/section5b"
+                      method="post" enctype="application/x-www-form-urlencoded">
+                <h2 class="question"><%=surveyQuestions.sections[5].questions[5].main_question%></h2>
+                    <fieldset>
+                        <% if (surveyQuestions.sections[5].questions[5].type === 'options') { %>
+                            <% for (var d = 0; d < surveyQuestions.sections[5].questions[5].response_options.length; d++) { %>
+                                <div class="answer">
+                                    <input type="radio" name="q10" id="'q10_' + '<%= d+1%>'" value="<%= d+1%>" required="required"/>
+                                    <label for="<%= d+1 %>"><%=surveyQuestions.sections[5].questions[5].response_options[d]%></label>
+                                </div>
+                            <% } %>
+                        <% } %>
+                    </fieldset>
+<br>
+                    <input class="submit" type="submit" value="Next / Prochain" />
+            </form>
+        </div>
+    </div>
+</div>

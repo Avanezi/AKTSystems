@@ -1,0 +1,315 @@
+{
+  "name": "Enquête sur l'expérience des patients en soins primaires",
+  "version": "4-2015",
+  "notes": " Vous êtes invité à participer à ce sondage parce que vous avez récemment eu une visite avec notre clinique.  Vos réponses aux questions sur cette enquête nous aideront à améliorer les soins que nous fournissons. Il y a six sections de l'enquête et il faudra environ 5 minutes pour être complété. Participation in the survey is completely voluntary and all your responses to the survey questions will be kept confidential.La participation à l'enquête est entièrement volontaire et toutes vos réponses aux questions du sondage seront confidentielles",
+  "sections": [
+    {
+      "section_name" : "start",
+      "section_id" : "0",
+      "extra_note" : "",
+      "questions" : [
+        {
+          "id": "q0",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "À qui complétez-vous ce sondage?",
+          "response_options": [
+            "Moi même",
+            "Famille ou ami",
+            "Patient ou client",
+            "Autre (veuillez préciser):"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Contactez-nous",
+      "section_id": "1",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q1",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "1.  Comment s'est déroulé le rendez-vous pour votre dernière visite?",
+          "response_options": [
+            "Je n'ai pas eu de rendez-vous - je viens de déposer",
+            "J'ai appelé et mis en place",
+            "J'ai envoyé un courrier électronique et l'ai configuré",
+            "Je l'ai mis en place lors de ma dernière visite",
+            "Vous m'avez appelé pour le mettre en place",
+            "Autre (veuillez préciser):"
+          ]
+        },
+        {
+          "id": "q2",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "2. En pensant à votre dernière visite, à une échelle de pauvre à excellente, comment évalueriez-vous ce qui suit ...?",
+          "sub_questions": [
+            "a. Le temps qu'il a fallu entre le rendez-vous et la visite que vous venez d'avoir",
+            "b. Votre expérience globale d'accès au bureau / clinique"
+          ],
+          "radio_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Arrivée et attente au Bureau / Clinique",
+      "section_id": "2",
+      "extra_note": "Toujours en train de réfléchir à votre visite la plus récente ...",
+      "questions": [
+        {
+          "id": "q3",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "3. Sur une échelle de pauvre à excellent, comment évalueriez-vous ce qui suit ...?",
+          "sub_questions": [
+            "a. Le temps que vous avez dû attendre dans la zone d'accueil / d'attente",
+            "b. Votre expérience globale avec notre personnel de réception",
+            "c. Le temps que vous avez dû attendre dans la salle d'examen avant de parler avec le fournisseur de soins de santé de la raison de votre visite"
+          ],
+          "radio_options" : [
+          "Pauvre",
+          "Accecptable",
+          "Bien",
+          "Très Bien",
+          "Excellent"
+        ]
+        }
+      ]
+    },
+    {
+      "section_name" : "Votre rendez-vous",
+      "section_id" : "3",
+      "extra_note" : " ",
+      "questions" : [
+        {
+          "id": "",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "4. En ce qui concerne le principal fournisseur de soins de santé dont vous avez parlé au cours de la visite, sur une échelle de pauvres à excellente, comment évalueriez-vous cette personne sur ce qui suit ...",
+          "sub_questions": [
+            "a. Ils connaissaient votre histoire médicale ",
+            "b. Ils ont écouté vos préoccupations",
+            "c. Ils ont parlé en utilisant une langue que vous comprendriez",
+            "d. Ils ont expliqué les choses d'une manière facile à comprendre",
+            "e. Ils étaient sensibles à vos besoins et à vos préférences",
+            "f. Ils vous ont traité avec dignité et respect",
+            "g. Ils vous ont donné des instructions claires sur ce que vous devez faire après votre visite",
+            "h. Votre expérience globale en parlant avec le fournisseur de soins de santé au sujet de la raison de votre visite"
+          ],
+          "radio_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Votre expérience globale avec votre dernière visite",
+      "section_id": "4",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q5",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "5. En ce qui concerne votre visite la plus récente, sur une échelle de pauvre à excellente, comment évalueriez-vous ce qui suit ...?",
+          "sub_questions": [
+            "a. La propreté globale du bureau / clinique",
+            "b. Le confort physique global du bureau / clinique",
+            "c. Votre confiance dans le médecin / fournisseur (s) de soins de santé que vous avez vu lors de la visite",
+            "d. Votre confiance que votre information sur la santé a été traitée avec le niveau de confidentialité que vous attendez",
+            "e. Votre expérience globale avec la visite que vous avez menée avec nous"
+          ],
+          "radio_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "Vos expériences en visite avec nous au cours de la dernière année",
+      "section_id": "5",
+      "extra_note": "Les premières questions ci-dessous sont semblables à celles qui ont été posées plus tôt. Toutefois, au lieu de réfléchir à votre visite la plus récente, nous souhaiterions que vous pensiez de manière plus large ... au sujet de vos expériences avec nous au cours de la dernière décennie ou si.",
+      "questions": [
+        {
+          "id": "q6a",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "6a. La dernière fois que vous étiez malade ou si vous étiez concerné, vous éprouviez un problème de santé ...",
+          "sub_questions": "Avez-vous un rendez-vous à la date souhaitée",
+          "response_options": [
+            "Oui",
+            "Non"
+          ]
+        },
+        {
+          "id": "q6b",
+          "type": "options",
+          "has_other" : true,
+          "main_question": "6b. Combien de jours a-t-il fallu lorsque vous avez essayé de consulter votre médecin ou votre infirmier praticien lorsque vous l'avez réellement vu ou à quelqu'un d'autre dans leur bureau?",
+          "response_options": [
+            "Même jour",
+            "Le prochain jour",
+            "2 à 19 jours (entre le nombre de jours)",
+            "20 jours ou plus",
+            "Sans objet (ne sais pas / refusé)"
+          ]
+        },
+        {
+          "id": "q7",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "7. Lorsque vous voyez votre médecin ou votre infirmière praticienne, à quelle fréquence font-ils ou quelqu'un d'autre au bureau ...?",
+          "sub_questions": [
+            "a. Donnez-vous l'occasion de poser des questions sur le traitement recommandé",
+            "b. Impliquez-vous autant que vous voulez être dans les décisions concernant vos soins et votre traitement",
+            "c. Passez du temps avec vous"
+          ],
+          "radio_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q8",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "8. Over the last year or so…",
+          "sub_questions": "a.  Avez-vous reçu des soins d'un ou des fournisseurs de soins de santé à un endroit autre que cette pratique?",
+          "response_options": [
+            "Oui",
+            "Non (Passez à la question 10)"
+          ]
+        },
+        {
+          "id": "q9",
+          "type": "scales",
+          "has_other" : false,
+          "main_question": "9. En ce qui concerne les fournisseurs de soins de santé que vous avez vus aux différents endroits où vous avez reçu des soins au cours de la dernière année, à quelle fréquence ...?",
+          "sub_questions": [
+            "a. Est-ce que chacun a l'impression de connaître votre histoire médicale?",
+            "b. Est-ce que chacun d'entre vous semble avoir vos tests ou résultats d'examens récents?",
+            "c. Sont-ils cohérents dans ce qu'ils vous disaient de vos soins et de votre traitement?",
+            "d. Est-ce qu'ils semblaient bien travailler ensemble pour vous soigner?"
+          ],
+          "radio_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q10",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "10. Sur une autre question, la dernière fois que vous aviez besoin de soins médicaux dans la soirée, un week-end ou un jour férié, combien était-il facile de faire attention sans aller au service des urgences?",
+          "response_options": [
+            "N'est pas applicable",
+            "Très facile",
+            "Assez facile",
+            "Un peu difficile",
+            "Très difficile"
+          ]
+        }
+      ]
+    },
+    {
+      "section_name": "CONTEXTE / DÉMOGRAPHIE ",
+      "section_id": "6",
+      "extra_note": "",
+      "questions": [
+        {
+          "id": "q11",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "11. En général, comment évalueriez-vous votre santé globale?",
+          "response_options" : [
+            "Pauvre",
+            "Accecptable",
+            "Bien",
+            "Très Bien",
+            "Excellent"
+          ]
+        },
+        {
+          "id": "q12",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "12. Depuis combien de temps vous nous avez-vous consultés pour vos soins de santé?",
+          "response_options": [
+            "Moins de six mois ",
+            "Entre six mois et un an",
+            "Between one and three years",
+            "Entre trois et cinq ans",
+            "Plus de cinq ans"
+          ]
+        },
+        {
+          "id": "q13",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "13. En utilisant votre meilleure estimation, combien de fois avez-vous visité nous au cours de l'année écoulée pour vos propres soins médicaux?",
+          "response_options": [
+            "One",
+            "Un",
+            "Deux",
+            "Trois",
+            "Quatre"
+          ]
+        },
+        {
+          "id": "q14",
+          "type": "options",
+          "has_other" : false,
+          "main_question": "14. Recommanderiez-vous nos services à votre famille ou à vos amis? Vérifiez UN seul",
+          "response_options": [
+            "Définitivement non",
+            "Probablement pas",
+            "Définitivement oui",
+            "Probablement oui"
+            ]
+        }
+      ]
+    },
+    {
+      "section_name": "Retour d'information (Optionnel)",
+      "section_id": "7",
+      "extra_note": "Si vous souhaitez fournir des commentaires supplémentaires, utilisez l'espace ci-dessous:",
+      "questions": [
+        {
+          "id": "q15",
+          "type": "text",
+          "has_other" : false,
+          "main_question": "15. En pensant à votre expérience globale avec notre bureau / clinique, qu'est-ce que ...?",
+          "sub_questions": [
+            "a. Deux choses particulièrement bien faites:",
+            "b. Deux choses qui pourraient être améliorées?",
+            "c. Existe-t-il des informations supplémentaires ou des commentaires que vous souhaitez partager avec nous qui pourraient nous aider à améliorer la façon dont nous fournissons des soins?"
+          ]
+        }
+      ]
+    }
+
+  ]
+}
