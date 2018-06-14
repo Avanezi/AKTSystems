@@ -205,8 +205,12 @@ exports.postLoginRequest = function(req, res, next) {
 // };
 
 exports.registerAdmin = function(req, res, next){
+    var first_name = req.body['first_name'];
+    var last_name = req.body['last_name'];
     var email_address = req.body['email_address'];
+    var email_confirm = req.body['email_address_confirm']
     var password = req.body['passwordNew'];
+    var password_confirm = req.body['passwordNew_confirm']
     var security_question = req.body['security_question'];
     var security_answer = req.body['security_answer'];
     var salt = bcrypt.genSaltSync(10);
@@ -215,32 +219,42 @@ exports.registerAdmin = function(req, res, next){
     // var hashedAnswer = bcrypt.hashSync(security_answer, salt);
     // console.log('pw: ', hashedPassword, 'answer: ', hashedAnswer);
     //assumes 1 admin
-    var query = "UPDATE Users SET securityQuestion = '" + security_question + "', securityAnswer = '" + hashedAnswer + "', email_address = '" + email_address + "', password = '" + hashedPassword + "' WHERE role = 'admin';";
-    dbconn.query(
-        query, function(err, result, fields) {
-            if (err) {
-                var errMsg;
-                if (err.code === 'ER_DUP_ENTRY') {
-                    errMsg = 'That email is already taken, please try another.';
-                    console.log(errMsg);
+    if (email_address === email_confirm && password === password_confirm) {
+        var query = "UPDATE Users SET firstName = '" + first_name + "', lastName = '" + last_name + "', securityQuestion = '" + security_question + "', securityAnswer = '" + hashedAnswer + "', email_address = '" + email_address + "', password = '" + hashedPassword + "' WHERE role = 'admin';";
+        dbconn.query(
+            query, function (err, result, fields) {
+                if (err) {
+                    var errMsg;
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        errMsg = 'That email is already taken, please try another.';
+                        console.log(errMsg);
+                    }
+                    else {
+                        errMsg = 'An error occurred trying to register you. Please try again.';
+                        console.log(err)
+
+                    }
+                    res.header('Content-Type', 'text/html');
+                    res.render('pages/auth/register', {
+                        title: 'Login',
+                        surveyQuestions: surveyQuestions,
+                        loginMessage: errMsg
+                    });
                 }
                 else {
-                    errMsg = 'An error occurred trying to register you. Please try again.';
-                    console.log(err)
-
+                    console.log('============= Admin account has been updated =============');
+                    res.redirect(303, config.sitePrefix + '/auth/login');
                 }
-                res.header('Content-Type', 'text/html');
-                res.render('pages/auth/register', {
-                    title: 'Login',
-                    surveyQuestions : surveyQuestions,
-                    loginMessage: errMsg
-                });
-            }
-            else {
-                console.log('============= Admin account has been updated =============');
-                res.redirect(303, config.sitePrefix + '/auth/login');
-            }
+            });
+    } else {
+        console.log('fail');
+        res.header('Content-Type', 'text/html');
+        res.render('pages/admin_start', {
+            title: 'administratttttt',
+            surveyQuestions: surveyQuestions,
+            loginMessage: ''
         });
+    }
 };
 
 exports.registerTempUser = function(req, res, next) {

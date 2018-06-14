@@ -1,4 +1,5 @@
 <% include ../partials/head.ejs%>
+<body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-sm-6">
@@ -12,11 +13,25 @@
             </div>
 
             <div id="edit_admin_information">
-                <form action="<%=sitePrefix%>/admin_start" method="post" class="login">
+                <form action="<%=sitePrefix%>/admin_start" method="post" class="login" >
                     <div class="form-group">
                         <div class="form-group">
+                            <label> First Name </label>
+                            <input type="text" class="form-control" name="first_name" id="first_name" pattern="[A-Za-z]{1,}" required /><br />
+                        </div>
+
+                        <div class="form-group">
+                            <label> Last Name </label>
+                            <input type="text" class="form-control" name="last_name" pattern="[A-Za-z]{1,}" id="last_name" required /><br />
+                        </div>
+                        <div class="form-group">
                             <label> Email Address </label>
-                            <input type="email" class="form-control" name="email_address" required /><br />
+                            <input type="email" class="form-control" name="email_address" id="email_address" required /><br />
+                        </div>
+
+                        <div class="form-group">
+                            <label> Confirm Email Address </label>
+                            <input type="email" class="form-control" name="email_address_confirm" id="email_address_confirm" required /><br />
                         </div>
                         <!--<div class="form-group">-->
                             <!--<label> Re-enter Email Address </label>-->
@@ -24,22 +39,30 @@
                         <!--</div>-->
                         <div class="form-group">
                             <label>Enter New Password:</label>
-                            <input type="password" class="form-control" id="new_password" name="passwordNew" required="required" /><br />
+                            <input type="password" class="form-control" id="passwordNew" name="passwordNew" required="required" />
+                        </div>
+                        <div id="password_message" class="password_requirements">
+                            <h3>Password Requirements</h3>
+                            <p id="letter" class="invalid valid">A <b>lowercase</b> letter</p>
+                            <p id="capital" class="invalid valid">A <b>capital (uppercase)</b> letter</p>
+                            <p id="number" class="invalid valid">A <b>number</b></p>
+                            <p id="length" class="invalid valid">Minimum <b>8 characters</b></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Re-Enter Password:</label>
+                            <input type="password" class="form-control" id="passwordNew_confirm" name="passwordNew_confirm" required="required" /><br />
+                            <p id="password_checking">Password does not match</p>
                         </div>
                         <div class="form-group">
                             <label> Set a Security Question </label>
-                            <input type="text" class="form-control" name="security_question" required /><br />
+                            <input type="text" class="form-control" name="security_question" id="security_question" required /><br />
                         </div>
                         <div class="form-group">
                             <label> Set the Security Answer </label>
-                            <input type="text" class="form-control" name="security_answer" required /><br />
+                            <input type="text" class="form-control" name="security_answer" required id="security_answer"/><br />
                         </div>
-                        <!--<div class="form-group">-->
-                            <!--<label>Re-enter New Password:</label>-->
-                            <!--<input type="password" class="form-control" id="new_password_repeat" name="passwordNew2" required="required" /><br />-->
-                        <!--</div>-->
 
-                        <button type="submit" class="btn btn-default">Submit Changes</button>
+                        <button type="submit" class="btn btn-default" id="submitter">Submit Changes</button>
                     </div>
                 </form>
             </div>

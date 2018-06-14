@@ -36,3 +36,31 @@ fieldset{
   border: 5px solid;
   border-bottom: 5px solid;
 }
+
+.password_requirements{
+  background-color: #dff0d8;
+}
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "✔";
+}
+
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "✖";
+}
+
+.no-click {
+  pointer-events: none;
+}
