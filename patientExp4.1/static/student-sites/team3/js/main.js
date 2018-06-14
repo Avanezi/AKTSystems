@@ -34,6 +34,7 @@ $(document).ready(function(){
         var lowerCaseLetters = /[a-z]/g;
         var upperCaseLetters = /[A-Z]/g;
         var numbers = /[0-9]/g;
+        var symbols = /[#?!@$%^&*-]/g
         password.onkeyup = function() {
             if (password.value.match(lowerCaseLetters)) {
                 var lower_check = true;
@@ -47,11 +48,16 @@ $(document).ready(function(){
             if (password.value.length >= 8) {
                 var length_check = true;
             }
-            if (lower_check && upper_check && number_check && length_check) {
+            if (password.value.match(symbols)){
+                var symbols_check = true;
+            }
+            if (lower_check && upper_check && number_check && length_check && symbols_check) {
                 document.getElementById("letter").classList.remove("invalid");
                 document.getElementById("capital").classList.remove("invalid");
                 document.getElementById("number").classList.remove("invalid");
                 document.getElementById("length").classList.remove("invalid");
+                document.getElementById("symbol").classList.remove("invalid");
+
             } else {
                 // lower_check = false;
                 // upper_check = false;
@@ -61,6 +67,8 @@ $(document).ready(function(){
                 document.getElementById("capital").classList.add("invalid");
                 document.getElementById("number").classList.add("invalid");
                 document.getElementById("length").classList.add("invalid");
+                document.getElementById("symbol").classList.add("invalid");
+
             }
         }
     };
