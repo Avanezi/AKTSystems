@@ -1,0 +1,51 @@
+<% include ../partials/head.ejs%>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <h2>Edit the Sender Email</h2>
+            <div id="require_admin_edit">
+                <h3>You need to set the application email address.  This email address will generate the survey send out to recipients, as well as be used to validate the account and reset the administrator password. </h3>
+                <% if (loginMessage) { %>
+                <%=loginMessage%><br />
+                <% } %>
+            </div>
+
+            <div id="edit_admin_information">
+                <form action="<%=sitePrefix%>/admin_edit_mailer" method="post" class="login" >
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label> Email Address of Mailer </label>
+                            <input type="email" class="form-control" name="email_address" id="email_address" required /><br />
+                        </div>
+                        <div class="form-group">
+                            <label> Confirm Email Address </label>
+                            <input type="email" class="form-control" name="email_address_confirm" id="email_address_confirm" required /><br />
+                            <!--<p id="email_checking">Email Address does not match</p>-->
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label> Re-enter Email Address </label>-->
+                            <!--<input type="text" class="form-control"/><br />-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label>Enter Password for the Email Address:</label>
+                            <input type="password" class="form-control" id="password" name="password" required="required" />
+                        </div>
+                        <div id="password_message" class="password_requirements">
+                        </div>
+                        <div class="form-group">
+                            <label>Re-Enter Password:</label>
+                            <input type="password" class="form-control" id="password_confirm" name="password_confirm" required="required" /><br />
+                            <p id="password_checking">Password does not match</p>
+                        </div>
+
+                        <button type="submit" class="btn btn-default" id="submitter">Submit Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs%>
+
+

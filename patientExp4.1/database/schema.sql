@@ -2,6 +2,14 @@ create DATABASE pesdb3;
 
 USE pesdb3;
 
+CREATE TABLE mailer (
+id int not null auto_increment,
+email_address varchar(50) not null,
+password varchar (256) not null,
+verified char(1) not null,
+primary key(id)
+)
+
 CREATE TABLE Patients
 (
 id INT NOT NULL AUTO_INCREMENT,

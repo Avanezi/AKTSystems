@@ -88,6 +88,12 @@ exports.getAdminInterface = function (req, res, next) {
         surveyQuestions: surveyQuestions})
 };
 
+exports.getEditMailerInterface = function (req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/admin_edit_mailer', {loginMessage: null,
+        surveyQuestions: surveyQuestions})
+};
+
 exports.adminTest = function (req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/admin_test', {loginMessage: null,
@@ -216,7 +222,7 @@ exports.registerAdmin = function(req, res, next){
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync(password, salt);
     var hashedAnswer = bcrypt.hashSync(security_answer, salt);
-    var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+    var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     //assumes 1 admin
     if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
             var query = "UPDATE Users SET firstName = '" + first_name + "', lastName = '" + last_name + "', securityQuestion = '" + security_question + "', securityAnswer = '" + hashedAnswer + "', email_address = '" + email_address + "', password = '" + hashedPassword + "' WHERE role = 'admin';";
@@ -300,6 +306,45 @@ exports.registerTempUser = function(req, res, next) {
         });
     sendEmail(firstname, email_address, registrationId);
     console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
+};
+
+exports.registerMailer = function(req, res, next) {
+    var email_address = req.body['email_address'];
+    var password = req.body['password'];
+    var salt = bcrypt.genSaltSync(10);
+    var hashedPassword = bcrypt.hashSync(password, salt);
+    // var registrationId = uuidV1();
+    // registrationId = registrationId.toString();
+    dbconn.query(
+        'INSERT INTO mailer (email_address, password, verified) VALUES (?,?, ?);',
+        [email_address, hashedPassword, 'N'], function(err, result, fields) {
+            if (err) {
+                var errMsg;
+                if (err.code === 'ER_DUP_ENTRY') {
+                    errMsg = 'That email is already taken, please try another.';
+                    console.log(errMsg)
+                }
+                else {
+                    errMsg = 'An error occurred trying to register you. Please try again.';
+                    console.log(err)
+                }
+                res.header('Content-Type', 'text/html');
+                res.render('pages/admin_edit_mailer', {
+                    title: 'Register',
+                    surveyQuestions : surveyQuestions,
+                    messages : messages,
+                    loginMessage: errMsg
+                });
+            }
+            else {
+                res.redirect(303, config.sitePrefix + '/auth/login');
+                console.log('--------------Sender Email Updated----------------')
+            }
+        });
+    //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
+
+    // sendEmail(firstname, email_address, registrationId);
+    // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
 };
 
 
@@ -392,6 +437,33 @@ var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
   //for testing
     console.log('url: ' + 'http://localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language');
 };
+
+var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'pesa.testing@gmail.com',
+            pass: 'Conestoga1'
+        }
+    });
+    var mailOptions = {
+        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+        to:  emailAddress,
+        subject: 'Patient Experience Survey',
+        text: 'This is a test using Node.js module nodemailer',
+        html: '<html><body>Dear ' + patientFirstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</a></body></html>'
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Message sent: ' + info.response);
+        }
+    });
+    //for testing
+    console.log('url: ' + 'http://localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language');
+};
+
 
 // get patients
 exports.getPatients = function(req, res, next) {

@@ -35,6 +35,9 @@ app.use(express.static(__dirname + '/static'));
 app.get(config.sitePrefix + '/admin_start', pesAppRoutes.getAdminInterface);
 app.post(config.sitePrefix + '/admin_start', pesAppRoutes.registerAdmin);
 
+app.get(config.sitePrefix + '/admin_edit_mailer', pesAppRoutes.getEditMailerInterface);
+
+
 app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 
 app.get(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.getLogin);
@@ -42,6 +45,9 @@ app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 
 
 app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerTempUser);
+app.post(config.sitePrefix +'/admin_edit_mailer', pesAppRoutes.registerMailer);
+
+
 
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLoginRequest);
 // app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerNewUser);
