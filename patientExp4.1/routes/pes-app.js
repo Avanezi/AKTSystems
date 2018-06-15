@@ -248,7 +248,7 @@ exports.registerAdmin = function(req, res, next){
                     }
                     else {
                         console.log('============= Admin account has been updated =============');
-                        res.redirect(303, config.sitePrefix + '/auth/login');
+                        res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
                     }
                 });
         }
@@ -310,41 +310,52 @@ exports.registerTempUser = function(req, res, next) {
 
 exports.registerMailer = function(req, res, next) {
     var email_address = req.body['email_address'];
+    var confirm_email = req.body['email_address_confirm'];
     var password = req.body['password'];
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync(password, salt);
     // var registrationId = uuidV1();
     // registrationId = registrationId.toString();
-    dbconn.query(
-        'INSERT INTO mailer (email_address, password, verified) VALUES (?,?, ?);',
-        [email_address, hashedPassword, 'N'], function(err, result, fields) {
-            if (err) {
-                var errMsg;
-                if (err.code === 'ER_DUP_ENTRY') {
-                    errMsg = 'That email is already taken, please try another.';
-                    console.log(errMsg)
+    if (email_address === confirm_email) {
+        dbconn.query(
+            'INSERT INTO mailer (email_address, password, verified) VALUES (?,?, ?);',
+            [email_address, hashedPassword, 'N'], function (err, result, fields) {
+                if (err) {
+                    var errMsg;
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        errMsg = 'That email is already taken, please try another.';
+                        console.log(errMsg)
+                    }
+                    else {
+                        errMsg = 'An error occurred trying to register you. Please try again.';
+                        console.log(err)
+                    }
+                    res.header('Content-Type', 'text/html');
+                    res.render('pages/admin_edit_mailer', {
+                        title: 'Register',
+                        surveyQuestions: surveyQuestions,
+                        messages: messages,
+                        loginMessage: errMsg
+                    });
                 }
                 else {
-                    errMsg = 'An error occurred trying to register you. Please try again.';
-                    console.log(err)
+                    res.redirect(303, config.sitePrefix + '/auth/login');
+                    console.log('--------------Sender Email Updated----------------')
                 }
-                res.header('Content-Type', 'text/html');
-                res.render('pages/admin_edit_mailer', {
-                    title: 'Register',
-                    surveyQuestions : surveyQuestions,
-                    messages : messages,
-                    loginMessage: errMsg
-                });
-            }
-            else {
-                res.redirect(303, config.sitePrefix + '/auth/login');
-                console.log('--------------Sender Email Updated----------------')
-            }
-        });
-    //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
+            });
+        //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
 
-    // sendEmail(firstname, email_address, registrationId);
-    // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
+        // sendEmail(firstname, email_address, registrationId);
+        // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
+    } else {
+        console.log('MAILER FAILED');
+        res.header('Content-Type', 'text/html');
+        res.render('pages/admin_edit_mailer', {
+            title: 'administratttttt',
+            surveyQuestions: surveyQuestions,
+            loginMessage: ''
+        });
+    }
 };
 
 

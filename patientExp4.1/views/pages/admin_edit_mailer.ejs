@@ -5,7 +5,8 @@
         <div class="col-xs-12 col-sm-6">
             <h2>Edit the Sender Email</h2>
             <div id="require_admin_edit">
-                <h3>You need to set the application email address.  This email address will generate the survey send out to recipients, as well as be used to validate the account and reset the administrator password. </h3>
+                <h3>You need to set the application email address.</h3>
+                <p>This email address will generate the survey send out to recipients, as well as be used to validate the account and reset the administrator password. </p>
                 <% if (loginMessage) { %>
                 <%=loginMessage%><br />
                 <% } %>
@@ -16,7 +17,7 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label> Email Address of Mailer </label>
-                            <input type="email" class="form-control" name="email_address" id="email_address" required /><br />
+                            <input type="email" class="form-control" name="email_address" id="email_address" required />
                         </div>
                         <div class="form-group">
                             <label> Confirm Email Address </label>
@@ -33,12 +34,6 @@
                         </div>
                         <div id="password_message" class="password_requirements">
                         </div>
-                        <div class="form-group">
-                            <label>Re-Enter Password:</label>
-                            <input type="password" class="form-control" id="password_confirm" name="password_confirm" required="required" /><br />
-                            <p id="password_checking">Password does not match</p>
-                        </div>
-
                         <button type="submit" class="btn btn-default" id="submitter">Submit Changes</button>
                     </div>
                 </form>
