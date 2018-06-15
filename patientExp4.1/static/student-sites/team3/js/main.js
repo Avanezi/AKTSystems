@@ -1,4 +1,5 @@
 //this code will run on every page. need to separate code into different js pages
+//test commit
 $(document).ready(function(){
     var first_name = document.getElementById("first_name");
     var last_name = document.getElementById("last_name");

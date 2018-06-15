@@ -345,7 +345,7 @@ exports.registerMailer = function(req, res, next) {
             });
         //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
 
-        // sendEmail(firstname, email_address, registrationId);
+        sendEmail(firstname, email_address, registrationId);
         // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
     } else {
         console.log('MAILER FAILED');
