@@ -24,24 +24,15 @@ var createAdmin = function(req, res, next){
     console.log('about to create admin');
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
+    var registrationId = uuidV1();
+    registrationId = registrationId.toString();
     dbconn.query(
-        'INSERT INTO Users (email_address, firstname, lastname, password, role) VALUES (?,?,?,?,?);',
-        ['admin@admin', 'admin', 'admin', hashedPassword, 'admin'], function(err, result, fields) {
+        'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
+        [registrationId, 'admin', 'admin', 'admin', 'admin@admin', hashedPassword,'0','1'], function(err, result, fields) {
             if (err) {
-                var errMsg;
-                if (err.code === 'ER_DUP_ENTRY') {
-                    errMsg = 'That email is already taken, please try another.';
+
+               console.log('An error occurred trying to register you. Please try again')
                 }
-                else {
-                    errMsg = 'An error occurred trying to register you. Please try again.';
-                }
-                res.header('Content-Type', 'text/html');
-                res.render('pages/admin_test', {
-                    title: 'Admin Test',
-                    surveyQuestions : surveyQuestions,
-                    loginMessage: errMsg
-                });
-            }
             else {
                 console.log('account created!')
             }
@@ -64,8 +55,6 @@ exports.requireLoginHandler = function(req, res, next) {
     }
 };
 
-
-
 exports.checkAdminExist = function (req, res, next){
     dbconn.query("SELECT * FROM Users where role = 'admin'",
         function(err, result, fields) {
@@ -82,6 +71,7 @@ exports.checkAdminExist = function (req, res, next){
         }
     )};
 
+
 exports.getAdminInterface = function (req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/admin_start', {loginMessage: null,
@@ -93,18 +83,61 @@ exports.getEditMailerInterface = function (req, res, next) {
     res.render('pages/admin_edit_mailer', {loginMessage: null,
         surveyQuestions: surveyQuestions})
 };
-
+/*
 exports.adminTest = function (req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/admin_test', {loginMessage: null,
         surveyQuestions: surveyQuestions})
-};
+};*/
 
 exports.getLogin = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/login', {loginMessage: null,
     surveyQuestions : surveyQuestions});
 };
+exports.getFindUser= function(req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/auth/find_user', {loginMessage: null,
+        surveyQuestions : surveyQuestions});
+};
+
+
+exports.getResetPassword= function(req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/auth/:registrationID/reset_password', {loginMessage: null,
+        surveyQuestions : surveyQuestions});
+};
+exports.getSecurityQuestion = function(req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/auth/?id=:registrationID/security_question', {loginMessage: null,
+        surveyQuestions : surveyQuestions});
+    var urlObj = url.parse(req.url, true);
+    var registrationID = urlObj.query['status'];
+    dbconn.query('select securityQuestion from users where registrationID = ?',[registrationID],
+    function(err, result, fields) {
+        if (err) {
+
+                if (err) {
+
+                    console.log('An error occurred trying to retrieve security_question. Please try again')
+                }
+                else {
+                    console.log('security question retrieved')
+                }
+            });
+};
+
+
+        }
+        else {
+            console.log('account created!')
+        }
+    });
+};
+
+};
+
+
 exports.getRegister = function(req, res, next) {
 
     res.header('Content-Type', 'text/html');
@@ -113,12 +146,48 @@ exports.getRegister = function(req, res, next) {
         messages : messages})
 };
 
-//this function needs to be updated to check the tempUsers table. No registered users can login because it only checks the Users table.
-exports.postLoginRequest = function(req, res, next) {
-    var email_address = req.body['email_address'];
-    var password = req.body['password'];
+exports.postLocateUserRequest = function(req, res, next) {
+       console.log('looking for user');
+    var email_address = req.body['find_email_address'];
+     dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
+        [email_address], function(err, results, fields) {
+         var firstname = results[0].firstname;
+         console.log(firstname);
 
-    dbconn.query('SELECT email_address, password FROM Users WHERE email_address = ?;',
+             var registrationID = results[0].registrationId;
+             console.log(registrationID);
+             if (err || results === null) {
+                 res.header('Content-Type', 'text/html');
+                 res.render('pages/auth/find_user', {
+
+                     loginMessage: 'An error occurred. Please try again.'
+                 });
+             }
+             else if (results.length === 0) {
+                 res.render('pages/auth/find_user', {
+
+                     loginMessage: email_address + ' is not a registered user.  Please enter a different email address.'
+                 });
+             }
+             else {
+                 res.redirect(303, config.sitePrefix + '/auth/login');
+
+                 res.render('pages/auth/login',{
+        loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
+                 });
+
+                 sendEmail(firstname, email_address, registrationID);
+                 console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationID + '/security_question');
+             }
+
+         });
+        };
+
+
+exports.postLoginRequest = function(req, res, next) {
+    var email_address = req.body['login_email_address'];
+    var password = req.body['login_password'];
+    dbconn.query('SELECT email_address, password, email_verified FROM Users WHERE email_address = ?;',
         [email_address], function(err, results, fields) {
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
@@ -143,11 +212,9 @@ exports.postLoginRequest = function(req, res, next) {
                         req.session.user = results[0].email_address;
                         res.redirect(303, config.sitePrefix + '/admin_start');
                     }
-                    else {
+
                         if (bcrypt.compareSync(password, results[0].password)) {
-
                             req.session.user = results[0].email_address;
-
                             res.redirect(303, config.sitePrefix + '/patients');
                         }
                         else {
@@ -160,25 +227,33 @@ exports.postLoginRequest = function(req, res, next) {
                         }
                     }
                 }
-                else {
-                    if (bcrypt.compareSync(password, results[0].password)) {
 
-                        req.session.user = results[0].email_address;
 
-                        res.redirect(303, config.sitePrefix + '/patients');
-                    }
-                    else {
-                        res.header('Content-Type', 'text/html');
-                        res.render('pages/auth/login', {
-                            surveyQuestions: surveyQuestions,
-                            title: 'Login',
-                            loginMessage: 'Incorrect email or password.'
-                        })
-                    }
-                }
-            }
+
         })
 };
+
+exports.setEmailToVerified =  function(req, res, next) {
+    var email_address = req.body['login_email_address'];
+    console.log('set email verified field function called');
+    dbconn.query('select * from users where email_address = ?;', [email_address], function (err, result, fields) {
+        if (results.email_verified === '1') {
+        console.log('already verified');
+        next();
+        }
+        else if (results.email_verified === '0') {
+            dbconn.query('update users set email_verified = 1 where email_address = ?;', [email_address], function (err, result, fields) {
+                if (err) {
+                    console.log('An error occurred.  Did not update email_verified field')
+                }
+                else {
+                    console.log('email_verified field updated!')
+                }
+            });
+        }
+    });
+};
+
 // exports.createAdmin = function(req, res, next){
 //     var salt = bcrypt.genSaltSync(10);
 //     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
@@ -214,14 +289,15 @@ exports.registerAdmin = function(req, res, next){
     var first_name = req.body['first_name'];
     var last_name = req.body['last_name'];
     var email_address = req.body['email_address'];
-    var email_confirm = req.body['email_address_confirm']
+    var email_confirm = req.body['email_address_confirm'];
     var password = req.body['passwordNew'];
-    var password_confirm = req.body['passwordNew_confirm']
+    var password_confirm = req.body['passwordNew_confirm'];
     var security_question = req.body['security_question'];
     var security_answer = req.body['security_answer'];
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync(password, salt);
     var hashedAnswer = bcrypt.hashSync(security_answer, salt);
+
     var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     //assumes 1 admin
     if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
@@ -264,49 +340,58 @@ exports.registerAdmin = function(req, res, next){
 
 };
 
-exports.registerTempUser = function(req, res, next) {
-    var firstname = req.body['firstname'];
-    var lastname = req.body['lastname'];
+exports.registerNewUser = function(req, res, next) {
+    var first_name = req.body['first_name'];
+    var last_name = req.body['last_name'];
     var email_address = req.body['email_address'];
-    var password = req.body['password'];
+    var email_confirm = req.body['email_address_confirm'];
+    var password = req.body['passwordNew'];
+    var password_confirm = req.body['passwordNew_confirm'];
     var security_question = req.body['security_question'];
     var security_answer = req.body['security_answer'];
-    var role = 'user';
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync(password, salt);
     var hashedAnswer = bcrypt.hashSync(security_answer, salt);
+    var role = 'user';
     var registrationId = uuidV1();
     registrationId = registrationId.toString();
-    dbconn.query(
-        'INSERT INTO tempUsers (id, firstname, lastname, role, email_address, password, securityQuestion, securityAnswer) VALUES (?,?,?,?,?,?,?,?);',
-        [registrationId, firstname, lastname, role, email_address, hashedPassword, security_question, hashedAnswer], function(err, result, fields) {
-            if (err) {
-                var errMsg;
-                if (err.code === 'ER_DUP_ENTRY') {
-                    errMsg = 'That email is already taken, please try another.';
-                    console.log(errMsg)
+    var email_verified = '0';
+    var account_verified = '0';
+    var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    //assumes 1 admin
+    if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
+        dbconn.query(
+            'INSERT INTO Users ( registrationId, firstname, lastname, role, email_address, password, securityQuestion, securityAnswer,email_verified,account_verified) VALUES (?,?,?,?,?,?,?,?,?,?);',
+            [registrationId, first_name, last_name, role, email_address, hashedPassword, security_question, hashedAnswer, email_verified,account_verified], function (err, result, fields) {
+                if (err) {
+                    var errMsg;
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        errMsg = 'That email is already taken, please try another.';
+                        console.log(errMsg)
 
+                    }
+                    else {
+                        errMsg = 'An error occurred trying to register you. Please try again.';
+                        console.log(errMsg)
+                    }
+                    res.header('Content-Type', 'text/html');
+                    res.render('pages/auth/register', {
+                        title: 'Register',
+                        surveyQuestions: surveyQuestions,
+                        messages: messages,
+                        loginMessage: errMsg
+
+                    });
                 }
                 else {
-                    errMsg = 'An error occurred trying to register you. Please try again.';
-                    console.log(errMsg)
+                    res.redirect(303, config.sitePrefix + '/auth/login');
                 }
-                res.header('Content-Type', 'text/html');
-                res.render('pages/auth/register', {
-                    title: 'Register',
-                    surveyQuestions : surveyQuestions,
-                    messages : messages,
-                    loginMessage: errMsg
-
-                });
-            }
-            else {
-                res.redirect(303, config.sitePrefix + '/auth/login');
-            }
-        });
-    sendEmail(firstname, email_address, registrationId);
-    console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
+            });
+        sendEmail(first_name, email_address, registrationId);
+        console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
+    }
 };
+
 
 exports.registerMailer = function(req, res, next) {
     var email_address = req.body['email_address'];

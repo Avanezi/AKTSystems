@@ -118,8 +118,6 @@ $(document).ready(function(){
     }
 
 });
-function removeSessions(){
-    sessionStorage.clear();
-}
+
 
 

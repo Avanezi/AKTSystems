@@ -1,50 +1,89 @@
 <% include ../../partials/admin_head%>
-<body>
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-9">
-            <h2>Create an account</h2>
+<div class="row">
+        <h2>Create an account</h2>
 
             <% if (loginMessage) { %>
             <%=loginMessage%><br />
             <% } %>
-            <form class="login" action="<%=sitePrefix%>/auth/register" method="post">
-                <div class="form-group">
+
+        <form class="login" action="<%=sitePrefix%>/auth/register" method="post">
+
                     <div class="form-group">
-                        <label>First Name:</label>
-                        <input type="text" class="form-control" id="firstName" name="firstname" required="required" /><br />
+                        <label>First Name:
+                        <input type="text" class="form-control" name="first_name" id="first_name" pattern="[A-Za-z]{1,}" required /><br />
+                        </label>
                     </div>
+
                     <div class="form-group">
-                        <label>Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" name="lastname" required="required" /><br />
+                        <label>Last Name:
+
+                        <input type="text" class="form-control" name="last_name" pattern="[A-Za-z]{1,}" id="last_name" required /><br />
+                        </label>
+
                     </div>
-                    <label> Email address:</label>
-                    <input type="email" class="form-control" id="email_address" name="email_address"  required="required" /><br />
-                </div>
+
+                    <div class="form-group">
+                        <label> Email Address:
+                        <input type="email" class="form-control" name="email_address" id="email_address" required /><br />
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Confirm Email Address
+                        <input type="email" class="form-control" name="email_address_confirm" id="email_address_confirm" required /><br />
+                        </label>
+                            <p id="email_checking">Email Address does not match</p>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Enter New Password: <input type="password" class="form-control" id="passwordNew" name="passwordNew" required="required" />
+                        </label>
+                    </div>
+
+                    <div id="password_message" class="password_requirements">
+                        <h3>Password Requirements</h3>
+                        <p id="letter" class="invalid valid">A <b>lowercase</b> letter</p>
+                        <p id="capital" class="invalid valid">A <b>capital (uppercase)</b> letter</p>
+                        <p id="number" class="invalid valid">A <b>number</b></p>
+                        <p id="symbol" class="invalid valid">A <b>symbol</b></p>
+                        <p id="length" class="invalid valid">Minimum <b>8 characters</b></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Re-Enter Password:
+                        <input type="password" class="form-control" id="passwordNew_confirm" name="passwordNew_confirm" required="required" /><br />
+                        </label>
+                        <p id="password_checking">Password does not match</p>
+
+                    </div>
+
                 <div class="form-group">
-                    <label>Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" required="required" /><br />
-                </div>
-                <div class="form-group">
-                    <label>Re-type Password:</label>
-                    <input type="password" class="form-control" id="retype_password" name="retype_password" required="required" /><br />
-                </div>
-                <div class="form-group">
-                    <label>Security Question:</label>
+                    <label>Security Question:
                     <input type="text" class="form-control" id="security_question" name="security_question" required="required" /><br />
+                    </label>
                 </div>
+
                 <div class="form-group">
-                    <label>Security Answer:</label>
+                    <label>Security Answer:
                     <input type="text" class="form-control" id="security_answer" name="security_answer" required="required" /><br />
+                    </label>
                 </div>
+
                 <div class="form-group">
-                    <label>Re-type Security Answer:</label>
+                    <label>Re-type Security Answer:
                     <input type="text" class="form-control" id="retype_answer" name="retype_answer" required="required" /><br />
+                    </label>
                 </div>
 
                 <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-        </div>
+
+        </form>
+
     </div>
+
 </div>
+
 <% include ../../partials/footer %>
+

@@ -1,0 +1,19 @@
+<% include ../../partials/admin_head%>
+<div class="container">
+    <div class="row">
+        <h2>Create an account</h2>
+        <% if (securityQuestion) { %>
+        <%=securityQuestion%><br />
+        <% } %>
+
+        <form class="text" action="<%=sitePrefix%>/auth/reset_password" method="post">
+        <div class="form-group">
+            <label> Set the Security Answer </label>
+            <input type="text" class="form-control" name="security_answer" required id="security_answer"/><br />
+        </div>
+    </form>
+    </div>
+
+</div>
+
+<% include ../../partials/footer %>

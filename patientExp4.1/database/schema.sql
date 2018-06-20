@@ -21,7 +21,7 @@ PRIMARY KEY (id)
 
 CREATE TABLE Users
 (
-	id INT NOT NULL AUTO_INCREMENT,
+	registrationId varchar(250)NOT NULL,
 	firstname VARCHAR(128) not null,
     lastname VARCHAR(128) not null,
     role VARCHAR(128) not null,
@@ -29,23 +29,10 @@ CREATE TABLE Users
 	password VARCHAR(256) not null,
 	securityQuestion VARCHAR(250),
 	securityAnswer VARCHAR(250),
-	PRIMARY KEY (id)
+    email_verified int not null,
+    account_verified int not null,
+	PRIMARY KEY (registrationId)
 );
-
-CREATE TABLE tempUsers
-(
-    id VARCHAR(256) NOT NULL,
-	firstname VARCHAR(128) not null,
-    lastname VARCHAR(128) not null,
-    role VARCHAR(128) not null,
-	email_address VARCHAR(256) NOT NULL UNIQUE,
-	password VARCHAR(256) not null,
-	securityQuestion VARCHAR(250),
-	securityAnswer VARCHAR(250),
-	PRIMARY KEY (id)
-);
-
-
 CREATE TABLE SurveyRuns
 (
     id VARCHAR(256) NOT NULL,

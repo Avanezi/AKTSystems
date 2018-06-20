@@ -44,13 +44,21 @@ app.get(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.getLogin
 app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 
 
-app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerTempUser);
+app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerNewUser);
 app.post(config.sitePrefix +'/admin_edit_mailer', pesAppRoutes.registerMailer);
 
+app.get(config.sitePrefix + '/auth/find_user', pesAppRoutes.getFindUser);
+app.post(config.sitePrefix + '/auth/find_user',pesAppRoutes.postLocateUserRequest);
+app.get(config.sitePrefix + '/auth/:registrationID/reset_password', pesAppRoutes.getResetPassword);
+//app.post(config.sitePrefix + '/auth/:restID/reset_password', pesAppRoutes.postPasswordChange);
+app.get(config.sitePrefix + '/auth/:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
+app.post(config.sitePrefix + '/auth/:registrationId/security_question',[pesAppRoutes.postSecurityAnswer);
 
 
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLoginRequest);
+app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.setEmailToVerified);
 // app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerNewUser);
+
 
 app.get(config.sitePrefix + '/patients', pesAppRoutes.requireLoginHandler, pesAppRoutes.authHandler);
 
@@ -100,4 +108,3 @@ app.listen(config.port, function() {
 app.use(pesAppRoutes.checkAdminExist);
 app.get(config.sitePrefix + '/auth/login', pesAppRoutes.getLogin);
 app.get(config.sitePrefix + '/auth/register', pesAppRoutes.getRegister);
-

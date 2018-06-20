@@ -1,30 +1,41 @@
-<% include ../../partials/head.ejs%>
-<body onload="removeSessions()">
-<div class="container-fluid">
-    <div class="row content">
-        <div class="col-xs-12 col-sm-9">
+<% include ../../partials/admin_head.ejs%>
+
+<div class="container">
+<div class="row">
+
 <h2>Login to your account</h2>
 
     <% if (loginMessage) { %>
         <%=loginMessage%><br />
     <% } %>
+
         <form class="login" action="<%=sitePrefix%>/auth/login" method="post">
+
             <div class="form-group">
-                <label> Email address:</label>
-                <input class="form-control" id="email_address" name="email_address"  required="required" /><br />
+                <label> Email address:
+                <input class="form-control" id="login_email_address" name="login_email_address"  required="required" /><br />
+                </label>
             </div>
+
             <div class="form-group">
-                <label>Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required="required" /><br />
+                <label>Password:
+                <input type="password" class="form-control" id="login_password" name="login_password" required="required" /><br />
+                </label>
             </div>
+
             <button type="submit" class="btn btn-default">Submit</button>
+
         </form>
+
     <p>
         Don't have an account? Then <a href="/team3/auth/register">register</a> for one.
     </p>
 
-    </div>
-</div>
-</div>
+    <p>
+        Forgot your password? Click <a href="/team3/auth/find_user">here</a>to reset.
+    </p>
 
+    </div>
+
+</div>
 <% include ../../partials/footer.ejs%>
