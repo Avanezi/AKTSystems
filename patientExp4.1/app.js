@@ -33,32 +33,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/static'));
 
 app.get(config.sitePrefix + '/admin_start', pesAppRoutes.getAdminInterface);
-app.post(config.sitePrefix + '/admin_start', pesAppRoutes.registerAdmin);
-
 app.get(config.sitePrefix + '/admin_edit_mailer', pesAppRoutes.getEditMailerInterface);
 
-
-app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
-
-app.get(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.getLogin);
-app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
-
-
+app.post(config.sitePrefix + '/admin_start', pesAppRoutes.registerAdmin);
 app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerNewUser);
 app.post(config.sitePrefix +'/admin_edit_mailer', pesAppRoutes.registerMailer);
 
 app.get(config.sitePrefix + '/auth/find_user', pesAppRoutes.getFindUser);
+//Not funtioning pes-app function started
 app.post(config.sitePrefix + '/auth/find_user',pesAppRoutes.postLocateUserRequest);
-app.get(config.sitePrefix + '/auth/:registrationID/reset_password', pesAppRoutes.getResetPassword);
+
+//Not working yet no development started besides views
+//app.get(config.sitePrefix + '/auth?reg=:registrationID/reset_password', pesAppRoutes.getResetPassword);
 //app.post(config.sitePrefix + '/auth/:restID/reset_password', pesAppRoutes.postPasswordChange);
-app.get(config.sitePrefix + '/auth/:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
-app.post(config.sitePrefix + '/auth/:registrationId/security_question',[pesAppRoutes.postSecurityAnswer);
 
+//Not working yet, pes-app functions started
+app.get(config.sitePrefix + '/auth?reg=:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
+//app.post(config.sitePrefix + '/auth/:registrationId/security_question',[pesAppRoutes.postSecurityAnswer);
 
+app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLoginRequest);
-app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.setEmailToVerified);
-// app.post(config.sitePrefix +'/auth/register', pesAppRoutes.registerNewUser);
 
+//Not working yet pes-app function started
+app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.setEmailToVerified);
 
 app.get(config.sitePrefix + '/patients', pesAppRoutes.requireLoginHandler, pesAppRoutes.authHandler);
 
@@ -108,3 +105,5 @@ app.listen(config.port, function() {
 app.use(pesAppRoutes.checkAdminExist);
 app.get(config.sitePrefix + '/auth/login', pesAppRoutes.getLogin);
 app.get(config.sitePrefix + '/auth/register', pesAppRoutes.getRegister);
+
+app.get(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.getLogin);

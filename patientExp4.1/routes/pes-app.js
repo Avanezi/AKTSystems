@@ -71,7 +71,6 @@ exports.checkAdminExist = function (req, res, next){
         }
     )};
 
-
 exports.getAdminInterface = function (req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/admin_start', {loginMessage: null,
@@ -83,17 +82,11 @@ exports.getEditMailerInterface = function (req, res, next) {
     res.render('pages/admin_edit_mailer', {loginMessage: null,
         surveyQuestions: surveyQuestions})
 };
-/*
-exports.adminTest = function (req, res, next) {
-    res.header('Content-Type', 'text/html');
-    res.render('pages/admin_test', {loginMessage: null,
-        surveyQuestions: surveyQuestions})
-};*/
 
 exports.getLogin = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/login', {loginMessage: null,
-    surveyQuestions : surveyQuestions});
+        surveyQuestions : surveyQuestions});
 };
 exports.getFindUser= function(req, res, next) {
     res.header('Content-Type', 'text/html');
@@ -101,93 +94,80 @@ exports.getFindUser= function(req, res, next) {
         surveyQuestions : surveyQuestions});
 };
 
-
 exports.getResetPassword= function(req, res, next) {
     res.header('Content-Type', 'text/html');
-    res.render('pages/auth/:registrationID/reset_password', {loginMessage: null,
+    res.render('pages/auth/reg:registrationID/reset_password', {loginMessage: null,
         surveyQuestions : surveyQuestions});
 };
+
 exports.getSecurityQuestion = function(req, res, next) {
-    res.header('Content-Type', 'text/html');
-    res.render('pages/auth/?id=:registrationID/security_question', {loginMessage: null,
-        surveyQuestions : surveyQuestions});
     var urlObj = url.parse(req.url, true);
-    var registrationID = urlObj.query['status'];
-    dbconn.query('select securityQuestion from users where registrationID = ?',[registrationID],
-    function(err, result, fields) {
-        if (err) {
+    var registrationId = urlObj.query['reg'];
+    var msg = null;
+    dbconn.query('SELECT registrationId, securityQuestion from users where registrationId = ?;', [registrationId],
+        function (err, results, fields) {
+            console.log('security question retrieved');
+            if (err) {
+                console.log('An error occurred trying to retrieve security_question. Please try again');
+                next();
+            }
+            res.header('Content-Type', 'text/html');
+            res.render('pages/auth?reg=:'+registrationId+'/security_question', {
+                surveyQuestions: surveyQuestions,
+                securityQuestion: results[0],
+                message: msg
+            });
+        });
+};
 
-                if (err) {
 
-                    console.log('An error occurred trying to retrieve security_question. Please try again')
+exports.getRegister = function (req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/auth/register', {
+         loginMessage: null,
+         surveyQuestions: surveyQuestions,
+         messages: messages
+    })
+};
+
+exports.postLocateUserRequest = function (req, res, next) {
+    console.log('looking for user');
+    var email_address = req.body['find_email_address'];
+    dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
+        [email_address], function (err, results, fields) {
+            var firstname = results[0].firstname;
+            console.log(firstname);
+            var registrationID = results[0].registrationId;
+            console.log(registrationID);
+                if (err || results === null) {
+                    res.header('Content-Type', 'text/html');
+                    res.render('pages/auth/find_user', {
+                   //     loginMessage: 'An error occurred. Please try again.'
+                    });
+                }
+                else if (results.length === 0) {
+                 //console.log('Not registered');
+                    res.render('pages/auth/find_user', {
+               //         loginMessage: email_address + ' is not a registered user.  Please enter a different email address.'
+                    });
                 }
                 else {
-                    console.log('security question retrieved')
-                }
-            });
-};
+                    //res.redirect(303, config.sitePrefix + '/auth/login');
+                    res.render('pages/auth/find_user', {
+                   //     loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
+                    });
 
-
-        }
-        else {
-            console.log('account created!')
-        }
+                    sendEmail(firstname, email_address, registrationID);
+                    console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
+                    }
     });
 };
-
-};
-
-
-exports.getRegister = function(req, res, next) {
-
-    res.header('Content-Type', 'text/html');
-    res.render('pages/auth/register', {loginMessage: null,
-    surveyQuestions : surveyQuestions,
-        messages : messages})
-};
-
-exports.postLocateUserRequest = function(req, res, next) {
-       console.log('looking for user');
-    var email_address = req.body['find_email_address'];
-     dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
-        [email_address], function(err, results, fields) {
-         var firstname = results[0].firstname;
-         console.log(firstname);
-
-             var registrationID = results[0].registrationId;
-             console.log(registrationID);
-             if (err || results === null) {
-                 res.header('Content-Type', 'text/html');
-                 res.render('pages/auth/find_user', {
-
-                     loginMessage: 'An error occurred. Please try again.'
-                 });
-             }
-             else if (results.length === 0) {
-                 res.render('pages/auth/find_user', {
-
-                     loginMessage: email_address + ' is not a registered user.  Please enter a different email address.'
-                 });
-             }
-             else {
-                 res.redirect(303, config.sitePrefix + '/auth/login');
-
-                 res.render('pages/auth/login',{
-        loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
-                 });
-
-                 sendEmail(firstname, email_address, registrationID);
-                 console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationID + '/security_question');
-             }
-
-         });
-        };
 
 
 exports.postLoginRequest = function(req, res, next) {
     var email_address = req.body['login_email_address'];
     var password = req.body['login_password'];
-    dbconn.query('SELECT email_address, password, email_verified FROM Users WHERE email_address = ?;',
+    dbconn.query('SELECT email_address,password FROM Users WHERE email_address = ?;',
         [email_address], function(err, results, fields) {
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
@@ -212,9 +192,11 @@ exports.postLoginRequest = function(req, res, next) {
                         req.session.user = results[0].email_address;
                         res.redirect(303, config.sitePrefix + '/admin_start');
                     }
-
+                    else {
                         if (bcrypt.compareSync(password, results[0].password)) {
+
                             req.session.user = results[0].email_address;
+
                             res.redirect(303, config.sitePrefix + '/patients');
                         }
                         else {
@@ -227,12 +209,25 @@ exports.postLoginRequest = function(req, res, next) {
                         }
                     }
                 }
+                else {
+                    if (bcrypt.compareSync(password, results[0].password)) {
 
+                        req.session.user = results[0].email_address;
 
-
+                        res.redirect(303, config.sitePrefix + '/patients');
+                    }
+                    else {
+                        res.header('Content-Type', 'text/html');
+                        res.render('pages/auth/login', {
+                            surveyQuestions: surveyQuestions,
+                            title: 'Login',
+                            loginMessage: 'Incorrect email or password.'
+                        })
+                    }
+                }
+            }
         })
 };
-
 exports.setEmailToVerified =  function(req, res, next) {
     var email_address = req.body['login_email_address'];
     console.log('set email verified field function called');
@@ -253,37 +248,6 @@ exports.setEmailToVerified =  function(req, res, next) {
         }
     });
 };
-
-// exports.createAdmin = function(req, res, next){
-//     var salt = bcrypt.genSaltSync(10);
-//     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
-//     dbconn.query(
-//         'INSERT INTO Users (email_address, firstname, lastname, password, role) VALUES (?,?,?,?,?);',
-//         [administrator_account, 'admin', 'admin', hashedPassword, 'admin'], function(err, result, fields) {
-//             if (err) {
-//                 var errMsg;
-//                 if (err.code === 'ER_DUP_ENTRY') {
-//                     errMsg = 'That email is already taken, please try another.';
-//                     console.log(errMsg)
-//                 }
-//                 else {
-//                     errMsg = 'An error occurred trying to register you. Please try again.';
-//                     console.log(errMsg);
-//                 }
-//                 res.header('Content-Type', 'text/html');
-//                 res.render('pages/admin_start', {
-//                     title: 'Admin start',
-//                     surveyQuestions : surveyQuestions,
-//                     loginMessage: errMsg
-//                 });
-//             }
-//             else {
-//                 console.log('created account successfully');
-//                 res.redirect(303, config.sitePrefix + '/admin_start');
-//             }
-//             console.log('end of function createAdmin');
-//         });
-// };
 
 exports.registerAdmin = function(req, res, next){
     var first_name = req.body['first_name'];
@@ -442,41 +406,6 @@ exports.registerMailer = function(req, res, next) {
         });
     }
 };
-
-
-// exports.registerNewUser = function(req, res, next) {
-//     var firstname = req.body['firstname'];
-//     var lastname = req.body['lastname'];
-//     var email_address = req.body['email_address'];
-//     var password = req.body['password'];
-//     var salt = bcrypt.genSaltSync(10);
-//     var hashedPassword = bcrypt.hashSync(req.body['password'], salt);
-//
-//     dbconn.query(
-//         'INSERT INTO Users (email_address,firstname,lastname,password) VALUES (?,?,?,?);',
-//         [email_address, firstname, lastname, hashedPassword], function(err, result, fields) {
-//             if (err) {
-//                 var errMsg;
-//                 if (err.code === 'ER_DUP_ENTRY') {
-//                     errMsg = 'That email is already taken, please try another.';
-//                 }
-//                 else {
-//                     errMsg = 'An error occurred trying to register you. Please try again.';
-//                 }
-//                 res.header('Content-Type', 'text/html');
-//                 res.render('pages/auth/register', {
-//                     title: 'Register',
-//                     surveyQuestions : surveyQuestions,
-//                     loginMessage: errMsg,
-//                     messages : messages
-//                 });
-//             }
-//             else {
-//
-//                 res.redirect(303, config.sitePrefix + '/auth/login');
-//             }
-//         });
-// };
 
 exports.authHandler = function(req, res, next) {
       if (req.session && req.session.user) {
@@ -951,3 +880,75 @@ exports.getThankYou = function(req, res, next) {
 };
 
 
+
+// exports.createAdmin = function(req, res, next){
+//     var salt = bcrypt.genSaltSync(10);
+//     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
+//     dbconn.query(
+//         'INSERT INTO Users (email_address, firstname, lastname, password, role) VALUES (?,?,?,?,?);',
+//         [administrator_account, 'admin', 'admin', hashedPassword, 'admin'], function(err, result, fields) {
+//             if (err) {
+//                 var errMsg;
+//                 if (err.code === 'ER_DUP_ENTRY') {
+//                     errMsg = 'That email is already taken, please try another.';
+//                     console.log(errMsg)
+//                 }
+//                 else {
+//                     errMsg = 'An error occurred trying to register you. Please try again.';
+//                     console.log(errMsg);
+//                 }
+//                 res.header('Content-Type', 'text/html');
+//                 res.render('pages/admin_start', {
+//                     title: 'Admin start',
+//                     surveyQuestions : surveyQuestions,
+//                     loginMessage: errMsg
+//                 });
+//             }
+//             else {
+//                 console.log('created account successfully');
+//                 res.redirect(303, config.sitePrefix + '/admin_start');
+//             }
+//             console.log('end of function createAdmin');
+//         });
+// };
+
+
+// exports.registerNewUser = function(req, res, next) {
+//     var firstname = req.body['firstname'];
+//     var lastname = req.body['lastname'];
+//     var email_address = req.body['email_address'];
+//     var password = req.body['password'];
+//     var salt = bcrypt.genSaltSync(10);
+//     var hashedPassword = bcrypt.hashSync(req.body['password'], salt);
+//
+//     dbconn.query(
+//         'INSERT INTO Users (email_address,firstname,lastname,password) VALUES (?,?,?,?);',
+//         [email_address, firstname, lastname, hashedPassword], function(err, result, fields) {
+//             if (err) {
+//                 var errMsg;
+//                 if (err.code === 'ER_DUP_ENTRY') {
+//                     errMsg = 'That email is already taken, please try another.';
+//                 }
+//                 else {
+//                     errMsg = 'An error occurred trying to register you. Please try again.';
+//                 }
+//                 res.header('Content-Type', 'text/html');
+//                 res.render('pages/auth/register', {
+//                     title: 'Register',
+//                     surveyQuestions : surveyQuestions,
+//                     loginMessage: errMsg,
+//                     messages : messages
+//                 });
+//             }
+//             else {
+//
+//                 res.redirect(303, config.sitePrefix + '/auth/login');
+//             }
+//         });
+// };
+/*
+exports.adminTest = function (req, res, next) {
+    res.header('Content-Type', 'text/html');
+    res.render('pages/admin_test', {loginMessage: null,
+        surveyQuestions: surveyQuestions})
+};*/

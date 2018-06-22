@@ -2,14 +2,18 @@
 <div class="container">
     <div class="row">
         <h2>Create an account</h2>
-        <% if (securityQuestion) { %>
-        <%=securityQuestion%><br />
-        <% } %>
+        <div>
+            <% if (securityQuestion) { %>
+            <%=securityQuestion%><br />
+            <% } %>
+        </div>
+
 
         <form class="text" action="<%=sitePrefix%>/auth/reset_password" method="post">
         <div class="form-group">
-            <label> Set the Security Answer </label>
-            <input type="text" class="form-control" name="security_answer" required id="security_answer"/><br />
+            <label>Security Answer
+            <input type="text" class="form-control" name="security_answer" required id="security_answer"/>
+            </label><br />
         </div>
     </form>
     </div>
