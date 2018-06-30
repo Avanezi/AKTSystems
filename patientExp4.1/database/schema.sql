@@ -4,6 +4,7 @@ USE pesdb3;
 
 CREATE TABLE mailer (
 id int not null auto_increment,
+tempId varchar(250),
 email_address varchar(50) not null,
 password varchar (256) not null,
 verified char(1) not null,
@@ -29,8 +30,9 @@ CREATE TABLE Users
 	password VARCHAR(256) not null,
 	securityQuestion VARCHAR(250),
 	securityAnswer VARCHAR(250),
-    email_verified int not null,
-    account_verified int not null,
+    email_verified char(1) not null,
+    account_verified char(1) not null,
+    tempId varchar(250),
 	PRIMARY KEY (registrationId)
 );
 CREATE TABLE SurveyRuns

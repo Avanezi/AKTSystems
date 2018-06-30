@@ -44,11 +44,11 @@ app.get(config.sitePrefix + '/auth/find_user', pesAppRoutes.getFindUser);
 app.post(config.sitePrefix + '/auth/find_user',pesAppRoutes.postLocateUserRequest);
 
 //Not working yet no development started besides views
-//app.get(config.sitePrefix + '/auth?reg=:registrationID/reset_password', pesAppRoutes.getResetPassword);
+app.get(config.sitePrefix + '/auth?reg=:registrationID/reset_password', pesAppRoutes.getResetPassword);
 //app.post(config.sitePrefix + '/auth/:restID/reset_password', pesAppRoutes.postPasswordChange);
 
 //Not working yet, pes-app functions started
-app.get(config.sitePrefix + '/auth?reg=:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
+// app.get(config.sitePrefix + '/auth?reg=:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
 //app.post(config.sitePrefix + '/auth/:registrationId/security_question',[pesAppRoutes.postSecurityAnswer);
 
 app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
@@ -65,6 +65,10 @@ app.post(config.sitePrefix + '/recipients', pesAppRoutes.postRecipients);
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.getStart);
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.postStart);
+
+
+app.get(config.sitePrefix + '/verified/:registrationID', pesAppRoutes.getEmailVerified);
+
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/language', pesAppRoutes.getLanguage);
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/language', pesAppRoutes.postLanguage);
