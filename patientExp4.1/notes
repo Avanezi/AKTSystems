@@ -1,0 +1,13 @@
+june 30 2018
+Email verification for the sendout email address works. Sends email, containing a link which will verify (change N to Y in db) that email via registrationId / tempId, to the entered email address from the 'admin_edit_mailer' page.
+--actually need to change the sendemail function to use new email;
+
+July 1 2018
+-registerMailer does not store password encrypted in db; in the code, the mailer email is not encrypted/hashed either; not sure how to set mailer password if its hashed in the db; sendEmail function uses password of email in free-text;
+-Work on implementing the changed mailer email address so emails come from that set email
+-Work on find_user / password reset
+-eventually need to move functions out of pes-app.js, put in separate files that make sense.
+
+July 2 2018
+-Working on implementing newly set mailer email address; sends email from pesa.testing if newly set mailer email is not real/existing
+--Works for mailerEmailVerify, ONLY IF using GMAIL; hotmail does not work! Will need to adapt later;
