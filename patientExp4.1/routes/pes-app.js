@@ -69,7 +69,21 @@ exports.checkAdminExist = function (req, res, next){
                 next()
             }
         }
-    )};
+    );
+    dbconn.query("SELECT * FROM mailer;", function (err, result, fields){
+        if (err){
+            console.log(err);
+            next();
+        }
+        else if (result.length === 0){
+            dbconn.query('INSERT INTO MAILER (id, email_address, password, verified) VALUES (?, ?, ?, ?);', ['0', 'pesa.testing@gmail.com', 'Conestoga1', 'Y'])
+            console.log('SUCCESS: Inserted default Mailer');
+        } else {
+            next()
+        }
+
+    })
+};
 
 exports.getAdminInterface = function (req, res, next) {
     res.header('Content-Type', 'text/html');
@@ -95,6 +109,8 @@ exports.getFindUser= function(req, res, next) {
 };
 
 exports.getResetPassword= function(req, res, next) {
+
+    // var path = url.parse(req.url).pathname;
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/reset_password', {loginMessage: null,
         surveyQuestions : surveyQuestions});
@@ -131,13 +147,12 @@ exports.getRegister = function (req, res, next) {
 };
 
 exports.postPasswordChange = function (req, res, next) {
-    var password = req.body['passwordNew'];
-    dbconn.query('SELECT password FROM Users WHERE email_address = ?;',
-        [email_address], function (err, results, fields) {
-            var firstname = results[0].firstname;
-            console.log(firstname);
-            var registrationID = results[0].registrationId;
-            console.log(registrationID);
+    var param = req.params.registrationId;
+    var password = req.body['passwordNew2'];
+    var salt = bcrypt.genSaltSync(10);
+    var hashedPassword = bcrypt.hashSync(password, salt);
+    dbconn.query('UPDATE users SET password = ? WHERE registrationId = ?',
+        [hashedPassword, param], function (err, results, fields) {
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
                 res.render('pages/auth/find_user', {
@@ -151,26 +166,25 @@ exports.postPasswordChange = function (req, res, next) {
                 });
             }
             else {
-                //res.redirect(303, config.sitePrefix + '/auth/login');
-                res.render('pages/auth/find_user', {
-                    loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
-                });
+                res.redirect(303, config.sitePrefix + '/auth/login');
+                console.log('SUCCESS: Password has been reset for the user!')
+                // res.render('pages/auth/find_user', {
+                //     loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
+                }
 
                 // mailerEmailVerify(email_address, registrationID);
-                console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
-            }
-        });
-};
+                // console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
+            })
+        };
 
 
 exports.postLocateUserRequest = function (req, res, next) {
     var email_address = req.body['find_email_address'];
+    console.log(email_address)
     dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
         [email_address], function (err, results, fields) {
             var firstname = results[0].firstname;
-            console.log(firstname);
             var registrationID = results[0].registrationId;
-            console.log(registrationID);
                 if (err || results === null) {
                     res.header('Content-Type', 'text/html');
                     res.render('pages/auth/find_user', {
@@ -189,8 +203,8 @@ exports.postLocateUserRequest = function (req, res, next) {
                        loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
                     });
 
-                    mailerEmailVerify(email_address, registrationID);
-                    console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
+                    sendPasswordReset(email_address, registrationID);
+                    // console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
                     }
     });
 };
@@ -244,7 +258,7 @@ exports.postLoginRequest = function(req, res, next) {
                     if (bcrypt.compareSync(password, results[0].password)) {
                         req.session.user = results[0].email_address;
                         dbconn.query('SELECT email_address FROM mailer;', function(err, results, fields){
-                                if (results.length === 0){
+                                if (results[0].email_address === 'pesa.testing@gmail.com'){
                                     res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
                                 } else {
                                     // req.session.user = results[0].email_address;
@@ -479,15 +493,12 @@ exports.registerMailer = function(req, res, next) {
                 }
                 else {
                     res.redirect(303, config.sitePrefix + '/auth/login');
-                    console.log('--------------Sender Email Updated----------------')
+                    console.log('--------------Sender Email Updated----------------');
+                    mailerEmailVerify(email_address, tempId );
+                    console.log('URL to validate the new mailer email: ' + 'http://localhost:3003/team3/verified/' + tempId);
                 }
             });
         //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
-
-        //This needs to work;
-
-        mailerEmailVerify(email_address, tempId );
-        console.log('url: ' + 'http://localhost:3003/team3/verified/' + tempId);
     } else {
         console.log('MAILER FAILED');
         res.header('Content-Type', 'text/html');
@@ -646,14 +657,14 @@ var mailerEmailVerify = function(emailAddress, registrationID) {
             });
             var mailOptions = {
                 from: 'Primary Care Clinic <pesa.testing@gmail.com>',
-                to:  emailAddress,
+                to: emailAddress,
                 subject: 'Verification of Mailer email address',
                 text: 'This is a test using Node.js module nodemailer',
-                html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/'+ registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+                html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/' + registrationID + '">Click here</a><br><br></body></html>'
             };
 
-            transporter.sendMail(mailOptions, function(error, info){
-                if(error){
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
                     console.log(error);
                     var transporter = nodemailer.createTransport({
                         service: 'Gmail',
@@ -664,22 +675,80 @@ var mailerEmailVerify = function(emailAddress, registrationID) {
                     });
                     var mailOptions = {
                         from: 'Primary Care Clinic <pesa.testing@gmail.com>',
-                        to:  emailAddress,
+                        to: emailAddress,
                         subject: 'Patient Experience Survey',
                         text: 'This is a test using Node.js module nodemailer',
-                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/'+ registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
                     };
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if(error){
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
                             console.log(error)
-                        } else{
-                            console.log('USING DEFAULT MAILER; SUCCESS')
+                        } else {
+                            console.log('SOMEWHAT SUCCESS: Message sent using default Mailer address')
                         }
                     })
-                }else{
+                } else {
                     console.log('SUCCESS: Message sent from newly set Mailer email address');
                 }
-            })
+            });
+
+        }
+    });
+};
+
+var sendPasswordReset = function(emailAddress, registrationID) {
+    dbconn.query('SELECT email_address, password, verified FROM mailer', function (err, result, field) {
+        if (err) {
+            console.log(err);
+        } else {
+            var info = {
+                user: result[0].email_address,
+                pass: result[0].password
+            };
+            var transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: info.user,
+                    pass: info.pass
+                }
+            });
+            var mailOptions = {
+                from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                to: emailAddress,
+                subject: 'Password Reset for PESA',
+                text: 'This is a test using Node.js module nodemailer',
+                html: '<html><body>Dear ' + emailAddress + ', <br><p>Password reset! </p><br><a href="http://localhost:3003/team3/auth/reset_password/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                    var transporter = nodemailer.createTransport({
+                        service: 'Gmail',
+                        auth: {
+                            user: 'pesa.testing@gmail.com',
+                            pass: 'Conestoga1'
+                        }
+                    });
+                    var mailOptions = {
+                        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                        to: emailAddress,
+                        subject: 'Patient Experience Survey',
+                        text: 'This is a test using Node.js module nodemailer',
+                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error)
+                        } else {
+                            console.log('SOMEWHAT SUCCESS: Message sent using default Mailer address')
+                        }
+                    })
+                } else {
+                    console.log('SUCCESS: Password reset email sent!');
+                }
+            });
+
         }
     });
 };

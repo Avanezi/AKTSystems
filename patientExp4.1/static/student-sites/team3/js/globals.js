@@ -1,0 +1,1 @@
+//maybe start using global variables and define them here? globals for mailer, instead of querying db for credentials?
