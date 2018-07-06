@@ -1,33 +1,33 @@
 june 30 2018
-Email verification for the sendout email address works. Sends email, containing a link which will verify (change N to Y in db) that email via registrationId / tempId, to the entered email address from the 'admin_edit_mailer' page.
+-COMPLETED: Email verification for the sendout email address works. Sends email, containing a link which will verify (change N to Y in db) that email via registrationId / tempId, to the entered email address from the 'admin_edit_mailer' page.
 --actually need to change the sendemail function to use new email;
 
 July 1 2018
 -registerMailer does not store password encrypted in db; in the code, the mailer email is not encrypted/hashed either; not sure how to set mailer password if its hashed in the db; sendEmail function uses password of email in free-text;
--Work on implementing the changed mailer email address so emails come from that set email
--Work on find_user / password reset
+-COMPLETED: Work on implementing the changed mailer email address so emails come from that set email
+-COMPLETED: Work on find_user / password reset
 -eventually need to move functions out of pes-app.js, put in separate files that make sense.
 
 July 2 2018
--Working on implementing newly set mailer email address; sends email from pesa.testing if newly set mailer email is not real/existing
+-COMPLETED: Working on implementing newly set mailer email address; sends email from pesa.testing if newly set mailer email is not real/existing
 
 July 3 2018
--Working on password reset; had to change "action" on reset_password page dynamically so that POST works with different registrationIds in the href;
+-COMPLETED: Working on password reset; had to change "action" on reset_password page dynamically so that POST works with different registrationIds in the href;
 
 July 4 2018
 -Working on patients page / main interface;
 --patients page needs to have action=URL updated
 
 July 6 2018
--Work on populating the profile of users
---took out some profile elements (password, securityQ)
+-COMPLETED: Work on populating the profile of users
+-COMPLETED: took out some profile elements (password, securityQ)
 -Working on having user's recipients list loaded pertaining to their own (ie. each user's recipients list will be different instead of having all recipients from patients table);
 
 --Things to fix/add--
 1. admin_start page will always redirect to admin_edit_mailer; if we reuse admin_start page to edit admin information, then it shouldnt redirect to mailer; redirects to mailer ONLY if no mailer is set.
 2. admin_edit_mailer page: redirects to login even if set email is invalid; page should not redirect, or at least notify user of invalidity;
 3. Reset password uses only an emailed link including the user's registrationId; Add security question + answer here, too?
-4. Password reset has to set requirements;
+4. Password reset has to set requirements of password;
 5. Work for mailerEmailVerify, ONLY WORKS IF USING GMAIL as service; hotmail does not work!
 6. POST admin_start: need to verify the admin account!
 7. User should not be allowed to set the default mailer email on the admin_edit_mailer page!
