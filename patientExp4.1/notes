@@ -23,6 +23,15 @@ July 6 2018
 -COMPLETED: took out some profile elements (password, securityQ)
 -Working on having user's recipients list loaded pertaining to their own (ie. each user's recipients list will be different instead of having all recipients from patients table);
 
+
+--Goals--
+1. Make "Admin" tab appear only for Admin
+2. "Add Recipients" tab should allow input of .csv file for bulk upload of emails;
+3. "You are logged in as:" from patients page needs to work
+4. If email_address is not verified, then User should not be allowed to add recipients / send surveys;
+  a. Can be done by not loading the main content of each tab, but instead, show a "please verify email" type message;
+
+
 --Things to fix/add--
 1. admin_start page will always redirect to admin_edit_mailer; if we reuse admin_start page to edit admin information, then it shouldnt redirect to mailer; redirects to mailer ONLY if no mailer is set.
 2. admin_edit_mailer page: redirects to login even if set email is invalid; page should not redirect, or at least notify user of invalidity;
