@@ -262,7 +262,7 @@ exports.postLoginRequest = function(req, res, next) {
                                     res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
                                 } else {
                                     // req.session.user = results[0].email_address;
-                                    res.redirect(303, config.sitePrefix + '/patients');
+                                    res.redirect(303, config.sitePrefix + '/patients/' + req.session.user);
                                 }
                             });
                         }
@@ -369,8 +369,8 @@ exports.registerNewUser = function(req, res, next) {
     var role = 'user';
     var registrationId = uuidV1();
     registrationId = registrationId.toString();
-    var email_verified = '0';
-    var account_verified = '0';
+    var email_verified = 'N';
+    var account_verified = 'N';
     var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     //assumes 1 admin
     if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
@@ -755,6 +755,8 @@ var sendPasswordReset = function(emailAddress, registrationID) {
 
 // get patients
 exports.getPatients = function(req, res, next) {
+    var param = req.params.user
+    console.log(param)
     var urlObj = url.parse(req.url, true);
     var status = urlObj.query['status'];
     var msg = null;
@@ -770,8 +772,10 @@ exports.getPatients = function(req, res, next) {
     else{
      msg = null;
     }
-    dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients;',
+
+    dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients; SELECT firstname, lastname, role, email_address FROM Users where email_address = ?;', [param],
         function(err, results, fields) {
+        console.log(results)
             if (err) {
                 next();
             }
@@ -780,13 +784,29 @@ exports.getPatients = function(req, res, next) {
             res.render('pages/patients', {
                 surveyQuestions : surveyQuestions,
                 patients: results,
-                message: msg
+                message: msg,
+                profile: results
             });
         });
+
+    // dbconn.query('SELECT firstname, lastname FROM Users where email_address = ?;',
+    //     [param], function(err, results, fields) {
+    //         if (err) {
+    //             next();
+    //         }
+    //
+    //         // res.header('Content-Type', 'text/html');
+    //         res.render('pages/patients', {
+    //             surveyQuestions: surveyQuestions,
+    //             profilez: results,
+    //             message: msg
+    //         });
+    //     })
 };
 
 
 exports.postNewPatient = function(req, res, next) {
+    var param = req.params.user
     var patientFirstName = req.body['patientFirstName'];
     var patientLastName = req.body['patientLastName'];
     var patientEmailAddress = req.body['patientEmailAddress'];

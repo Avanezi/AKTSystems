@@ -20,24 +20,21 @@
                 <div id="home" class="tab-pane fade in active">
                     <h3>Profile</h3>
                     <br>
-                    <form  action="<%=sitePrefix%>/patients" method="post" enctype="application/x-www-form-urlencoded">
-                        First Name:
-                        Last Name:
-                        Role:
-                        Email Address:
-                        Password:
-                        Security Question:
-                        Role:
+                    <form action="<%=sitePrefix%>/patients" enctype="application/x-www-form-urlencoded">
+                        First Name: <%=profile[1][0].firstname%><br>
+                        Last Name: <%=profile[1][0].lastname%><br>
+                        Role: <%=profile[1][0].role%><br>
+                        Email Address: <%=profile[1][0].email_address%><br>
                     </form>
                 </div>
                 <div id="sendSurvey" class="tab-pane fade">
                     <h3>Send Survey</h3>
                     <form class="select-recipients" action="<%=sitePrefix%>/recipients"  method="post" enctype="application/x-www-form-urlencoded">
-                        <% for (var i = 0; i < patients.length; i++) {%>
+                        <% for (var i = 0; i < patients[0].length; i++) {%>
                         <div>
-                            <input type="checkbox" id="<%=patients[i].id%>;<%=patients[i].patientFirstNameName%>;<%=patients[i].patientLastName%>;<%=patients[i].patientEmailAddress%>" name="<%=patients[i].id%>;<%=patients[i].patientFirstName%>;<%=patients[i].patientEmailAddress%>" />
-                            <label for="<%=patients[i].id%>;<%=patients[i].patientFirstName%>;<%=patients[i].patientFirstName%>;<%=patients[i].patientEmailAddress%>">
-                                <%=patients[i].patientFirstName%> <%=patients[i].patientLastName%>(email address: <%=patients[i].patientEmailAddress%>)
+                            <input type="checkbox" id="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientLastName%>;<%=patients[0][i].patientEmailAddress%>" name="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>" />
+                            <label for="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>">
+                                <%=patients[0][i].patientFirstName%> <%=patients[0][i].patientLastName%>(email address: <%=patients[0][i].patientEmailAddress%>)
                             </label>
                         </div>
                         <% } %>
