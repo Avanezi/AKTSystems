@@ -1,4 +1,4 @@
-june 30 2018
+    june 30 2018
 -COMPLETED: Email verification for the sendout email address works. Sends email, containing a link which will verify (change N to Y in db) that email via registrationId / tempId, to the entered email address from the 'admin_edit_mailer' page.
 --actually need to change the sendemail function to use new email;
 

@@ -775,7 +775,6 @@ exports.getPatients = function(req, res, next) {
 
     dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients; SELECT firstname, lastname, role, email_address FROM Users where email_address = ?;', [param],
         function(err, results, fields) {
-        console.log(results)
             if (err) {
                 next();
             }
@@ -806,14 +805,13 @@ exports.getPatients = function(req, res, next) {
 
 
 exports.postNewPatient = function(req, res, next) {
-    var param = req.params.user
-    var patientFirstName = req.body['patientFirstName'];
-    var patientLastName = req.body['patientLastName'];
+    var user = req.params.user
+    var patientName = req.body['patientName'];
     var patientEmailAddress = req.body['patientEmailAddress'];
 
     dbconn.query(
-        'INSERT INTO Patients(patientFirstName, patientLastName, patientEmailAddress) VALUES (?, ?, ?);',
-        [patientFirstName, patientLastName, patientEmailAddress], function(err, result, fields) {
+        'INSERT INTO recipients(patientFirstName, r_email_address, s_email_address ) VALUES (?, ?, ?);',
+        [patientName, patientEmailAddress, user], function(err, result, fields) {
             if (err) {
                 next();
             }

@@ -1,4 +1,8 @@
 <% include ../partials/admin_head.ejs%>
+<div class="col-lg-4"><p>You are logged in as: <%=patients[1][0].email_address%></p></div>
+<form class="logout" action="<%=sitePrefix%>/auth/login" method="post">
+    <input type="submit" value="Logout" id="logout" class="btn btn-primary btn-lg">
+</form>
 
 <div class="container">
     <div class="row">
@@ -51,14 +55,10 @@
 
                 <div id="add_recipient" class="tab-pane fade">
                     <h3>Add a new patient:</h3>
-                    <form class="new-patient" action="<%=sitePrefix%>/patients" method="post" enctype="application/x-www-form-urlencoded">
+                    <form id='changeURL' class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
-                            <label>Patient First Name:</label>
-                            <input type="text" id="patientFirstName" name="patientFirstName" value="" required="true" /><br>
-
-                            <label>Patient Last Name:</label>
-                            <input type="text" id="patientLastNme" name="patientLastName" value="" required="true" /><br>
-
+                            <label>Patient Name:</label>
+                            <input type="text" id="patientName" name="patientName" value="" required="true" /><br>
 
                             <label>Patient email address:</label>
                             <input type="email" id="patientEmailAddress" name="patientEmailAddress" value="" required="true" /><br>
@@ -79,9 +79,7 @@
     <div class="row">
 
 
-        <form class="logout" action="<%=sitePrefix%>/auth/login" method="post">
-            <input type="submit" value="Logout" id="logout" class="btn btn-primary btn-lg">
-        </form>
+
 
 
     </div>

@@ -20,6 +20,15 @@ patientEmailAddress VARCHAR (256) NOT NULL,
 PRIMARY KEY (id)
 );
 
+CREATE TABLE recipients
+(
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(256) NOT NULL,
+r_email_address VARCHAR (256) NOT NULL,
+s_email_address VARCHAR (256) NOT NULL,
+PRIMARY KEY (id)
+);
+
 CREATE TABLE Users
 (
 	registrationId varchar(250)NOT NULL,
