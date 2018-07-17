@@ -337,8 +337,8 @@ exports.registerAdmin = function(req, res, next){
                         });
                     }
                     else {
-                        console.log('============= Admin account has been updated =============');
-                        res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
+                        // console.log('============= Admin account has been updated =============');
+                        res.redirect(303, config.sitePrefix + '/mail_sent');
                         verifyAdminEmail(email_address, 'P3$A1234')
                     }
                 });
@@ -399,10 +399,12 @@ exports.registerNewUser = function(req, res, next) {
                     });
                 }
                 else {
-                    res.redirect(303, config.sitePrefix + '/auth/login');
+                    console.log('===Registered new user===');
+                    res.redirect(303, config.sitePrefix + '/mail_sent');
+                    verifyRegisterEmail(email_address, registrationId);
+
                 }
             });
-        verifyRegisterEmail(email_address, registrationId);
         // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
     }
 };
@@ -557,7 +559,7 @@ var verifyRegisterEmail = function(emailAddress, registrationID) {
                 }
             });
             var mailOptions = {
-                from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                from: 'AKTSystems <info.user>',
                 to: emailAddress,
                 subject: 'Verification of User email address',
                 text: 'This is a test using Node.js module nodemailer',
@@ -589,7 +591,7 @@ var verifyRegisterEmail = function(emailAddress, registrationID) {
                         }
                     })
                 } else {
-                    console.log('SUCCESS: Message sent from updated Mailer email address');
+                    console.log('SUCCESS: Message sent from: ' + result[0].email_address);
                 }
             });
 
@@ -610,7 +612,7 @@ var verifyAdminEmail = function(emailAddress, registrationID) {
         to:  emailAddress,
         subject: 'Verify the Administrator email',
         text: 'This is a test using Node.js module nodemailer',
-        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/A/' + registrationID + '">Click here</a><br><br></body></html>'
+        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email address. Click the link below to verify: </p><br><a href="http://localhost:3003/team3/verified/A/' + registrationID + '">Click here</a><br><br></body></html>'
     };
 
     //html: '<html><body>Dear ' + emailAddress + ', <br><p>Reset password</p><a href="https://github.com/khangsin/AKTSystems/blob/master/patientExp4.1/routes/pes-app.js">Click here</a><br><br><p>testing!!!</p></body></html>'
@@ -618,7 +620,7 @@ var verifyAdminEmail = function(emailAddress, registrationID) {
         if(error){
             console.log(error);
         }else{
-            console.log('Message sent: ' + info.response);
+            console.log('Admin email verification sent: ' + info.response);
         }
     });
 };
@@ -929,6 +931,13 @@ exports.getStart = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/start', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
 };
+
+exports.getMailSent = function(req, res, next) {
+    var surveyRunId = req.params.surveyRunId;
+    res.header('Content-Type', 'text/html');
+    res.render('pages/mail_sent', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
+};
+
 //specific to mailer ONLY
 exports.getMailerVerified = function(req, res, next) {
     var surveyRunId = req.params.surveyRunId;

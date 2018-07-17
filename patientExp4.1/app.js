@@ -67,6 +67,9 @@ app.post(config.sitePrefix + '/recipients', pesAppRoutes.postRecipients);
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.getStart);
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.postStart);
 
+app.get(config.sitePrefix + '/mail_sent', pesAppRoutes.getMailSent);
+
+
 
 app.get(config.sitePrefix + '/verified/:registrationID', pesAppRoutes.getMailerVerified);
 app.get(config.sitePrefix + '/verified/U/:registrationID', pesAppRoutes.getUserVerified);
