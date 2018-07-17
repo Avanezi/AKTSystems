@@ -24,6 +24,10 @@ July 6 2018
 -Working on having user's recipients list loaded pertaining to their own (ie. each user's recipients list will be different instead of having all recipients from patients table);
 
 
+Jul7 17 2018
+-Working on changing users email_verified status to 'Y' when user verifies
+
+
 --Goals--
 1. Make "Admin" tab appear only for Admin
 2. "Add Recipients" tab should allow input of .csv file for bulk upload of emails;

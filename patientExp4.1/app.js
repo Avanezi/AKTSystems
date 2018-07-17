@@ -69,6 +69,9 @@ app.post(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.post
 
 
 app.get(config.sitePrefix + '/verified/:registrationID', pesAppRoutes.getMailerVerified);
+app.get(config.sitePrefix + '/verified/U/:registrationID', pesAppRoutes.getUserVerified);
+app.get(config.sitePrefix + '/verified/A/:registrationID', pesAppRoutes.getAdminVerified);
+
 
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/language', pesAppRoutes.getLanguage);

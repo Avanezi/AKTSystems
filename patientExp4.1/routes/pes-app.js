@@ -24,7 +24,7 @@ var createAdmin = function(req, res, next){
     console.log('about to create admin');
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
-    var registrationId = uuidV1();
+    var registrationId = 'P3$A1234'
     registrationId = registrationId.toString();
     dbconn.query(
         'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
@@ -339,6 +339,7 @@ exports.registerAdmin = function(req, res, next){
                     else {
                         console.log('============= Admin account has been updated =============');
                         res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
+                        verifyAdminEmail(email_address, 'P3$A1234')
                     }
                 });
         }
@@ -401,7 +402,7 @@ exports.registerNewUser = function(req, res, next) {
                     res.redirect(303, config.sitePrefix + '/auth/login');
                 }
             });
-        sendEmail(first_name, email_address, registrationId);
+        verifyRegisterEmail(email_address, registrationId);
         // console.log('url: ' + 'http://localhost:3003/team3/auth/' + registrationId + '/login');
     }
 };
@@ -539,33 +540,90 @@ exports.authHandler = function(req, res, next) {
     }
 };
 
-//send survey
-//
-// var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
-//     var transporter = nodemailer.createTransport({
-//         service: 'Gmail',
-//         auth: {
-//              user: 'pesa.testing@gmail.com',
-//              pass: 'Conestoga1'
-//          }
-//     });
-//     var mailOptions = {
-//         from: 'Primary Care Clinic <pesa.testing@gmail.com>',
-//         to:  emailAddress,
-//         subject: 'Patient Experience Survey',
-//         text: 'This is a test using Node.js module nodemailer',
-//         html: '<html><body>Dear ' + patientFirstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</a></body></html>'
-//     };
-//     transporter.sendMail(mailOptions, function(error, info){
-//         if(error){
-//             console.log(error);
-//         }else{
-//             console.log('Message sent: ' + info.response);
-//         }
-//     });
-//   //for testing
-//     console.log('url: ' + 'http://localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language');
-// };
+var verifyRegisterEmail = function(emailAddress, registrationID) {
+    dbconn.query('SELECT email_address, password, verified FROM mailer', function (err, result, field) {
+        if (err) {
+            console.log(err);
+        } else {
+            var info = {
+                user: result[0].email_address,
+                pass: result[0].password
+            };
+            var transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: info.user,
+                    pass: info.pass
+                }
+            });
+            var mailOptions = {
+                from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                to: emailAddress,
+                subject: 'Verification of User email address',
+                text: 'This is a test using Node.js module nodemailer',
+                html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/U/' + registrationID + '">Click here</a><br><br></body></html>'
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                    var transporter = nodemailer.createTransport({
+                        service: 'Gmail',
+                        auth: {
+                            user: 'pesa.testing@gmail.com',
+                            pass: 'Conestoga1'
+                        }
+                    });
+                    var mailOptions = {
+                        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                        to: emailAddress,
+                        subject: 'Patient Experience Survey',
+                        text: 'This is a test using Node.js module nodemailer',
+                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/U/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error)
+                        } else {
+                            console.log('SOMEWHAT SUCCESS: Message sent using default Mailer address')
+                        }
+                    })
+                } else {
+                    console.log('SUCCESS: Message sent from updated Mailer email address');
+                }
+            });
+
+        }
+    });
+};
+
+var verifyAdminEmail = function(emailAddress, registrationID) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'pesa.testing@gmail.com',
+            pass: 'Conestoga1'
+        }
+    });
+    var mailOptions = {
+        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+        to:  emailAddress,
+        subject: 'Verify the Administrator email',
+        text: 'This is a test using Node.js module nodemailer',
+        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/A/' + registrationID + '">Click here</a><br><br></body></html>'
+    };
+
+    //html: '<html><body>Dear ' + emailAddress + ', <br><p>Reset password</p><a href="https://github.com/khangsin/AKTSystems/blob/master/patientExp4.1/routes/pes-app.js">Click here</a><br><br><p>testing!!!</p></body></html>'
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Message sent: ' + info.response);
+        }
+    });
+};
+
+
 
 var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
     var transporter = nodemailer.createTransport({
@@ -887,6 +945,43 @@ exports.getMailerVerified = function(req, res, next) {
             }
             else {
                 console.log('SUCCESS: Mailer email address verified!');
+            }
+        })
+};
+exports.getUserVerified = function(req, res, next) {
+    var surveyRunId = req.params.surveyRunId;
+    res.header('Content-Type', 'text/html');
+    res.render('pages/verified', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
+    var path = url.parse(req.url).pathname;
+    var pathObj = path.split('/');
+    var regID = pathObj[pathObj.length-1];
+    dbconn.query(
+        'UPDATE users SET email_verified = "Y" WHERE registrationId = ?', [regID], function(err, result, fields) {
+            if (err) {
+                console.log(err);
+                next();
+            }
+            else {
+                console.log('SUCCESS: USER email address verified!');
+            }
+        })
+};
+
+exports.getAdminVerified = function(req, res, next) {
+    var surveyRunId = req.params.surveyRunId;
+    res.header('Content-Type', 'text/html');
+    res.render('pages/verified', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
+    var path = url.parse(req.url).pathname;
+    var pathObj = path.split('/');
+    var regID = pathObj[pathObj.length-1];
+    dbconn.query(
+        'UPDATE users SET email_verified = "Y" WHERE registrationId = ?', [regID], function(err, result, fields) {
+            if (err) {
+                console.log(err);
+                next();
+            }
+            else {
+                console.log('SUCCESS: USER email address verified!');
             }
         })
 };
