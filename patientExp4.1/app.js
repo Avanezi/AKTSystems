@@ -19,11 +19,12 @@ var dbconn = mysql.createConnection({
 dbconn.query('USE ' + config.dbName + ';');
 administrator_email = 'admin@admin';
 
-app.use(session({
+ app.use(session({
     cookieName: 'session',
     secret: 'jhfjdfdjfhkdfjcvbxndsemvsfriwetitieryeireedsdsdsmnmnmereuaaarierueioettttzzswvcbnmrturio41aaaaaes22221222',
     duration: 30 * 60 * 1000,
     activeDuration: 10 * 60 * 1000
+
 }));
 app.use(pesAppRoutes.authHandler);
 

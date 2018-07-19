@@ -10,7 +10,9 @@
 
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                <%if (profile[1][0].role === 'admin') { %>
                 <li><a data-toggle="tab" href="#admin">Admin</a></li>
+                <% } %>
                 <li><a data-toggle="tab" href="#sendSurvey">Send Survey</a></li>
                 <li><a data-toggle="tab" href="#add_recipient">Add Recipient</a></li>
                 <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
@@ -31,8 +33,14 @@
                         Email Address: <%=profile[1][0].email_address%><br>
                     </form>
                 </div>
+                <div id="admin" class="tab-pane fade">
+                    <h3>Admin Interface</h3>
+                    <br>
+                </div>
                 <div id="sendSurvey" class="tab-pane fade">
                     <h3>Send Survey</h3>
+                    <%if (email_verified === 'Y') { %>
+                    <div class="verified_email">
                     <form class="select-recipients" action="<%=sitePrefix%>/recipients"  method="post" enctype="application/x-www-form-urlencoded">
                         <% for (var i = 0; i < patients[0].length; i++) {%>
                         <div>
@@ -45,16 +53,22 @@
                         <label>Send survey request:</label>
                         <input id="sendSurvey" type="submit" value="Send" />
                     </form>
+                    </div>
+                    <% } else { %>
+                    <div class="not_verified">
+                        <h1>You must verify your email address to use this functionality</h1>
+                    </div>
+                    <% } %>
                     <% if (message) { %>
                     <p class="info_msg">
                         <%=message%>
                     </p>
                     <% } %>
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>
 
                 <div id="add_recipient" class="tab-pane fade">
                     <h3>Add a new patient:</h3>
+                    <%if (email_verified === 'Y') { %>
                     <form id='changeURL' class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
                             <label>Patient Name:</label>
@@ -66,7 +80,11 @@
                             <input type="submit" value="Add" />
                         </div>
                     </form>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                    <% } else { %>
+                    <div class="not_verified">
+                        <h1>You must verify your email address to use this functionality</h1>
+                    </div>
+                    <% } %>
                 </div>
 
                 <div id="menu3" class="tab-pane fade">

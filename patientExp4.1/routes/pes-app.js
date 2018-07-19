@@ -30,7 +30,6 @@ var createAdmin = function(req, res, next){
         'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
         [registrationId, 'admin', 'admin', 'admin', 'admin@admin', hashedPassword,'N','Y'], function(err, result, fields) {
             if (err) {
-
                console.log('An error occurred trying to register you. Please try again')
                 }
             else {
@@ -101,6 +100,9 @@ exports.getLogin = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/login', {loginMessage: null,
         surveyQuestions : surveyQuestions});
+    console.log('session of: ' + req.session.user);
+    req.session.reset()
+
 };
 exports.getFindUser= function(req, res, next) {
     res.header('Content-Type', 'text/html');
@@ -183,8 +185,6 @@ exports.postLocateUserRequest = function (req, res, next) {
     console.log(email_address)
     dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
         [email_address], function (err, results, fields) {
-            var firstname = results[0].firstname;
-            var registrationID = results[0].registrationId;
                 if (err || results === null) {
                     res.header('Content-Type', 'text/html');
                     res.render('pages/auth/find_user', {
@@ -202,7 +202,7 @@ exports.postLocateUserRequest = function (req, res, next) {
                     res.render('pages/auth/find_user', {
                        loginMessage: 'Please check your email to validate your account. Ensure to check your spam as well. If you do not receive an email please click'
                     });
-
+                    var registrationID = results[0].registrationId;
                     sendPasswordReset(email_address, registrationID);
                     // console.log('url: ' + 'http://localhost:3003/team3/auth?reg=' + registrationID + '/security_question');
                     }
@@ -241,7 +241,6 @@ exports.postLoginRequest = function(req, res, next) {
                     else {
                         if (bcrypt.compareSync(password, results[0].password)) {
                             req.session.user = results[0].email_address;
-
                             res.redirect(303, config.sitePrefix + '/patients');
                         }
                         else {
@@ -556,10 +555,13 @@ var verifyRegisterEmail = function(emailAddress, registrationID) {
                 auth: {
                     user: info.user,
                     pass: info.pass
+                },
+                tls: {
+                    rejectUnauthorized: false
                 }
             });
             var mailOptions = {
-                from: 'AKTSystems <info.user>',
+                from: 'AKTSystems',
                 to: emailAddress,
                 subject: 'Verification of User email address',
                 text: 'This is a test using Node.js module nodemailer',
@@ -574,6 +576,9 @@ var verifyRegisterEmail = function(emailAddress, registrationID) {
                         auth: {
                             user: 'pesa.testing@gmail.com',
                             pass: 'Conestoga1'
+                        },
+                        tls: {
+                            rejectUnauthorized: false
                         }
                     });
                     var mailOptions = {
@@ -605,6 +610,9 @@ var verifyAdminEmail = function(emailAddress, registrationID) {
         auth: {
             user: 'pesa.testing@gmail.com',
             pass: 'Conestoga1'
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     });
     var mailOptions = {
@@ -633,6 +641,9 @@ var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
         auth: {
             user: 'pesa.testing@gmail.com',
             pass: 'Conestoga1'
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     });
     var mailOptions = {
@@ -713,6 +724,9 @@ var mailerEmailVerify = function(emailAddress, registrationID) {
                 auth: {
                     user: info.user,
                     pass: info.pass
+                },
+                tls: {
+                    rejectUnauthorized: false
                 }
             });
             var mailOptions = {
@@ -731,6 +745,9 @@ var mailerEmailVerify = function(emailAddress, registrationID) {
                         auth: {
                             user: 'pesa.testing@gmail.com',
                             pass: 'Conestoga1'
+                        },
+                        tls: {
+                            rejectUnauthorized: false
                         }
                     });
                     var mailOptions = {
@@ -770,12 +787,15 @@ var sendPasswordReset = function(emailAddress, registrationID) {
                 auth: {
                     user: info.user,
                     pass: info.pass
+                },
+                tls: {
+                    rejectUnauthorized: false
                 }
             });
             var mailOptions = {
                 from: 'Primary Care Clinic <pesa.testing@gmail.com>',
                 to: emailAddress,
-                subject: 'Password Reset for PESA',
+                subject: 'Password Reset for AKTSystems',
                 text: 'This is a test using Node.js module nodemailer',
                 html: '<html><body>Dear ' + emailAddress + ', <br><p>Password reset! </p><br><a href="http://localhost:3003/team3/auth/reset_password/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
             };
@@ -788,6 +808,9 @@ var sendPasswordReset = function(emailAddress, registrationID) {
                         auth: {
                             user: 'pesa.testing@gmail.com',
                             pass: 'Conestoga1'
+                        },
+                        tls: {
+                            rejectUnauthorized: false
                         }
                     });
                     var mailOptions = {
@@ -805,7 +828,7 @@ var sendPasswordReset = function(emailAddress, registrationID) {
                         }
                     })
                 } else {
-                    console.log('SUCCESS: Password reset email sent!');
+                    console.log('SUCCESS: Password reset email sent from ' + result[0].email_address);
                 }
             });
 
@@ -816,7 +839,7 @@ var sendPasswordReset = function(emailAddress, registrationID) {
 // get patients
 exports.getPatients = function(req, res, next) {
     var param = req.params.user
-    console.log(param)
+    // console.log(param)
     var urlObj = url.parse(req.url, true);
     var status = urlObj.query['status'];
     var msg = null;
@@ -833,34 +856,32 @@ exports.getPatients = function(req, res, next) {
      msg = null;
     }
 
-    dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients; SELECT firstname, lastname, role, email_address FROM Users where email_address = ?;', [param],
+    dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?;',[param],
         function(err, results, fields) {
             if (err) {
                 next();
             }
-
             res.header('Content-Type', 'text/html');
             res.render('pages/patients', {
+                //this could be improved by being more specific; patients should be results[0],
+                // and the code from patients.ejs should be changed accordingly
                 surveyQuestions : surveyQuestions,
                 patients: results,
                 message: msg,
-                profile: results
+                profile: results,
+                email_verified: results[1][0].email_verified
             });
         });
-
-    // dbconn.query('SELECT firstname, lastname FROM Users where email_address = ?;',
-    //     [param], function(err, results, fields) {
-    //         if (err) {
-    //             next();
-    //         }
-    //
-    //         // res.header('Content-Type', 'text/html');
-    //         res.render('pages/patients', {
-    //             surveyQuestions: surveyQuestions,
-    //             profilez: results,
-    //             message: msg
-    //         });
+    // dbconn.query('SELECT email_verified FROM users WHERE email_address = ?', [param],
+    // function (err, results, fields){
+    //     if (err) {
+    //         console.log(err);
+    //         next();
+    //     }
+    //     res.render('pages/patients', {
+    //         verified: results
     //     })
+    // })
 };
 
 
