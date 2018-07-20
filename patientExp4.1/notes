@@ -36,7 +36,6 @@ July 19, 2018
 -Changing database schema: recipients table;
 -The recipients tab will be revamped: adding recipient will redirect to new page; tab will show all recipients in a table; this is because of POSTing issues (posting affects sendSurvey)
 -added main_interface.js for /patients/user page (not used atm);
--Posting sends to login page (BUG)
 
 --Goals--
 1. Get sessions working (reset on logout, should not be able to access internal pages without being logged in; HUGE bug atm);

@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b237e433-4f40-4ac1-95b9-45c43f9f8572" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main_interface.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patientExp4.1/database/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/database/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/patientExp4.1/notes" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/notes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/patientExp4.1/views/partials/footer.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/patientExp4.1/views/partials/footer.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,8 +23,8 @@
       <file leaf-file-name="pes-app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/patientExp4.1/routes/pes-app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="888" column="31" lean-forward="true" selection-start-line="888" selection-start-column="31" selection-end-line="888" selection-end-column="31" />
+            <state relative-caret-position="224">
+              <caret line="899" column="41" selection-start-line="899" selection-start-column="41" selection-end-line="899" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -62,20 +56,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="38" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="notes" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/patientExp4.1/notes">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
             </state>
           </provider>
         </entry>
@@ -110,8 +95,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/patientExp4.1/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-558">
-              <caret line="64" column="48" lean-forward="true" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+            <state relative-caret-position="285">
+              <caret line="64" column="69" lean-forward="true" selection-start-line="64" selection-start-column="69" selection-end-line="64" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -127,7 +112,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>req.params</find>
       <find>params.regis</find>
       <find>sitePrefix</find>
       <find>loginMess</find>
@@ -157,6 +141,7 @@
       <find>required=</find>
       <find>changeUrl</find>
       <find>changeURL</find>
+      <find>requireLogin</find>
     </findStrings>
     <replaceStrings>
       <replace>mailerEmailVerify</replace>
@@ -193,8 +178,8 @@
         <option value="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" />
         <option value="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/views/partials/admin_head.ejs" />
-        <option value="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main_interface.js" />
+        <option value="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/notes" />
       </list>
     </option>
@@ -1125,12 +1110,12 @@
       <workItem from="1529067272427" duration="1630000" />
       <workItem from="1531282729319" duration="570000" />
       <workItem from="1531283323043" duration="19888000" />
-      <workItem from="1532017490600" duration="12262000" />
+      <workItem from="1532017490600" duration="13282000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101736000" />
+    <option name="totallyTimeSpent" value="102756000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="951" extended-state="6" />
@@ -1174,13 +1159,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2091">
-          <caret line="123" selection-start-line="123" selection-end-line="123" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/patientExp4.1/views/pages/admin_start.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1305,13 +1283,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/express/lib/router/route.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="181" selection-start-line="181" selection-end-line="181" />
         </state>
       </provider>
     </entry>
@@ -1462,24 +1433,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/patientExp4.1/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-558">
-          <caret line="64" column="48" lean-forward="true" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/patientExp4.1/views/partials/admin_head.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/patientExp4.1/routes/pes-app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="888" column="31" lean-forward="true" selection-start-line="888" selection-start-column="31" selection-end-line="888" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -1518,10 +1475,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/express/lib/router/route.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="485">
+          <caret line="111" column="2" selection-start-line="111" selection-start-column="2" selection-end-line="111" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/patientExp4.1/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="64" column="69" lean-forward="true" selection-start-line="64" selection-start-column="69" selection-end-line="64" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/express/lib/response.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="921" column="17" selection-start-line="921" selection-start-column="17" selection-end-line="921" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/patientExp4.1/routes/pes-app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="899" column="41" selection-start-line="899" selection-start-column="41" selection-end-line="899" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/patientExp4.1/notes">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="38" column="34" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>

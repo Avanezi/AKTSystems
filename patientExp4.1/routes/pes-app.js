@@ -536,7 +536,6 @@ exports.authHandler = function(req, res, next) {
             });
     }
     else {
-
         next();
     }
 };
@@ -898,7 +897,7 @@ exports.postNewPatient = function(req, res, next) {
                 console.log(err);
                 next();
             }
-            res.redirect(303, config.sitePrefix + '/patients?status=np');
+            res.redirect(303, config.sitePrefix + '/patients/' + user);
         });
 };
 
