@@ -1,14 +1,3 @@
-//this code will run on every page. need to separate code into different js pages
-//test commit
-// $('#changeURL').submit(function(ev){
-//     // ev.preventDefault();
-//     var pathname = window.location.href;
-//     var pathObj = pathname.split('/');
-//     var actionURL = document.getElementById('changeURL').action;
-//     actionURL = actionURL + pathObj[pathObj.length-1];
-//     alert(actionURL)
-//     // this.submit();
-// })
 function changeURL(){
     var pathname = window.location.href;
     var pathObj = pathname.split('/');

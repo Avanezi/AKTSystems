@@ -28,7 +28,7 @@ var createAdmin = function(req, res, next){
     registrationId = registrationId.toString();
     dbconn.query(
         'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
-        [registrationId, 'admin', 'admin', 'admin', 'admin@admin', hashedPassword,'N','Y'], function(err, result, fields) {
+        [registrationId, 'admin', 'admin', 'admin', 'admin@admin', hashedPassword,'Y','Y'], function(err, result, fields) {
             if (err) {
                console.log('An error occurred trying to register you. Please try again')
                 }
@@ -886,14 +886,16 @@ exports.getPatients = function(req, res, next) {
 
 
 exports.postNewPatient = function(req, res, next) {
-    var user = req.params.user
-    var patientName = req.body['patientName'];
+    var user = req.params.user;
+    var patientFirstName = req.body['patientFirstName'];
+    var patientLastName = req.body['patientLastName'];
     var patientEmailAddress = req.body['patientEmailAddress'];
 
     dbconn.query(
-        'INSERT INTO recipients(patientFirstName, r_email_address, s_email_address ) VALUES (?, ?, ?);',
-        [patientName, patientEmailAddress, user], function(err, result, fields) {
+        'INSERT INTO recipients(first_name, last_name, email_address, added_by) VALUES (?, ?, ?, ?);',
+        [patientFirstName, patientLastName, patientEmailAddress, user], function(err, result, fields) {
             if (err) {
+                console.log(err);
                 next();
             }
             res.redirect(303, config.sitePrefix + '/patients?status=np');

@@ -9,7 +9,7 @@ email_address varchar(50) not null,
 password varchar (256) not null,
 verified char(1) not null,
 primary key(id)
-)
+);
 
 CREATE TABLE Patients
 (
@@ -24,8 +24,8 @@ CREATE TABLE recipients
 (
 id INT NOT NULL AUTO_INCREMENT,
 name VARCHAR(256) NOT NULL,
-r_email_address VARCHAR (256) NOT NULL,
-s_email_address VARCHAR (256) NOT NULL,
+email_address VARCHAR (256) NOT NULL,
+added_by VARCHAR (256) NOT NULL,
 PRIMARY KEY (id)
 );
 

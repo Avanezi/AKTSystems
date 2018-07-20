@@ -32,11 +32,18 @@ July 18 2018
 -Removed Admin tab for non-admins (will appear for administrator account only)
 -Working on resetting sessions... (currently out of scope?)
 
+July 19, 2018
+-Changing database schema: recipients table;
+-The recipients tab will be revamped: adding recipient will redirect to new page; tab will show all recipients in a table; this is because of POSTing issues (posting affects sendSurvey)
+-added main_interface.js for /patients/user page (not used atm);
+-Posting sends to login page (BUG)
+
 --Goals--
 1. Get sessions working (reset on logout, should not be able to access internal pages without being logged in; HUGE bug atm);
 2. Sending of survey needs to be fixed
 3. Adding recipients need to be fixed
 4. personalized recipients for user needs to work (think about changes to db schema)
+5. Ability to re-send verification email
 
 --out of scope but nice to have--
 1. admin_start page will always redirect to admin_edit_mailer; if we reuse admin_start page to edit admin information, then it shouldnt redirect to mailer; redirects to mailer ONLY if no mailer is set.
