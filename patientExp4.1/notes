@@ -38,7 +38,7 @@ July 19, 2018
 -added main_interface.js for /patients/user page (not used atm);
 
 --Goals--
-1. Get sessions working (reset on logout, should not be able to access internal pages without being logged in; HUGE bug atm);
+1. sessions still not working properly (need to remove session for user when logout is hit);
 2. Sending of survey needs to be fixed
 3. Adding recipients need to be fixed
 4. personalized recipients for user needs to work (think about changes to db schema)

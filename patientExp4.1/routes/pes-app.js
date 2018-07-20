@@ -49,8 +49,14 @@ exports.requireLoginHandler = function(req, res, next) {
         res.redirect(303, config.sitePrefix + '/auth/login');
     }
     else {
-        console.log('In requireLoginHandler; user: ' + req.session.user);
-        next();
+            console.log(req.params.user)
+            if(req.session.user === req.params.user) {
+                console.log('current session guy: ' + req.session.user);
+                console.log('In requireLoginHandler; user: ' + req.session.user);
+                next();
+            } else {
+                res.redirect(303, config.sitePrefix + '/auth/login');
+            }
     }
 };
 

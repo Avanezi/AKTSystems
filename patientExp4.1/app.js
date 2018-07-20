@@ -59,7 +59,7 @@ app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLog
 //Not working yet pes-app function started
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.setEmailToVerified);
 
-app.get(config.sitePrefix + '/patients', pesAppRoutes.requireLoginHandler, pesAppRoutes.authHandler);
+app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.requireLoginHandler, pesAppRoutes.authHandler);
 
 app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.getPatients);
 app.post(config.sitePrefix + '/patients/:user', pesAppRoutes.postNewPatient);
