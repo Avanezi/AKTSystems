@@ -1,8 +1,6 @@
 <% include ../partials/admin_head.ejs%>
 <div class="col-lg-4"><p>You are logged in as: <%=patients[1][0].email_address%></p></div>
-<form class="logout" action="<%=sitePrefix%>/auth/login" method="post">
-    <input type="submit" value="Logout" id="logout" class="btn btn-primary btn-lg">
-</form>
+
 
 <div class="container">
     <div class="row">
@@ -13,8 +11,8 @@
                 <%if (profile[1][0].role === 'admin') { %>
                 <li id="admin_tab"><a data-toggle="tab" href="#admin">Admin</a></li>
                 <% } %>
-                <li id="sendSurvey_tab"><a data-toggle="tab" href="#sendSurvey">Send Survey</a></li>
                 <li id="recipient_tab"><a data-toggle="tab" href="#manage_recipient">Manage Recipients</a></li>
+                <li id="sendSurvey_tab"><a data-toggle="tab" href="#sendSurvey">Send Survey</a></li>
             </ul>
 
         </div>
@@ -36,22 +34,58 @@
                     <h3>Admin Interface</h3>
                     <br>
                 </div>
-                <div id="sendSurvey" class="tab-pane fade">
-                    <h3>Send Survey</h3>
+
+                <div id="manage_recipient" class="tab-pane fade">
                     <%if (email_verified === 'Y') { %>
-                    <div class="verified_email">
-                    <form class="select-recipients" action="<%=sitePrefix%>/recipients"  method="post" enctype="application/x-www-form-urlencoded">
-                        <% for (var i = 0; i < patients[0].length; i++) {%>
+                    <h3>My recipients</h3>
+                    <ul class="nav nav-tabs">
+                        <li id="new_tab" class="active"><a data-toggle="tab" href="#new_recipient">New</a></li>
+                        <li id="view_tab"><a data-toggle="tab" href="#view_recipients">View</a></li>
+                    </ul>
+                    <div id="new_recipient" class="tab-pane fade in active">
+                    <form id='changeURL' class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
-                            <input type="checkbox" id="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientLastName%>;<%=patients[0][i].patientEmailAddress%>" name="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>" />
-                            <label for="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>">
-                                <%=patients[0][i].patientFirstName%> <%=patients[0][i].patientLastName%>(email address: <%=patients[0][i].patientEmailAddress%>)
-                            </label>
+                            <h2>Add Recipient</h2>
+                            <label>First Name:</label>
+                            <input type="text" id="patientFirstName" name="patientFirstName" value="" required="required" /><br>
+                            <label>Last Name:</label>
+                            <input type="text" id="patientLastName" name="patientLastName" value="" required="required" /><br>
+
+                            <label>Email address:</label>
+                            <input type="email" id="patientEmailAddress" name="patientEmailAddress" value="" required="required" /><br>
+                            <input type="submit" value="add_recipient" id="logout">
                         </div>
-                        <% } %>
-                        <label>Send survey request:</label>
-                        <input id="sendSurvey" type="submit" value="Send" />
                     </form>
+
+
+                </div>
+                    <div id="view_recipients" class="tab-pane fade">
+                        <h1>Under Construction</h1>
+                    </div>
+                    <% } else { %>
+                    <div class="not_verified">
+                        <h1>You must verify your email address to use this functionality</h1>
+                    </div>
+                    <% } %>
+                </div>
+
+
+                <div id="sendSurvey" class="tab-pane fade">
+                    <%if (email_verified === 'Y') { %>
+                    <h3>Send Survey</h3>
+                    <div class="verified_email">
+                        <form class="select-recipients" action="<%=sitePrefix%>/recipients"  method="post" enctype="application/x-www-form-urlencoded">
+                            <% for (var i = 0; i < patients[0].length; i++) {%>
+                            <div>
+                                <input type="checkbox" id="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientLastName%>;<%=patients[0][i].patientEmailAddress%>" name="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>" />
+                                <label for="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>">
+                                    <%=patients[0][i].patientFirstName%> <%=patients[0][i].patientLastName%>(email address: <%=patients[0][i].patientEmailAddress%>)
+                                </label>
+                            </div>
+                            <% } %>
+                            <label>Send survey request:</label>
+                            <input id="sendSurvey" type="submit" value="Send" />
+                        </form>
                     </div>
                     <% } else { %>
                     <div class="not_verified">
@@ -65,27 +99,6 @@
                     <% } %>
                 </div>
 
-                <div id="manage_recipient" class="tab-pane fade">
-                    <h3>List of recipients</h3>
-                    <%if (email_verified === 'Y') { %>
-                    <form id='changeURL' class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
-                        <div>
-                            <label>Patient First Name:</label>
-                            <input type="text" id="patientFirstName" name="patientFirstName" value="" required="required" /><br>
-                            <label>Patient Last Name:</label>
-                            <input type="text" id="patientLastName" name="patientLastName" value="" required="required" /><br>
-
-                            <label>Patient email address:</label>
-                            <input type="email" id="patientEmailAddress" name="patientEmailAddress" value="" required="required" /><br>
-
-                        </div>
-                    </form>
-                    <% } else { %>
-                    <div class="not_verified">
-                        <h1>You must verify your email address to use this functionality</h1>
-                    </div>
-                    <% } %>
-                </div>
             </div>
         </div>
     </div>

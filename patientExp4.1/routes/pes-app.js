@@ -4,6 +4,8 @@ var url = require('url');
 var uuidV1 = require('uuid/v1');
 var nodemailer = require('nodemailer');
 var bcrypt = require('bcryptjs');
+var util = require('util')
+var http = require('http')
 
 var config = require('../conf/config');
 
@@ -49,13 +51,15 @@ exports.requireLoginHandler = function(req, res, next) {
         res.redirect(303, config.sitePrefix + '/auth/login');
     }
     else {
-            console.log(req.params.user)
             if(req.session.user === req.params.user) {
                 console.log('current session guy: ' + req.session.user);
                 console.log('In requireLoginHandler; user: ' + req.session.user);
                 next();
             } else {
                 res.redirect(303, config.sitePrefix + '/auth/login');
+                // var a = util.inspect(res)
+                // console.log(a)
+
             }
     }
 };
@@ -106,8 +110,6 @@ exports.getLogin = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/login', {loginMessage: null,
         surveyQuestions : surveyQuestions});
-    console.log('session of: ' + req.session.user);
-    req.session.reset()
 
 };
 exports.getFindUser= function(req, res, next) {
@@ -214,7 +216,10 @@ exports.postLocateUserRequest = function (req, res, next) {
                     }
     });
 };
-
+exports.postLogout = function(req, res, next){
+    req.session.reset()
+    res.redirect(303, config.sitePrefix + '/auth/login')
+}
 
 exports.postLoginRequest = function(req, res, next) {
     var email_address = req.body['login_email_address'];

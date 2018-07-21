@@ -37,6 +37,12 @@ July 19, 2018
 -The recipients tab will be revamped: adding recipient will redirect to new page; tab will show all recipients in a table; this is because of POSTing issues (posting affects sendSurvey)
 -added main_interface.js for /patients/user page (not used atm);
 
+July 20, 2018
+-Working on session bugs (trying to fix logout button; redirecting to login should reset/destroy current session)
+
+July 21, 2018
+-Working on session bugs and logout function;
+
 --Goals--
 1. sessions still not working properly (need to remove session for user when logout is hit);
 2. Sending of survey needs to be fixed
