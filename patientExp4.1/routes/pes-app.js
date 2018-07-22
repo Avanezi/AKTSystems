@@ -864,7 +864,7 @@ exports.getPatients = function(req, res, next) {
      msg = null;
     }
 
-    dbconn.query('SELECT id, patientFirstName, patientLastName, patientEmailAddress FROM Patients; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?;',[param],
+    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?;',[param, param],
         function(err, results, fields) {
             if (err) {
                 next();
@@ -874,7 +874,7 @@ exports.getPatients = function(req, res, next) {
                 //this could be improved by being more specific; patients should be results[0],
                 // and the code from patients.ejs should be changed accordingly
                 surveyQuestions : surveyQuestions,
-                patients: results,
+                recipients: results,
                 message: msg,
                 profile: results,
                 email_verified: results[1][0].email_verified

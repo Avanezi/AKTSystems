@@ -47,6 +47,8 @@ July 21, 2018
 
 July 22, 2018
 -Adding recipient will check if the recipient already exists in the user's recipient list, and will not add if true
+-Work to add recipients to sendSurvey tab;
+
 --Goals--
 2. Sending of survey needs to be fixed
 3. Adding recipients need to be fixed

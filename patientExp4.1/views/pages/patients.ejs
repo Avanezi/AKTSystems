@@ -1,12 +1,12 @@
 <% include ../partials/admin_head.ejs%>
-<div class="col-lg-4"><p>You are logged in as: <%=patients[1][0].email_address%></p></div>
+<div class="col-lg-4"><p>You are logged in as: <%=profile[1][0].email_address%></p></div>
 
 
 <div class="container">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-1">
 
-            <ul class="nav nav-tabs">
+            <ul id="main_tabs" class="nav nav-tabs">
                 <li id="home_tab" class="active"><a data-toggle="tab" href="#home">Home</a></li>
                 <%if (profile[1][0].role === 'admin') { %>
                 <li id="admin_tab"><a data-toggle="tab" href="#admin">Admin</a></li>
@@ -21,7 +21,7 @@
         <div class="col-lg-12 col-md-12 col-sm-1">
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
-                    <h3>Profile</h3>
+                    <h1>Profile</h1>
                     <br>
                     <form action="<%=sitePrefix%>/patients" enctype="application/x-www-form-urlencoded">
                         First Name: <%=profile[1][0].firstname%><br>
@@ -31,34 +31,33 @@
                     </form>
                 </div>
                 <div id="admin" class="tab-pane fade">
-                    <h3>Admin Interface</h3>
+                    <h1>Admin Interface</h1>
                     <br>
                 </div>
 
                 <div id="manage_recipient" class="tab-pane fade">
                     <%if (email_verified === 'Y') { %>
-                    <h3>My recipients</h3>
+                    <h1>My recipients</h1>
+                    <p><b>Add new recipients or view your list of recipients</b></p>
                     <ul class="nav nav-tabs">
                         <li id="new_tab" class="active"><a data-toggle="tab" href="#new_recipient">New</a></li>
-                        <li id="view_tab"><a data-toggle="tab" href="#view_recipients">View</a></li>
+                        <li id="view_tab"><a data-toggle="tab" href="#view_recipients">View / Edit</a></li>
                     </ul>
                     <div id="new_recipient" class="tab-pane fade in active">
-                    <form class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
-                        <div>
-                            <h2>Add Recipient</h2>
-                            <label>First Name:</label>
-                            <input type="text" id="patientFirstName" name="patientFirstName" value="" required="required" /><br>
-                            <label>Last Name:</label>
-                            <input type="text" id="patientLastName" name="patientLastName" value="" required="required" /><br>
+                        <form class="new-patient" action="<%=sitePrefix%>/patients/" method="post" enctype="application/x-www-form-urlencoded">
+                            <div>
+                                <h2>Add Recipient</h2>
+                                <label>First Name:</label>
+                                <input type="text" id="patientFirstName" name="patientFirstName" value="" required="required" /><br>
+                                <label>Last Name:</label>
+                                <input type="text" id="patientLastName" name="patientLastName" value="" required="required" /><br>
 
-                            <label>Email address:</label>
-                            <input type="email" id="patientEmailAddress" name="patientEmailAddress" value="" required="required" /><br>
-                            <input type="submit" value="Add Recipient">
-                        </div>
-                    </form>
-
-
-                </div>
+                                <label>Email address:</label>
+                                <input type="email" id="patientEmailAddress" name="patientEmailAddress" value="" required="required" /><br>
+                                <input type="submit" value="Add Recipient">
+                            </div>
+                        </form>
+                    </div>
                     <div id="view_recipients" class="tab-pane fade">
                         <h1>Under Construction</h1>
                     </div>
@@ -69,23 +68,35 @@
                     <% } %>
                 </div>
 
-
                 <div id="sendSurvey" class="tab-pane fade">
                     <%if (email_verified === 'Y') { %>
-                    <h3>Send Survey</h3>
+                    <h2>Send Survey</h2>
+                    <p><b>Please select a recipient(s) to receive the Patient Experience survey</b></p>
                     <div class="verified_email">
+                        <%if (recipients[0].length !== 0) { %>
                         <form class="select-recipients" action="<%=sitePrefix%>/recipients"  method="post" enctype="application/x-www-form-urlencoded">
-                            <% for (var i = 0; i < patients[0].length; i++) {%>
-                            <div>
-                                <input type="checkbox" id="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientLastName%>;<%=patients[0][i].patientEmailAddress%>" name="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>" />
-                                <label for="<%=patients[0][i].id%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientFirstName%>;<%=patients[0][i].patientEmailAddress%>">
-                                    <%=patients[0][i].patientFirstName%> <%=patients[0][i].patientLastName%>(email address: <%=patients[0][i].patientEmailAddress%>)
-                                </label>
-                            </div>
-                            <% } %>
-                            <label>Send survey request:</label>
+                            <table>
+                                <tr>
+                                    <th width="1%">Select</th>
+                                    <th width="30%">Name</th>
+                                    <th>Email Address</th>
+                                </tr>
+                                <% for (var i = 0; i < recipients[0].length; i++) {%>
+                                <div>
+                                    <tr>
+                                        <td id="selects"> <input type="checkbox" id="<%=recipients[0][i].id%>"></td>
+                                        <td><%=recipients[0][i].first_name%> <%=recipients[0][i].last_name%></td>
+                                        <td> <%=recipients[0][i].email_address%></td>
+                                    </tr>
+                                </div>
+                                <% } %>
+                            </table>
                             <input id="sendSurvey" type="submit" value="Send" />
+                            <br>
                         </form>
+                        <% } else { %>
+                        <h2>No Recipients Found!</h2>
+                        <% } %>
                     </div>
                     <% } else { %>
                     <div class="not_verified">
