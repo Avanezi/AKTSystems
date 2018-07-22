@@ -864,7 +864,8 @@ exports.getPatients = function(req, res, next) {
      msg = null;
     }
 
-    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?;',[param, param],
+    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?; ' +
+        'SELECT firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
         function(err, results, fields) {
             if (err) {
                 next();
@@ -877,7 +878,8 @@ exports.getPatients = function(req, res, next) {
                 recipients: results,
                 message: msg,
                 profile: results,
-                email_verified: results[1][0].email_verified
+                email_verified: results[1][0].email_verified,
+                regularUsers: results[2]
             });
         });
     // dbconn.query('SELECT email_verified FROM users WHERE email_address = ?', [param],
@@ -914,10 +916,12 @@ exports.postNewPatient = function(req, res, next) {
                 [patientFirstName, patientLastName, patientEmailAddress, user], function (err, result, fields) {
                     if (err) {
                         console.log(err);
+                        //is this needed?
                         next();
+                    } else {
+                        console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
                     }
                     res.redirect(303, config.sitePrefix + '/patients/' + user);
-                    console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
                 });
         }
     })
