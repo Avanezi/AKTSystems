@@ -894,7 +894,7 @@ exports.getPatients = function(req, res, next) {
 
 
 exports.postNewPatient = function(req, res, next) {
-    var user = req.session.user
+    var user = req.session.user;
     var patientFirstName = req.body['patientFirstName'];
     var patientLastName = req.body['patientLastName'];
     var patientEmailAddress = req.body['patientEmailAddress'];

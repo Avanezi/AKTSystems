@@ -65,7 +65,7 @@ app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.setEmai
 app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.requireLoginHandler, pesAppRoutes.authHandler);
 
 app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.getPatients);
-app.post(config.sitePrefix + '/patients/:user', pesAppRoutes.postNewPatient);
+app.post(config.sitePrefix + '/patients/', pesAppRoutes.postNewPatient);
 app.post(config.sitePrefix + '/recipients', pesAppRoutes.postRecipients);
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.getStart);
