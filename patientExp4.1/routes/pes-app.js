@@ -23,10 +23,10 @@ var surveyQuestions = JSON.parse(fs.readFileSync('../patientExp4.1/data/surveyCo
 var messages = JSON.parse(fs.readFileSync('../patientExp4.1/data/messages-en.json'));
 
 var createAdmin = function(req, res, next){
-    console.log('about to create admin');
+    console.log('Admin account does not exist!');
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
-    var registrationId = 'P3$A1234'
+    var registrationId = 'P3$A1234';
     registrationId = registrationId.toString();
     dbconn.query(
         'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
@@ -35,7 +35,7 @@ var createAdmin = function(req, res, next){
                console.log('An error occurred trying to register you. Please try again')
                 }
             else {
-                console.log('account created!')
+                console.log('SUCCESS: Admin account created!')
             }
         });
 };
@@ -67,14 +67,11 @@ exports.requireLoginHandler = function(req, res, next) {
 exports.checkAdminExist = function (req, res, next){
     dbconn.query("SELECT * FROM Users where role = 'admin'",
         function(err, result, fields) {
-            console.log('checking if admin account exists...');
             if (result.length === 0){
-                console.log('no results found!');
                 createAdmin();
                 next();
             }
             else if (result[0].role === 'admin') {
-                console.log('admin account exists;');
                 next()
             }
         }
@@ -217,6 +214,7 @@ exports.postLocateUserRequest = function (req, res, next) {
     });
 };
 exports.postLogout = function(req, res, next){
+    //Will all users have their session reset when server receives request?
     req.session.reset()
     res.redirect(303, config.sitePrefix + '/auth/login')
 }
@@ -896,7 +894,7 @@ exports.getPatients = function(req, res, next) {
 
 
 exports.postNewPatient = function(req, res, next) {
-    var user = req.params.user;
+    var user = req.session.user
     var patientFirstName = req.body['patientFirstName'];
     var patientLastName = req.body['patientLastName'];
     var patientEmailAddress = req.body['patientEmailAddress'];
@@ -909,6 +907,7 @@ exports.postNewPatient = function(req, res, next) {
                 next();
             }
             res.redirect(303, config.sitePrefix + '/patients/' + user);
+            console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
         });
 };
 

@@ -42,9 +42,10 @@ July 20, 2018
 
 July 21, 2018
 -Working on session bugs and logout function;
+-Users are able to add recipients to their recipient list!
+-Updated "Manage Recipients" tab to match mockup;
 
 --Goals--
-1. sessions still not working properly (need to remove session for user when logout is hit);
 2. Sending of survey needs to be fixed
 3. Adding recipients need to be fixed
 4. personalized recipients for user needs to work (think about changes to db schema)

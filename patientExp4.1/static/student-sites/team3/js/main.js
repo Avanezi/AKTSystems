@@ -4,6 +4,7 @@ function changeURL(){
     var actionURL = document.getElementById('changeURL').action;
     actionURL = actionURL + pathObj[pathObj.length-1];
     document.getElementById('changeURL').action = actionURL;
+    console.log(actionURL)
 }
 
 $(document).ready(function(){
