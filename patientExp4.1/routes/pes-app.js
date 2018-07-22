@@ -899,17 +899,29 @@ exports.postNewPatient = function(req, res, next) {
     var patientLastName = req.body['patientLastName'];
     var patientEmailAddress = req.body['patientEmailAddress'];
 
-    dbconn.query(
-        'INSERT INTO recipients(first_name, last_name, email_address, added_by) VALUES (?, ?, ?, ?);',
-        [patientFirstName, patientLastName, patientEmailAddress, user], function(err, result, fields) {
-            if (err) {
-                console.log(err);
-                next();
+    dbconn.query('SELECT email_address FROM recipients WHERE added_by = ?', [user], function (err, result, fields) {
+        var email_exist = false;
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].email_address === patientEmailAddress) {
+                console.log('FAILURE: Recipient %s already exists in your recipient list!', patientEmailAddress);
+                email_exist = true;
+                res.redirect(303, config.sitePrefix + '/patients/' + user);
+                break;
             }
-            res.redirect(303, config.sitePrefix + '/patients/' + user);
-            console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
-        });
-};
+        }
+        if (!email_exist) {
+            dbconn.query('INSERT INTO recipients(first_name, last_name, email_address, added_by) VALUES (?, ?, ?, ?);',
+                [patientFirstName, patientLastName, patientEmailAddress, user], function (err, result, fields) {
+                    if (err) {
+                        console.log(err);
+                        next();
+                    }
+                    res.redirect(303, config.sitePrefix + '/patients/' + user);
+                    console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
+                });
+        }
+    })
+}
 
 exports.postRecipients = function(req, res, next) {
     var insertStmt = '';
