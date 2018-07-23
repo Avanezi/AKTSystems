@@ -67,6 +67,8 @@ app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.requireLoginHandler,
 app.get(config.sitePrefix + '/patients/:user', pesAppRoutes.getPatients);
 app.post(config.sitePrefix + '/patients/', pesAppRoutes.postNewPatient);
 app.post(config.sitePrefix + '/recipients', pesAppRoutes.postRecipients);
+app.post(config.sitePrefix + '/deleteusers', pesAppRoutes.postDeleteUsers);
+
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.getStart);
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.postStart);

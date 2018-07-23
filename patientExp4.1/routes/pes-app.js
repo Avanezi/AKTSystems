@@ -52,8 +52,6 @@ exports.requireLoginHandler = function(req, res, next) {
     }
     else {
             if(req.session.user === req.params.user) {
-                console.log('current session guy: ' + req.session.user);
-                console.log('In requireLoginHandler; user: ' + req.session.user);
                 next();
             } else {
                 res.redirect(303, config.sitePrefix + '/auth/login');
@@ -865,7 +863,7 @@ exports.getPatients = function(req, res, next) {
     }
 
     dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?; ' +
-        'SELECT firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
+        'SELECT registrationId, firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
         function(err, results, fields) {
             if (err) {
                 next();
@@ -926,6 +924,49 @@ exports.postNewPatient = function(req, res, next) {
         }
     })
 }
+
+exports.postDeleteUsers = function(req, res, next) {
+    var user = req.session.user;
+    dbconn.query('SELECT registrationId FROM users WHERE role = "user";', function(err, result, fields){
+        var deleteStmt = '';
+        for(var i = 0; i < result.length; i++) {
+            var checkboxId = result[i].registrationId;
+            if(req.body[checkboxId] === 'on'){
+                deleteStmt += "DELETE FROM users WHERE registrationId = '" + checkboxId + "'; ";
+            }
+        }
+        dbconn.query(deleteStmt, function(err, result, fields){
+            if (err){
+                console.log(err);
+                next();
+            } else {
+                console.log('SUCCESS: User(s) have been deleted!')
+            }
+            res.redirect(303, config.sitePrefix + '/patients/' + user);
+        })
+    })
+    // if (Object.keys(req.body).length > 0) {
+    //     Object.keys(req.body).forEach(function (key) {
+    //         var currRecipient = key.split(';');
+    //         var currUuid = uuidV1();
+    //         deleteStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
+    //         params.push(currUuid.toString(), parseInt(currRecipient[0]));
+    //         sendEmail(currRecipient[1], currRecipient[2], currUuid);
+    //     });
+    //
+    //     dbconn.query(insertStmt, params, function (err, result, fields) {
+    //         if (err) {
+    //             next();
+    //         }
+    //         res.redirect(303, config.sitePrefix + '/patients?status=ss');
+    //     })
+    // }
+    // else {
+    //     res.redirect(303, config.sitePrefix + '/patients?status=ns');
+    //
+    // }
+};
+
 
 exports.postRecipients = function(req, res, next) {
     var insertStmt = '';
