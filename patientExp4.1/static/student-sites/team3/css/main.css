@@ -109,3 +109,10 @@ input[type=submit]{
     width: 80pt;
     height: 40pt;
 }
+
+img {
+    padding-right: 30px;
+}
+/*#profile_info {*/
+    /*text-align: left;*/
+/*}*/

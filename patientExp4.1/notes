@@ -51,6 +51,13 @@ July 22, 2018
 -Did lots of CSS work (table, li)
 -added content for admin interface (needs functionality)
 
+July 23, 2018
+-Added delete users functionality for administrator account (admin tab)
+
+July 24, 2018
+-Work on info messages display for main interface
+
+
 --Goals--
 2. Sending of survey needs to be fixed
 3. Adding recipients need to be fixed

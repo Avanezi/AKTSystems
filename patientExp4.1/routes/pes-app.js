@@ -45,8 +45,8 @@ var createAdmin = function(req, res, next){
 exports.requireLoginHandler = function(req, res, next) {
         if (!req.session.user) {
         console.log('In requireLoginHandler; no user in session yet.');
-            res.header('Content-Type', 'text/html');
-        res.render('pages/auth/login', {loginMessage: null,
+            // res.header('Content-Type', 'text/html');
+        res.render('pages/auth/login', {loginMessage: 'Please Log in',
             surveyQuestions : surveyQuestions});
         res.redirect(303, config.sitePrefix + '/auth/login');
     }
@@ -844,34 +844,38 @@ var sendPasswordReset = function(emailAddress, registrationID) {
 
 // get patients
 exports.getPatients = function(req, res, next) {
-    var param = req.params.user
+    var param = req.params.user;
     // console.log(param)
     var urlObj = url.parse(req.url, true);
     var status = urlObj.query['status'];
+    console.log(urlObj);
+    console.log(status)
     var msg = null;
-    if (status==='ns') {
-        msg = 'Please select email address!';
+    if (status==='S_du') {
+        msg = 'User(s) have been deleted!';
     }
-    else if (status === 'np') {
-        msg = 'New patient has been added!'
+    else if (status === 'F_ra') {
+        msg = 'Recipient already exists!'
     }
-    else if (status === 'ss'){
-        msg = 'Survey has been sent!';
+    else if (status === 'S_ra'){
+        msg = 'Recipient has been added!';
     }
+    // else if (status === 'S_ra'){
+    //     msg = 'Recipient has been added!';
+    // }
     else{
      msg = null;
     }
-
     dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?; ' +
         'SELECT registrationId, firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
         function(err, results, fields) {
             if (err) {
                 next();
             }
-            res.header('Content-Type', 'text/html');
             res.render('pages/patients', {
                 //this could be improved by being more specific; patients should be results[0],
                 // and the code from patients.ejs should be changed accordingly
+                loginMessage: null,
                 surveyQuestions : surveyQuestions,
                 recipients: results,
                 message: msg,
@@ -905,7 +909,7 @@ exports.postNewPatient = function(req, res, next) {
             if (result[i].email_address === patientEmailAddress) {
                 console.log('FAILURE: Recipient %s already exists in your recipient list!', patientEmailAddress);
                 email_exist = true;
-                res.redirect(303, config.sitePrefix + '/patients/' + user);
+                res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=F_ra');
                 break;
             }
         }
@@ -919,7 +923,7 @@ exports.postNewPatient = function(req, res, next) {
                     } else {
                         console.log('SUCCESS:\'%s\' has been added to user %s\'s list of recipients!', patientEmailAddress, user)
                     }
-                    res.redirect(303, config.sitePrefix + '/patients/' + user);
+                    res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=S_ra');
                 });
         }
     })
@@ -941,9 +945,12 @@ exports.postDeleteUsers = function(req, res, next) {
                 next();
             } else {
                 console.log('SUCCESS: User(s) have been deleted!')
+
             }
-            res.redirect(303, config.sitePrefix + '/patients/' + user);
+            res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=S_du');
         })
+        // res.render('pages/patients', {loginMessage: 'User(s) have been deleted!',
+        //     surveyQuestions : surveyQuestions});
     })
     // if (Object.keys(req.body).length > 0) {
     //     Object.keys(req.body).forEach(function (key) {
