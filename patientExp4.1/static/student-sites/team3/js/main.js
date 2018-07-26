@@ -1,4 +1,5 @@
 function changeURL(){
+    console.log('changing URL...')
     var pathname = window.location.href;
     var pathObj = pathname.split('/');
     var actionURL = document.getElementById('changeURL').action;

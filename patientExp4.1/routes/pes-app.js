@@ -63,7 +63,7 @@ exports.requireLoginHandler = function(req, res, next) {
 };
 
 exports.checkAdminExist = function (req, res, next){
-    dbconn.query("SELECT * FROM Users where role = 'admin'",
+    dbconn.query("SELECT * FROM users where role = 'admin'",
         function(err, result, fields) {
             if (result.length === 0){
                 createAdmin();
@@ -80,7 +80,7 @@ exports.checkAdminExist = function (req, res, next){
             next();
         }
         else if (result.length === 0){
-            dbconn.query('INSERT INTO MAILER (id, email_address, password, verified) VALUES (?, ?, ?, ?);', ['0', 'pesa.testing@gmail.com', 'Conestoga1', 'Y'])
+            dbconn.query('INSERT INTO mailer (id, email_address, password, verified) VALUES (?, ?, ?, ?);', ['0', 'pesa.testing@gmail.com', 'Conestoga1', 'Y'])
             console.log('SUCCESS: Inserted default Mailer');
         } else {
             next()
@@ -186,7 +186,7 @@ exports.postPasswordChange = function (req, res, next) {
 exports.postLocateUserRequest = function (req, res, next) {
     var email_address = req.body['find_email_address'];
     console.log(email_address)
-    dbconn.query('SELECT registrationId, firstname FROM Users WHERE email_address = ?;',
+    dbconn.query('SELECT registrationId, firstname FROM users WHERE email_address = ?;',
         [email_address], function (err, results, fields) {
                 if (err || results === null) {
                     res.header('Content-Type', 'text/html');
@@ -220,7 +220,7 @@ exports.postLogout = function(req, res, next){
 exports.postLoginRequest = function(req, res, next) {
     var email_address = req.body['login_email_address'];
     var password = req.body['login_password'];
-    dbconn.query('SELECT email_address,password FROM Users WHERE email_address = ?;',
+    dbconn.query('SELECT email_address,password FROM users WHERE email_address = ?;',
         [email_address], function(err, results, fields) {
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
@@ -480,7 +480,7 @@ exports.registerMailer = function(req, res, next) {
     if (email_address === confirm_email) {
         //need to check if mailer exists; if it does, do not insert but rather UPDATE. if doesnt exist, insert;
         dbconn.query(
-            'DELETE FROM MAILER; INSERT INTO mailer (email_address, password, verified, tempId) VALUES (?,?,?,?);',
+            'DELETE FROM mailer; INSERT INTO mailer (email_address, password, verified, tempId) VALUES (?,?,?,?);',
             [email_address, password, 'N', tempId], function (err, result, fields) {
                 if (err) {
                     var errMsg;
@@ -522,7 +522,7 @@ exports.registerMailer = function(req, res, next) {
 
 exports.authHandler = function(req, res, next) {
       if (req.session && req.session.user) {
-          dbconn.query('SELECT email_address, firstname, lastname FROM Users WHERE email_address = ?;',
+          dbconn.query('SELECT email_address, firstname, lastname FROM users WHERE email_address = ?;',
             [req.session.user], function(err, results, fields) {
                 if (err || results === null) {
                     res.render('pages/auth/login', {
@@ -866,7 +866,7 @@ exports.getPatients = function(req, res, next) {
     else{
      msg = null;
     }
-    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM Users where email_address = ?; ' +
+    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM users where email_address = ?; ' +
         'SELECT registrationId, firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
         function(err, results, fields) {
             if (err) {
