@@ -90,15 +90,52 @@ exports.checkAdminExist = function (req, res, next){
 };
 
 exports.getAdminInterface = function (req, res, next) {
-    res.header('Content-Type', 'text/html');
-    res.render('pages/admin_start', {loginMessage: null,
-        surveyQuestions: surveyQuestions})
+    if (Object.keys(req.session).length === 0){
+        res.redirect(303, config.sitePrefix + '/auth/login');
+        console.log('FAILURE: Must be logged in as Admin to access admin page')
+    } else {
+        var user = req.session.user;
+        dbconn.query('SELECT role FROM users WHERE email_address = ?', [user], function (err, result, fields){
+            if (err){
+                console.log(err);
+                res.redirect(303, config.sitePrefix + '/auth/login');
+            }
+
+            if (result[0].role === 'admin'){
+                res.header('Content-Type', 'text/html');
+                res.render('pages/admin_start', {loginMessage: null,
+                    surveyQuestions: surveyQuestions})
+            } else {
+                res.redirect(303, config.sitePrefix + '/auth/login');
+                console.log('FAILURE: Users do not have access to admin page')
+            }
+        })
+    }
+
 };
 
 exports.getEditMailerInterface = function (req, res, next) {
-    res.header('Content-Type', 'text/html');
-    res.render('pages/admin_edit_mailer', {loginMessage: null,
-        surveyQuestions: surveyQuestions})
+    if (Object.keys(req.session).length === 0){
+        res.redirect(303, config.sitePrefix + '/auth/login');
+        console.log('FAILURE: Must be logged in as Admin to access mailer page')
+    } else {
+        var user = req.session.user;
+        dbconn.query('SELECT role FROM users WHERE email_address = ?', [user], function (err, result, fields){
+            if (err){
+                console.log(err);
+                res.redirect(303, config.sitePrefix + '/auth/login');
+            }
+
+            if (result[0].role === 'admin'){
+                res.header('Content-Type', 'text/html');
+                res.render('pages/admin_edit_mailer', {loginMessage: null,
+                    surveyQuestions: surveyQuestions})
+            } else {
+                res.redirect(303, config.sitePrefix + '/auth/login');
+                console.log('FAILURE: Users do not have access to mailer page')
+            }
+        })
+    }
 };
 
 exports.getLogin = function(req, res, next) {
@@ -226,7 +263,7 @@ exports.postLogoutStatus = function(req, res, next){
 exports.postLoginRequest = function(req, res, next) {
     var email_address = req.body['login_email_address'];
     var password = req.body['login_password'];
-    dbconn.query('SELECT email_address,password FROM users WHERE email_address = ?;',
+    dbconn.query('SELECT email_address, password FROM users WHERE email_address = ?;',
         [email_address], function(err, results, fields) {
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
@@ -851,11 +888,8 @@ var sendPasswordReset = function(emailAddress, registrationID) {
 // get patients
 exports.getPatients = function(req, res, next) {
     var param = req.params.user;
-    // console.log(param)
     var urlObj = url.parse(req.url, true);
     var status = urlObj.query['status'];
-    console.log(urlObj);
-    console.log(status)
     var msg = null;
     if (status==='S_du') {
         msg = 'User(s) have been deleted!';
@@ -866,9 +900,6 @@ exports.getPatients = function(req, res, next) {
     else if (status === 'S_ra'){
         msg = 'Recipient has been added!';
     }
-    // else if (status === 'S_ra'){
-    //     msg = 'Recipient has been added!';
-    // }
     else{
      msg = null;
     }
