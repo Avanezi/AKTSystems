@@ -47,7 +47,7 @@ app.post(config.sitePrefix + '/auth/find_user',pesAppRoutes.postLocateUserReques
 //Not working yet no development started besides views
 // app.get(config.sitePrefix + '/auth?reg=:registrationID/reset_password', pesAppRoutes.getResetPassword);
 app.get(config.sitePrefix + '/auth/reset_password/:registrationId?', pesAppRoutes.getResetPassword);
-app.post(config.sitePrefix + '/auth/reset_password/:registrationId', pesAppRoutes.postPasswordChange);
+app.post(config.sitePrefix + '/auth/reset_password/:registrationId?', pesAppRoutes.postPasswordChange);
 
 //Not working yet, pes-app functions started
 // app.get(config.sitePrefix + '/auth?reg=:registrationId/security_question', pesAppRoutes.getSecurityQuestion);
@@ -56,8 +56,7 @@ app.post(config.sitePrefix + '/auth/reset_password/:registrationId', pesAppRoute
 app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLoginRequest);
 
-app.post(config.sitePrefix + '/auth/logout/:registrationId/', pesAppRoutes.postLogout);
-app.post(config.sitePrefix + '/auth/logout/?status=S_ra', pesAppRoutes.postLogoutStatus);
+app.post(config.sitePrefix + '/auth/logout/:registrationId?', pesAppRoutes.postLogout);
 
 
 //Not working yet pes-app function started

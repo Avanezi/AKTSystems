@@ -114,7 +114,6 @@ exports.getFindUser= function(req, res, next) {
 };
 
 exports.getResetPassword= function(req, res, next) {
-
     // var path = url.parse(req.url).pathname;
     res.header('Content-Type', 'text/html');
     res.render('pages/auth/reset_password', {loginMessage: null,
@@ -156,8 +155,10 @@ exports.postPasswordChange = function (req, res, next) {
     var password = req.body['passwordNew2'];
     var salt = bcrypt.genSaltSync(10);
     var hashedPassword = bcrypt.hashSync(password, salt);
+    console.log(param);
     dbconn.query('UPDATE users SET password = ? WHERE registrationId = ?',
         [hashedPassword, param], function (err, results, fields) {
+        console.log(results)
             if (err || results === null) {
                 res.header('Content-Type', 'text/html');
                 res.render('pages/auth/find_user', {
