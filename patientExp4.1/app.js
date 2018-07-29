@@ -56,7 +56,8 @@ app.post(config.sitePrefix + '/auth/reset_password/:registrationId', pesAppRoute
 app.post(config.sitePrefix + '/auth/login', pesAppRoutes.postLoginRequest);
 app.post(config.sitePrefix + '/auth/:registrationId/login', pesAppRoutes.postLoginRequest);
 
-app.post(config.sitePrefix + '/auth/logout/:registrationId/:status', pesAppRoutes.postLogout);
+app.post(config.sitePrefix + '/auth/logout/:registrationId/', pesAppRoutes.postLogout);
+app.post(config.sitePrefix + '/auth/logout/?status=S_ra', pesAppRoutes.postLogoutStatus);
 
 
 //Not working yet pes-app function started

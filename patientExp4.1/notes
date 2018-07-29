@@ -57,6 +57,12 @@ July 23, 2018
 July 24, 2018
 -Work on info messages display for main interface
 
+July 26-27, 2018
+-Working on logout function (bug fixing)
+-Fixed database schema (recipients table not corresponding to code)
+-Working on minor changes for deployment on server
+-Need to fix email links because it starts with localhost:3003
+
 
 --Goals--
 2. Sending of survey needs to be fixed
@@ -75,3 +81,8 @@ July 24, 2018
 8. Password reset will look like it worked even if the registrationId in the URL is invalid!!!
 9. Logout button not functioning properly: brings to login page, but using incorrect function;
 
+--Deploying onto server--
+SSH to students.healthinformaticshub.ca while on the school network. Enter in credentials for team3; copy the project
+folder onto team3; install all dependencies; mysql command: mysql -u pesApp03 -p (requires password); create the tables;
+make sure to add 'use pesdb3'; quit; npm install nodemailer@1.0.0 (because error prevents app from running);
+when ready, enter command: 'node app.js'; follow error messages if it doesn't run;

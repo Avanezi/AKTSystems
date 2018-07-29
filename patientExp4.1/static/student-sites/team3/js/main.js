@@ -1,11 +1,21 @@
 function changeURL(){
-    console.log('changing URL...')
+    var pathname = window.location.href;
+    var pathObj = pathname.split('/');
+    var actionURL = document.getElementById('changeURL').action;
+    actionURL = actionURL + pathObj[pathObj.length-1];
+    if ((pathObj[pathObj.length-1]).char)
+    document.getElementById('changeURL').action = actionURL;
+    alert(actionURL);
+}
+
+function changeUrlLogout(){
     var pathname = window.location.href;
     var pathObj = pathname.split('/');
     var actionURL = document.getElementById('changeURL').action;
     actionURL = actionURL + pathObj[pathObj.length-1];
     document.getElementById('changeURL').action = actionURL;
     console.log(actionURL)
+    alert(actionURL)
 }
 
 $(document).ready(function(){

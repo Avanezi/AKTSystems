@@ -213,9 +213,14 @@ exports.postLocateUserRequest = function (req, res, next) {
 };
 exports.postLogout = function(req, res, next){
     //Will all users have their session reset when server receives request?
-    req.session.reset()
+    req.session.reset();
     res.redirect(303, config.sitePrefix + '/auth/login')
-}
+};
+
+exports.postLogoutStatus = function(req, res, next){
+    req.session.reset();
+    res.redirect(303, config.sitePrefix + '/auth/login')
+};
 
 exports.postLoginRequest = function(req, res, next) {
     var email_address = req.body['login_email_address'];
