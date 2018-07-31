@@ -27,6 +27,7 @@ first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
 email_address VARCHAR (256) NOT NULL,
 added_by VARCHAR (256) NOT NULL,
+opt_in CHAR(1) NOT NULL,
 PRIMARY KEY (id)
 );
 

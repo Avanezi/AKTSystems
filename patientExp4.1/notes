@@ -63,11 +63,14 @@ July 26-27, 2018
 -Working on minor changes for deployment on server
 -Need to fix email links because it starts with localhost:3003
 
+July 30, 2018
+-Fixed logout functionality
+-Only admin is able to access admin_start and edit_mailer pages now
+-Working on implementing opt out of receiving surveys functionality for recipients
+
 
 --Goals--
 2. Sending of survey needs to be fixed
-3. Adding recipients need to be fixed
-4. personalized recipients for user needs to work (think about changes to db schema)
 5. Ability to re-send verification email
 
 --out of scope but nice to have--
@@ -80,6 +83,8 @@ July 26-27, 2018
 7. User should not be allowed to set the default mailer email on the admin_edit_mailer page!
 8. Password reset will look like it worked even if the registrationId in the URL is invalid!!!
 9. Logout button not functioning properly: brings to login page, but using incorrect function;
+10. Mailer table password..
+11. Mailer email verification no functionality
 
 --Deploying onto server--
 SSH to students.healthinformaticshub.ca while on the school network. Enter in credentials for team3; copy the project

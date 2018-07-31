@@ -74,6 +74,8 @@ app.get(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.getSt
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/start', pesAppRoutes.postStart);
 
 app.get(config.sitePrefix + '/mail_sent', pesAppRoutes.getMailSent);
+app.post(config.sitePrefix + '/mail_sent/:resent', pesAppRoutes.getMailReSent);
+
 
 
 

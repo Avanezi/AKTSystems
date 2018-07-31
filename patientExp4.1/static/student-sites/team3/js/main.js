@@ -6,6 +6,15 @@ function changeURL(){
     document.getElementById('changeURL').action = actionURL;
 }
 
+function changeUrlResend(){
+    var pathname = window.location.href;
+    var pathObj = pathname.split('/');
+    var actionURL = document.getElementById('changeUrlResend').action;
+    actionURL = actionURL + pathObj[pathObj.length-1];
+    alert(actionURL);
+    document.getElementById('changeURL').action = actionURL;
+}
+
 
 $(document).ready(function(){
     var first_name = document.getElementById("first_name");

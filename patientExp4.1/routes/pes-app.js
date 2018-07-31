@@ -250,6 +250,7 @@ exports.postLocateUserRequest = function (req, res, next) {
     });
 };
 exports.postLogout = function(req, res, next){
+    console.log(req.session.user + ' has logged out!')
     //Will all users have their session reset when server receives request?
     req.session.reset();
     res.redirect(303, config.sitePrefix + '/auth/login')
@@ -306,6 +307,7 @@ exports.postLoginRequest = function(req, res, next) {
                 else {
                     if (bcrypt.compareSync(password, results[0].password)) {
                         req.session.user = results[0].email_address;
+                        console.log(req.session.user + ' has logged in!');
                         dbconn.query('SELECT email_address FROM mailer;', function(err, results, fields){
                                 if (results[0].email_address === 'pesa.testing@gmail.com'){
                                     res.redirect(303, config.sitePrefix + '/admin_edit_mailer');
@@ -432,7 +434,6 @@ exports.registerNewUser = function(req, res, next) {
                     if (err.code === 'ER_DUP_ENTRY') {
                         errMsg = 'That email is already taken, please try another.';
                         console.log(errMsg)
-
                     }
                     else {
                         errMsg = 'An error occurred trying to register you. Please try again.';
@@ -444,7 +445,6 @@ exports.registerNewUser = function(req, res, next) {
                         surveyQuestions: surveyQuestions,
                         messages: messages,
                         loginMessage: errMsg
-
                     });
                 }
                 else {
@@ -516,8 +516,8 @@ exports.registerMailer = function(req, res, next) {
     var email_address = req.body['email_address'];
     var confirm_email = req.body['email_address_confirm'];
     var password = req.body['password'];
-    // var salt = bcrypt.genSaltSync(10);
-    // var hashedPassword = bcrypt.hashSync(password, salt);
+    var salt = bcrypt.genSaltSync(10);
+    var hashedPassword = bcrypt.hashSync(password, salt);
     var tempId = uuidV1();
     tempId = tempId .toString();
     if (email_address === confirm_email) {
@@ -921,16 +921,6 @@ exports.getPatients = function(req, res, next) {
                 regularUsers: results[2]
             });
         });
-    // dbconn.query('SELECT email_verified FROM users WHERE email_address = ?', [param],
-    // function (err, results, fields){
-    //     if (err) {
-    //         console.log(err);
-    //         next();
-    //     }
-    //     res.render('pages/patients', {
-    //         verified: results
-    //     })
-    // })
 };
 
 
@@ -951,8 +941,8 @@ exports.postNewPatient = function(req, res, next) {
             }
         }
         if (!email_exist) {
-            dbconn.query('INSERT INTO recipients(first_name, last_name, email_address, added_by) VALUES (?, ?, ?, ?);',
-                [patientFirstName, patientLastName, patientEmailAddress, user], function (err, result, fields) {
+            dbconn.query('INSERT INTO recipients(first_name, last_name, email_address, added_by, opt_in) VALUES (?, ?, ?, ?, ?);',
+                [patientFirstName, patientLastName, patientEmailAddress, user, 'Y'], function (err, result, fields) {
                     if (err) {
                         console.log(err);
                         //is this needed?
@@ -1066,6 +1056,14 @@ exports.getStart = function(req, res, next) {
 };
 
 exports.getMailSent = function(req, res, next) {
+    var surveyRunId = req.params.surveyRunId;
+    res.header('Content-Type', 'text/html');
+    res.render('pages/mail_sent', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
+};
+
+
+exports.getMailReSent = function(req, res, next) {
+    console.log(req.params.resent)
     var surveyRunId = req.params.surveyRunId;
     res.header('Content-Type', 'text/html');
     res.render('pages/mail_sent', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
