@@ -1,5 +1,5 @@
 <% include ../partials/admin_head.ejs%>
-<div class="col-lg-4"><p>You are logged in as: <%=profile[1][0].email_address%></p></div>
+<div class="col-lg-4" id='loggedInAs'><h3>You are logged in as: <%=profile[1][0].email_address%></h3></div>
 
 
 <div class="container">
@@ -44,14 +44,14 @@
 
                 <div id="admin" class="tab-pane fade">
                     <h1>Admin Interface</h1>
-                    <div>
+                    <div class="sectionBox">
                         <h3>Users</h3>
                         <form action="<%=sitePrefix%>/deleteusers"  method="post" enctype="application/x-www-form-urlencoded">
                             <table>
                                 <tr>
                                     <th width="5%">Select</th>
                                     <th width="30%">Name</th>
-                                    <th>Email Address</th>
+                                    <th width="30%">Email Address</th>
                                     <th width="10%">Verified?</th>
                                 </tr>
                                 <% for (var j = 0; j < regularUsers.length; j++) {%>
@@ -71,7 +71,7 @@
                     </div>
                     <div>
                         <h3>Edit Mailer Information</h3>
-                        <p>Edit the mailer email credentials used to send email verifications and surveys from</p>
+                        <p>Update the mailer email credentials used to send email verifications and surveys from</p>
                         <form action="<%=sitePrefix%>/admin_edit_mailer">
                             <input type="submit" value="Edit Mailer">
                         </form>
@@ -123,7 +123,7 @@
                                 <tr>
                                     <th width="1%">Select</th>
                                     <th width="30%">Name</th>
-                                    <th>Email Address</th>
+                                    <th width="30%">Email Address</th>
                                 </tr>
                                 <% for (var i = 0; i < recipients[0].length; i++) {%>
                                 <div>

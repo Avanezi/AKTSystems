@@ -8,19 +8,15 @@
         <% if (loginMessage) { %>
         <%=loginMessage%><br />
         <% } %>
-
+        <h2>Enter your email address and we'll send you instructions to reset your password</h2>
         <form class="search" action="<%=sitePrefix%>/auth/find_user" method="post">
-
             <div class="form-group">
                 <label> Email address:
                     <input class="email" id="find_email_address" name="find_email_address"  required="required" /><br />
                 </label>
             </div>
-
             <button type="submit" class="btn btn-default">Submit</button>
-
         </form>
-
         <p>
             Don't have an account? Then <a href="/team3/auth/register">register</a> for one.
         </p>
@@ -28,7 +24,6 @@
         <p>
             Return To <a href="/team3/auth/login">Login</a>.
         </p>
-
     </div>
 
 </div>
