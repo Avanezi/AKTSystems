@@ -25,6 +25,13 @@
                     <% if (message) { %>
                     <h3><%=message%></h3><br />
                     <% } %>
+                    <%if (email_verified === 'N') { %>
+                    <h2>Your account is not verified. Follow the instructions sent to your email address.</h2>
+                    <form action="<%=sitePrefix%>/mail_sent/"  method="post" enctype="application/x-www-form-urlencoded" id="changeUrlResend">
+                        <input type="submit" value="Re-send Email" >
+                    </form>
+                    <br>
+                    <% } %>
                     <h1>Profile</h1>
                     <div id="profile_info">
                         <img src="/student-sites/team3/img/user_picture.jpg" style="float: left">
@@ -100,7 +107,7 @@
                     <% } else { %>
                     <div class="not_verified">
                         <h1>You must verify your email address to use this functionality</h1>
-                        <p>To resend the verification email, click here</p>
+
                     </div>
                     <% } %>
                 </div>
@@ -138,9 +145,6 @@
                     <% } else { %>
                     <div class="not_verified">
                         <h1>You must verify your email address to use this functionality</h1>
-                        <form action="<%=sitePrefix%>/mail_sent"  method="post" enctype="application/x-www-form-urlencoded" id="changeUrlResend">
-                            <input type="submit" value="Re-send Verification Email" >
-                        </form>
                     </div>
                     <% } %>
                 </div>

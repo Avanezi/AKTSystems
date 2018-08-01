@@ -68,6 +68,10 @@ July 30, 2018
 -Only admin is able to access admin_start and edit_mailer pages now
 -Working on implementing opt out of receiving surveys functionality for recipients
 
+July 31, 2018
+-Opt out survey function
+-Implemented email verification resend functionality for non-verified users;
+
 
 --Goals--
 2. Sending of survey needs to be fixed

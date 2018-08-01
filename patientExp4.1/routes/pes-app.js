@@ -1062,9 +1062,16 @@ exports.getMailSent = function(req, res, next) {
 };
 
 
-exports.getMailReSent = function(req, res, next) {
-    console.log(req.params.resent)
+exports.postMailReSent = function(req, res, next) {
     var surveyRunId = req.params.surveyRunId;
+    var user = req.session.user;
+    dbconn.query('SELECT registrationId FROM users WHERE email_address = ?', [user], function(err, result, fields){
+        if (err){
+            console.log(err);
+            next()
+        }
+        verifyRegisterEmail(user, result[0].registrationId);
+    });
     res.header('Content-Type', 'text/html');
     res.render('pages/mail_sent', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
 };
