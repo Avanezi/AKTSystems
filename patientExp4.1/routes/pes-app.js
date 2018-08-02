@@ -616,7 +616,8 @@ var sendSurveyEmail = function(emailAddress, firstName, surveyId) {
                 to: emailAddress,
                 subject: 'Survey of Last Visit',
                 text: 'This is a test using Node.js module nodemailer',
-                html: '<html><body>Dear ' + firstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="http://localhost:3003/team3/survey_run/' + surveyId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</body></html>'
+                html: '<html><body>Dear ' + firstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="http://localhost:3003/team3/survey_run/' + surveyId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic' +
+                '<p>If you would like to opt-out of receiving surveys, please click <a href="http://localhost:3003/team3/opt_out/' + surveyId + '/' + emailAddress + '"> here</a></p></body></html>'
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
@@ -920,11 +921,12 @@ exports.postRecipients = function(req, res, next) {
         for (var i = 0; i < Object.keys(req.body).length; i++) {
             //uuidv1 is barely different if sent to multiple users at once;
             var surveyId = uuidV1();
-            insertStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
+            insertStmt += 'INSERT INTO surveyruns(id, completedFor) VALUES (?, ?);';
             params.push(surveyId.toString(), Object.keys(req.body)[i]);
             //this will kill the db with queries...
-            dbconn.query('SELECT first_name, email_address FROM recipients WHERE id = ?', [Object.keys(req.body)[i]], function(err, results, fields){
-                sendSurveyEmail(results[0].email_address, results[0].first_name, surveyId)
+            dbconn.query('SELECT first_name, email_address FROM recipients WHERE email_address = ?', [Object.keys(req.body)[i]], function(err, results, fields){
+                var email = results[0].email_address;
+                sendSurveyEmail(email, results[0].first_name, surveyId)
             })
         }
         dbconn.query(insertStmt, params, function(err, result, fields){
@@ -986,6 +988,22 @@ exports.postMailReSent = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/mail_sent', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
 };
+exports.getOptOut = function(req, res, next) {
+    var recipientRegId = req.params.recipientRegId;
+    var recipient = req.params.recipient;
+    res.render('pages/opt_out', {surveyQuestions: surveyQuestions});
+    var updateQuery = 'UPDATE recipients r JOIN surveyruns s ON r.email_address = ? SET opt_in = IF(s.id = ?,"N", opt_in) WHERE r.email_address = s.completedFor';
+    var params = [recipient, recipientRegId ];
+    dbconn.query(updateQuery, params, function(err, result, fields){
+        if (err){
+            console.log(err);
+            next()
+        }
+        console.log('Opt out results: '+result.message)
+        next()
+    })
+};
+
 
 //specific to mailer ONLY
 exports.getMailerVerified = function(req, res, next) {

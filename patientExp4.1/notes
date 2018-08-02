@@ -76,8 +76,10 @@ Aug 01, 2018
 -surveySendEmail now functional! Recipients can now receive the survey;
 -Recipients are now able to go through the entire survey!
 
+Aug 02, 2018
+-Opt out functionality added! Recipients will be removed from all user's list if they choose to opt-out of surveys
+
 --Goals--
-opt-out functionality
 
 --out of scope but nice to have--
 1. admin_start page will always redirect to admin_edit_mailer; if we reuse admin_start page to edit admin information, then it shouldnt redirect to mailer; redirects to mailer ONLY if no mailer is set.
