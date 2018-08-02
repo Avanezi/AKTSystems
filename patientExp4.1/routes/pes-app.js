@@ -4,8 +4,8 @@ var url = require('url');
 var uuidV1 = require('uuid/v1');
 var nodemailer = require('nodemailer');
 var bcrypt = require('bcryptjs');
-var util = require('util')
-var http = require('http')
+var util = require('util');
+var http = require('http');
 
 var config = require('../conf/config');
 
@@ -458,60 +458,6 @@ exports.registerNewUser = function(req, res, next) {
     }
 };
 
-// This version of registerMailer hashes the password, which is ideal but for sendEmail function, credentials are not hashed;
-// exports.registerMailer = function(req, res, next) {
-//     var email_address = req.body['email_address'];
-//     var confirm_email = req.body['email_address_confirm'];
-//     var password = req.body['password'];
-//     var salt = bcrypt.genSaltSync(10);
-//     var hashedPassword = bcrypt.hashSync(password, salt);
-//     var tempId = uuidV1();
-//     tempId = tempId .toString();
-//     if (email_address === confirm_email) {
-//         //need to check if mailer exists; if it does, do not insert but rather UPDATE. if doesnt exist, insert;
-//         dbconn.query(
-//             'DELETE FROM MAILER; INSERT INTO mailer (email_address, password, verified, tempId) VALUES (?,?,?,?);',
-//             [email_address, hashedPassword, 'N', tempId], function (err, result, fields) {
-//                 if (err) {
-//                     var errMsg;
-//                     if (err.code === 'ER_DUP_ENTRY') {
-//                         errMsg = 'That email is already taken, please try another.';
-//                         console.log(errMsg)
-//                     }
-//                     else {
-//                         errMsg = 'An error occurred trying to register you. Please try again.';
-//                         console.log(err)
-//                     }
-//                     res.header('Content-Type', 'text/html');
-//                     res.render('pages/admin_edit_mailer', {
-//                         title: 'Register',
-//                         surveyQuestions: surveyQuestions,
-//                         messages: messages,
-//                         loginMessage: errMsg
-//                     });
-//                 }
-//                 else {
-//                     res.redirect(303, config.sitePrefix + '/auth/login');
-//                     console.log('--------------Sender Email Updated----------------')
-//                 }
-//             });
-//         //From here, need sendEmail function adapted, or new function to send verification email to verify sendout email.
-//
-//         //This needs to work;
-//
-//         mailerEmailVerify(email_address, tempId );
-//         console.log('url: ' + 'http://localhost:3003/team3/verified/' + tempId);
-//     } else {
-//         console.log('MAILER FAILED');
-//         res.header('Content-Type', 'text/html');
-//         res.render('pages/admin_edit_mailer', {
-//             title: 'administratttttt',
-//             surveyQuestions: surveyQuestions,
-//             loginMessage: ''
-//         });
-//     }
-// };
-
 exports.registerMailer = function(req, res, next) {
     var email_address = req.body['email_address'];
     var confirm_email = req.body['email_address_confirm'];
@@ -561,7 +507,6 @@ exports.registerMailer = function(req, res, next) {
         });
     }
 };
-
 
 exports.authHandler = function(req, res, next) {
       if (req.session && req.session.user) {
@@ -745,83 +690,6 @@ var verifyAdminEmail = function(emailAddress, registrationID) {
     });
 };
 
-
-
-var sendEmail = function(patientFirstName, emailAddress, surveyRunId) {
-    var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'pesa.testing@gmail.com',
-            pass: 'Conestoga1'
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
-    var mailOptions = {
-        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
-        to:  emailAddress,
-        subject: 'Patient Experience Survey',
-        text: 'This is a test using Node.js module nodemailer',
-        html: '<html><body>Dear ' + patientFirstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</body></html>'
-    };
-
-    //html: '<html><body>Dear ' + emailAddress + ', <br><p>Reset password</p><a href="https://github.com/khangsin/AKTSystems/blob/master/patientExp4.1/routes/pes-app.js">Click here</a><br><br><p>testing!!!</p></body></html>'
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error);
-        }else{
-            console.log('Message sent: ' + info.response);
-        }
-    });
-    //for testing
-    console.log('url: ' + 'http://localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language');
-};
-
-var UpdatedSendEmail = function(patientFirstName, emailAddress, surveyRunId) {
-    dbconn.query('SELECT email_address, password FROM mailer', function (err, result, field) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(result)
-        }
-    });
-    // var transporter = nodemailer.createTransport({
-    //     service: 'Gmail',
-    //     auth: {
-    //         user: 'pesa.testing@gmail.com',
-    //         pass: 'Conestoga1'
-    //     }
-    // });
-    // var mailOptions = {
-    //     from: 'Primary Care Clinic <pesa.testing@gmail.com>',
-    //     to:  emailAddress,
-    //     subject: 'Patient Experience Survey',
-    //     text: 'This is a test using Node.js module nodemailer',
-    //     html: '<html><body>Dear ' + patientFirstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="localhost:3003/team3/survey_run/' + surveyRunId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</body></html>'
-    // };
-
-    //html: '<html><body>Dear ' + emailAddress + ', <br><p>Reset password</p><a href="https://github.com/khangsin/AKTSystems/blob/master/patientExp4.1/routes/pes-app.js">Click here</a><br><br><p>testing!!!</p></body></html>'
-    // transporter.sendMail(mailOptions, function(error, info){
-    //     if(error){
-    //         console.log(error);
-    //     }else{
-    //         console.log('Message sent: ' + info.response);
-    //     }
-    // });
-};
-
-var getMailerInfo= function(){
-    dbconn.query('SELECT email_address, password FROM mailer', function (err, result, field) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(result[0].password)
-        }
-    });
-
-};
-
 var mailerEmailVerify = function(emailAddress, registrationID) {
     dbconn.query('SELECT email_address, password, verified FROM mailer', function (err, result, field) {
         if (err) {
@@ -948,7 +816,6 @@ var sendPasswordReset = function(emailAddress, registrationID) {
     });
 };
 
-// get patients
 exports.getPatients = function(req, res, next) {
     var param = req.params.user;
     var urlObj = url.parse(req.url, true);
@@ -1044,30 +911,10 @@ exports.postDeleteUsers = function(req, res, next) {
 
             }
             res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=S_du');
-        })
+        });
         // res.render('pages/patients', {loginMessage: 'User(s) have been deleted!',
         //     surveyQuestions : surveyQuestions});
-    })
-    // if (Object.keys(req.body).length > 0) {
-    //     Object.keys(req.body).forEach(function (key) {
-    //         var currRecipient = key.split(';');
-    //         var currUuid = uuidV1();
-    //         deleteStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
-    //         params.push(currUuid.toString(), parseInt(currRecipient[0]));
-    //         sendEmail(currRecipient[1], currRecipient[2], currUuid);
-    //     });
-    //
-    //     dbconn.query(insertStmt, params, function (err, result, fields) {
-    //         if (err) {
-    //             next();
-    //         }
-    //         res.redirect(303, config.sitePrefix + '/patients?status=ss');
-    //     })
-    // }
-    // else {
-    //     res.redirect(303, config.sitePrefix + '/patients?status=ns');
-    //
-    // }
+    });
 };
 
 
@@ -1096,29 +943,6 @@ exports.postRecipients = function(req, res, next) {
     } else {
         res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=F_pr')
     }
-    // dbconn.query('SELECT email_address from recipients WHERE id = ?')
-    // var params = [];
-    //
-    // if (Object.keys(req.body).length > 0) {
-    //     Object.keys(req.body).forEach(function (key) {
-    //         var currRecipient = key.split(';');
-    //         var currUuid = uuidV1();
-    //         insertStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
-    //         params.push(currUuid.toString(), parseInt(currRecipient[0]));
-    //         sendEmail(currRecipient[1], currRecipient[2], currUuid);
-    //     });
-    //
-    //     dbconn.query(insertStmt, params, function (err, result, fields) {
-    //         if (err) {
-    //             next();
-    //         }
-    //         res.redirect(303, config.sitePrefix + '/patients?status=ss');
-    //     })
-    // }
-    // else {
-    //     res.redirect(303, config.sitePrefix + '/patients?status=ns');
-    //
-    // }
  };
 
 
@@ -1512,77 +1336,3 @@ exports.getThankYou = function(req, res, next) {
     res.header('Content-Type', 'text/html');
     res.render('pages/thankYou', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
 };
-
-
-
-// exports.createAdmin = function(req, res, next){
-//     var salt = bcrypt.genSaltSync(10);
-//     var hashedPassword = bcrypt.hashSync('Administrator1!', salt);
-//     dbconn.query(
-//         'INSERT INTO Users (email_address, firstname, lastname, password, role) VALUES (?,?,?,?,?);',
-//         [administrator_account, 'admin', 'admin', hashedPassword, 'admin'], function(err, result, fields) {
-//             if (err) {
-//                 var errMsg;
-//                 if (err.code === 'ER_DUP_ENTRY') {
-//                     errMsg = 'That email is already taken, please try another.';
-//                     console.log(errMsg)
-//                 }
-//                 else {
-//                     errMsg = 'An error occurred trying to register you. Please try again.';
-//                     console.log(errMsg);
-//                 }
-//                 res.header('Content-Type', 'text/html');
-//                 res.render('pages/admin_start', {
-//                     title: 'Admin start',
-//                     surveyQuestions : surveyQuestions,
-//                     loginMessage: errMsg
-//                 });
-//             }
-//             else {
-//                 console.log('created account successfully');
-//                 res.redirect(303, config.sitePrefix + '/admin_start');
-//             }
-//             console.log('end of function createAdmin');
-//         });
-// };
-
-
-// exports.registerNewUser = function(req, res, next) {
-//     var firstname = req.body['firstname'];
-//     var lastname = req.body['lastname'];
-//     var email_address = req.body['email_address'];
-//     var password = req.body['password'];
-//     var salt = bcrypt.genSaltSync(10);
-//     var hashedPassword = bcrypt.hashSync(req.body['password'], salt);
-//
-//     dbconn.query(
-//         'INSERT INTO Users (email_address,firstname,lastname,password) VALUES (?,?,?,?);',
-//         [email_address, firstname, lastname, hashedPassword], function(err, result, fields) {
-//             if (err) {
-//                 var errMsg;
-//                 if (err.code === 'ER_DUP_ENTRY') {
-//                     errMsg = 'That email is already taken, please try another.';
-//                 }
-//                 else {
-//                     errMsg = 'An error occurred trying to register you. Please try again.';
-//                 }
-//                 res.header('Content-Type', 'text/html');
-//                 res.render('pages/auth/register', {
-//                     title: 'Register',
-//                     surveyQuestions : surveyQuestions,
-//                     loginMessage: errMsg,
-//                     messages : messages
-//                 });
-//             }
-//             else {
-//
-//                 res.redirect(303, config.sitePrefix + '/auth/login');
-//             }
-//         });
-// };
-/*
-exports.adminTest = function (req, res, next) {
-    res.header('Content-Type', 'text/html');
-    res.render('pages/admin_test', {loginMessage: null,
-        surveyQuestions: surveyQuestions})
-};*/
