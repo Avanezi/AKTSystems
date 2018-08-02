@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b237e433-4f40-4ac1-95b9-45c43f9f8572" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/patientExp4.1/views/pages/opt_out.ejs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patientExp4.1/app.js" afterPath="$PROJECT_DIR$/patientExp4.1/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patientExp4.1/database/schema.sql" afterPath="$PROJECT_DIR$/patientExp4.1/database/schema.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patientExp4.1/notes" afterPath="$PROJECT_DIR$/patientExp4.1/notes" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" afterPath="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" afterPath="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,7 +31,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="notes" pinned="false" current-in-tab="true">
+      <file leaf-file-name="notes" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/patientExp4.1/notes">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
@@ -66,14 +61,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="schema.sql" pinned="false" current-in-tab="false">
+      <file leaf-file-name="schema.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/patientExp4.1/database/schema.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-650">
-              <caret line="48" column="24" lean-forward="false" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
+            <state relative-caret-position="0">
+              <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
               <folding>
-                <marker date="1533234406574" expanded="true" signature="228:241" ph=" CREATE statement" />
-                <marker date="1533234406574" expanded="true" signature="684:688" ph=" CREATE statement" />
+                <marker date="1533237014067" expanded="true" signature="228:241" ph=" CREATE statement" />
+                <marker date="1533237014067" expanded="true" signature="684:688" ph=" CREATE statement" />
               </folding>
             </state>
           </provider>
@@ -153,11 +148,11 @@
         <option value="$PROJECT_DIR$/patientExp4.1/static/student-sites/team3/js/main.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/views/pages/opt_out.ejs" />
         <option value="$PROJECT_DIR$/patientExp4.1/views/partials/noSession_head.ejs" />
-        <option value="$PROJECT_DIR$/patientExp4.1/database/schema.sql" />
         <option value="$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs" />
         <option value="$PROJECT_DIR$/patientExp4.1/app.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/routes/pes-app.js" />
         <option value="$PROJECT_DIR$/patientExp4.1/notes" />
+        <option value="$PROJECT_DIR$/patientExp4.1/database/schema.sql" />
       </list>
     </option>
   </component>
@@ -1198,12 +1193,12 @@
       <workItem from="1531282729319" duration="570000" />
       <workItem from="1531283323043" duration="30377000" />
       <workItem from="1532700915458" duration="5396000" />
-      <workItem from="1532835537897" duration="21542000" />
+      <workItem from="1532835537897" duration="21617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126901000" />
+    <option name="totallyTimeSpent" value="126976000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -1632,17 +1627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/patientExp4.1/database/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-650">
-          <caret line="48" column="24" lean-forward="false" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
-          <folding>
-            <marker date="1533234406574" expanded="true" signature="228:241" ph=" CREATE statement" />
-            <marker date="1533234406574" expanded="true" signature="684:688" ph=" CREATE statement" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/patientExp4.1/views/pages/patients.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -1672,6 +1656,17 @@
         <state relative-caret-position="209">
           <caret line="79" column="114" lean-forward="false" selection-start-line="79" selection-start-column="114" selection-end-line="79" selection-end-column="114" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/patientExp4.1/database/schema.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding>
+            <marker date="1533237014067" expanded="true" signature="228:241" ph=" CREATE statement" />
+            <marker date="1533237014067" expanded="true" signature="684:688" ph=" CREATE statement" />
+          </folding>
         </state>
       </provider>
     </entry>

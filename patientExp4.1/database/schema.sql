@@ -1,4 +1,4 @@
-create DATABASE pesdb3;
+CREATE DATABASE pesdb3;
 USE pesdb3;
 
 CREATE TABLE mailer (
@@ -96,7 +96,6 @@ CREATE TABLE Users
         q15b2 varchar(500) NULL,
         q15c varchar(500) NULL,
         timeCompleted TIMESTAMP NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (completedFor) REFERENCES recipients(email_address)
+        PRIMARY KEY (id)
     );
 
