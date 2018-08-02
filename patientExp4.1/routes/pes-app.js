@@ -544,7 +544,7 @@ exports.registerMailer = function(req, res, next) {
                     });
                 }
                 else {
-                    res.redirect(303, config.sitePrefix + '/auth/login');
+                    res.redirect(303, config.sitePrefix + '/patients/' + req.session.user);
                     console.log('--------------Sender Email Updated----------------');
                     mailerEmailVerify(email_address, tempId );
                     console.log('URL to validate the new mailer email: ' + 'http://localhost:3003/team3/verified/' + tempId);
@@ -635,7 +635,70 @@ var verifyRegisterEmail = function(emailAddress, registrationID) {
                         to: emailAddress,
                         subject: 'Patient Experience Survey',
                         text: 'This is a test using Node.js module nodemailer',
-                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/U/' + registrationID + '">Click here</a><br><br><p>testing!!!</p></body></html>'
+                        html: '<html><body>Dear ' + emailAddress + ', <br><p>You need to verify your email. Click the link below: </p><br><a href="http://localhost:3003/team3/verified/U/' + registrationID + '">Click here</a><br><br><p></p></body></html>'
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error)
+                        } else {
+                            console.log('SOMEWHAT SUCCESS: Message sent using default Mailer address')
+                        }
+                    })
+                } else {
+                    console.log('SUCCESS: Message sent from: ' + result[0].email_address);
+                }
+            });
+
+        }
+    });
+};
+
+var sendSurveyEmail = function(emailAddress, firstName, surveyId) {
+    dbconn.query('SELECT email_address, password, verified FROM mailer', function (err, result, field) {
+        if (err) {
+            console.log(err);
+        } else {
+            var info = {
+                user: result[0].email_address,
+                pass: result[0].password
+            };
+            var transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: info.user,
+                    pass: info.pass
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+            var mailOptions = {
+                from: 'AKTSystems',
+                to: emailAddress,
+                subject: 'Survey of Last Visit',
+                text: 'This is a test using Node.js module nodemailer',
+                html: '<html><body>Dear ' + firstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="http://localhost:3003/team3/survey_run/' + surveyId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</body></html>'
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                    var transporter = nodemailer.createTransport({
+                        service: 'Gmail',
+                        auth: {
+                            user: 'pesa.testing@gmail.com',
+                            pass: 'Conestoga1'
+                        },
+                        tls: {
+                            rejectUnauthorized: false
+                        }
+                    });
+                    var mailOptions = {
+                        from: 'Primary Care Clinic <pesa.testing@gmail.com>',
+                        to: emailAddress,
+                        subject: 'Patient Experience Survey',
+                        text: 'This is a test using Node.js module nodemailer',
+                        html: '<html><body>Dear ' + firstName + ':<br />According to our records, you have visited our office recently. We would appreciate your feedback to allow us to improve your future experience.  Please follow the link to complete our survey: <a href="http://localhost:3003/team3/survey_run/' + surveyId.toString() + '/language">Start</a><br>Best Wishes,<br>Conestoga Primary Care Clinic</body></html>'
                     };
                     transporter.sendMail(mailOptions, function (error, info) {
                         if (error) {
@@ -900,10 +963,16 @@ exports.getPatients = function(req, res, next) {
     else if (status === 'S_ra'){
         msg = 'Recipient has been added!';
     }
+    else if (status === 'S_pr'){
+        msg = 'Surveys sent to recipient(s)!'
+    }
+    else if (status === 'F_pr'){
+        msg = 'A recipient must be selected!'
+    }
     else{
      msg = null;
     }
-    dbconn.query('SELECT first_name, last_name, email_address FROM recipients WHERE added_by = ?; SELECT firstname, lastname, role, email_address, email_verified FROM users where email_address = ?; ' +
+    dbconn.query('SELECT id, first_name, last_name, email_address FROM recipients WHERE added_by = ? AND opt_in = "Y"; SELECT firstname, lastname, role, email_address, email_verified FROM users where email_address = ?; ' +
         'SELECT registrationId, firstname, lastname, email_address, email_verified FROM users WHERE role = "user"' ,[param, param],
         function(err, results, fields) {
             if (err) {
@@ -954,7 +1023,7 @@ exports.postNewPatient = function(req, res, next) {
                 });
         }
     })
-}
+};
 
 exports.postDeleteUsers = function(req, res, next) {
     var user = req.session.user;
@@ -1003,29 +1072,53 @@ exports.postDeleteUsers = function(req, res, next) {
 
 
 exports.postRecipients = function(req, res, next) {
+    var user = req.session.user;
     var insertStmt = '';
     var params = [];
-
     if (Object.keys(req.body).length > 0) {
-        Object.keys(req.body).forEach(function (key) {
-            var currRecipient = key.split(';');
-            var currUuid = uuidV1();
+        for (var i = 0; i < Object.keys(req.body).length; i++) {
+            //uuidv1 is barely different if sent to multiple users at once;
+            var surveyId = uuidV1();
             insertStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
-            params.push(currUuid.toString(), parseInt(currRecipient[0]));
-            sendEmail(currRecipient[1], currRecipient[2], currUuid);
-        });
-
-        dbconn.query(insertStmt, params, function (err, result, fields) {
-            if (err) {
+            params.push(surveyId.toString(), Object.keys(req.body)[i]);
+            //this will kill the db with queries...
+            dbconn.query('SELECT first_name, email_address FROM recipients WHERE id = ?', [Object.keys(req.body)[i]], function(err, results, fields){
+                sendSurveyEmail(results[0].email_address, results[0].first_name, surveyId)
+            })
+        }
+        dbconn.query(insertStmt, params, function(err, result, fields){
+            if (err){
+                console.log(err);
                 next();
             }
-            res.redirect(303, config.sitePrefix + '/patients?status=ss');
+            res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=S_pr')
         })
+    } else {
+        res.redirect(303, config.sitePrefix + '/patients/' + user + '/?status=F_pr')
     }
-    else {
-        res.redirect(303, config.sitePrefix + '/patients?status=ns');
-
-    }
+    // dbconn.query('SELECT email_address from recipients WHERE id = ?')
+    // var params = [];
+    //
+    // if (Object.keys(req.body).length > 0) {
+    //     Object.keys(req.body).forEach(function (key) {
+    //         var currRecipient = key.split(';');
+    //         var currUuid = uuidV1();
+    //         insertStmt += 'INSERT INTO SurveyRuns(id, completedFor) VALUES (?, ?);';
+    //         params.push(currUuid.toString(), parseInt(currRecipient[0]));
+    //         sendEmail(currRecipient[1], currRecipient[2], currUuid);
+    //     });
+    //
+    //     dbconn.query(insertStmt, params, function (err, result, fields) {
+    //         if (err) {
+    //             next();
+    //         }
+    //         res.redirect(303, config.sitePrefix + '/patients?status=ss');
+    //     })
+    // }
+    // else {
+    //     res.redirect(303, config.sitePrefix + '/patients?status=ns');
+    //
+    // }
  };
 
 

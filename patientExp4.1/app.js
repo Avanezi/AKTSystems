@@ -83,7 +83,7 @@ app.get(config.sitePrefix + '/verified/:registrationID', pesAppRoutes.getMailerV
 app.get(config.sitePrefix + '/verified/U/:registrationID', pesAppRoutes.getUserVerified);
 app.get(config.sitePrefix + '/verified/A/:registrationID', pesAppRoutes.getAdminVerified);
 
-
+app.post(config.sitePrefix + 'patients/')
 
 app.get(config.sitePrefix + '/survey_run/:surveyRunId/language', pesAppRoutes.getLanguage);
 app.post(config.sitePrefix + '/survey_run/:surveyRunId/language', pesAppRoutes.postLanguage);

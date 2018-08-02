@@ -72,6 +72,9 @@ July 31, 2018
 -Opt out survey function
 -Implemented email verification resend functionality for non-verified users;
 
+Aug 01, 2018
+-surveySendEmail now functional! Recipients can now receive the survey;
+-Recipients are now able to go through the entire survey!
 
 --Goals--
 2. Sending of survey needs to be fixed
