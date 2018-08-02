@@ -83,10 +83,7 @@ opt-out functionality
 1. admin_start page will always redirect to admin_edit_mailer; if we reuse admin_start page to edit admin information, then it shouldnt redirect to mailer; redirects to mailer ONLY if no mailer is set.
 2. admin_edit_mailer page: redirects to login even if set email is invalid; page should not redirect, or at least notify user of invalidity;
 3. Reset password uses only an emailed link including the user's registrationId; Add security question + answer here, too?
-4. Password reset has to set requirements of password;
 5. Work for mailerEmailVerify, ONLY WORKS IF USING GMAIL as service; hotmail does not work!
-6. POST admin_start: need to verify the admin account!
-7. User should not be allowed to set the default mailer email on the admin_edit_mailer page!
 8. Password reset will look like it worked even if the registrationId in the URL is invalid!!!
 9. Logout button not functioning properly: brings to login page, but using incorrect function;
 10. Mailer table password..

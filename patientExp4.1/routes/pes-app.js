@@ -40,7 +40,6 @@ var createAdmin = function(req, res, next){
         });
 };
 
-
 //authentication
 exports.requireLoginHandler = function(req, res, next) {
         if (!req.session.user) {
@@ -55,9 +54,6 @@ exports.requireLoginHandler = function(req, res, next) {
                 next();
             } else {
                 res.redirect(303, config.sitePrefix + '/auth/login');
-                // var a = util.inspect(res)
-                // console.log(a)
-
             }
     }
 };
@@ -85,7 +81,6 @@ exports.checkAdminExist = function (req, res, next){
         } else {
             next()
         }
-
     })
 };
 
@@ -111,7 +106,6 @@ exports.getAdminInterface = function (req, res, next) {
             }
         })
     }
-
 };
 
 exports.getEditMailerInterface = function (req, res, next) {
