@@ -29,7 +29,7 @@ var createAdmin = function(req, res, next){
     var registrationId = 'P3$A1234';
     registrationId = registrationId.toString();
     dbconn.query(
-        'INSERT INTO Users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
+        'INSERT INTO users (registrationId, firstname, lastname, role, email_address, password,email_verified, account_verified) VALUES(?,?,?,?,?,?,?,?);',
         [registrationId, 'admin', 'admin', 'admin', 'admin@admin', hashedPassword,'Y','Y'], function(err, result, fields) {
             if (err) {
                console.log('An error occurred trying to register you. Please try again')
@@ -360,7 +360,7 @@ exports.registerAdmin = function(req, res, next){
     var regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     //assumes 1 admin
     if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
-            var query = "UPDATE Users SET firstName = '" + first_name + "', lastName = '" + last_name + "', securityQuestion = '" + security_question + "', securityAnswer = '" + hashedAnswer + "', email_address = '" + email_address + "', password = '" + hashedPassword + "' WHERE role = 'admin';";
+            var query = "UPDATE users SET firstName = '" + first_name + "', lastName = '" + last_name + "', securityQuestion = '" + security_question + "', securityAnswer = '" + hashedAnswer + "', email_address = '" + email_address + "', password = '" + hashedPassword + "' WHERE role = 'admin';";
             dbconn.query(
                 query, function (err, result, fields) {
                     if (err) {
@@ -421,7 +421,7 @@ exports.registerNewUser = function(req, res, next) {
     //assumes 1 admin
     if (email_address === email_confirm && password === password_confirm && regex.test(password)) {
         dbconn.query(
-            'INSERT INTO Users ( registrationId, firstname, lastname, role, email_address, password, securityQuestion, securityAnswer,email_verified,account_verified) VALUES (?,?,?,?,?,?,?,?,?,?);',
+            'INSERT INTO users ( registrationId, firstname, lastname, role, email_address, password, securityQuestion, securityAnswer,email_verified,account_verified) VALUES (?,?,?,?,?,?,?,?,?,?);',
             [registrationId, first_name, last_name, role, email_address, hashedPassword, security_question, hashedAnswer, email_verified,account_verified], function (err, result, fields) {
                 if (err) {
                     var errMsg;
@@ -1008,7 +1008,7 @@ exports.getOptOut = function(req, res, next) {
 //specific to mailer ONLY
 exports.getMailerVerified = function(req, res, next) {
     var surveyRunId = req.params.surveyRunId;
-    res.header('Content-Type', 'text/html');
+    res.header('Contet-Type', 'text/html');
     res.render('pages/verified', {surveyRunId: surveyRunId, surveyQuestions: surveyQuestions});
     var path = url.parse(req.url).pathname;
     var pathObj = path.split('/');

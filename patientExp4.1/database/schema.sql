@@ -49,7 +49,7 @@ CREATE TABLE Users
     CREATE TABLE surveyruns
     (
         id VARCHAR(256) NOT NULL,
-        completedFor email_address VARCHAR(128) NOT NULL,
+        completedFor VARCHAR(128) NOT NULL,
         timeSent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         timeStarted TIMESTAMP NULL,
         q0 VARCHAR(64) NULL,
