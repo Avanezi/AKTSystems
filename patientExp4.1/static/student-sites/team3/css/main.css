@@ -1,5 +1,5 @@
 body {
-  background-color: cyan ;
+  background-color: whitesmoke ;
 }
 
 .info_msg {
@@ -14,7 +14,7 @@ footer {
   font-size: 0.8em;
 }
 .title{
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .version{
@@ -118,5 +118,6 @@ img {
     text-align: right;
 }
 
-.sectionBox {
+#profile_pic {
+    transform: scale(1);
 }
